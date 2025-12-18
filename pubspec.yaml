@@ -1,0 +1,61 @@
+name: mts_website_admin_panel
+description: "This code is for the MTS Website admin panel. The admin or any user created by the admin shall have access to the features and functionalities of this panel"
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  get: ^4.7.2
+  js: ^0.7.2
+  dotted_border: ^3.0.1
+  image_picker: ^1.1.2
+  http: ^1.4.0
+  cached_network_image: ^3.4.1
+  file_picker: ^10.3.3
+  intl: ^0.20.2
+  flutter_rating_bar: ^4.0.1
+  web_socket_channel: ^3.0.3
+  flex_color_picker: ^3.7.1
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+  -  assets/images/
+  -  assets/logos/
+  -  assets/icons/
+
+  fonts:
+
+  - family: Nunito
+    fonts:
+
+      - asset: assets/fonts/nunito/Nunito-Bold.ttf
+
+      - asset: assets/fonts/nunito/Nunito-Black.ttf
+        weight: 900
+
+      - asset: assets/fonts/nunito/Nunito-Medium.ttf
+        weight: 600
+
+      - asset: assets/fonts/nunito/Nunito-Light.ttf
+        weight: 500
+
+      - asset: assets/fonts/nunito/Nunito-ExtraLight.ttf
+        weight: 400

@@ -1,0 +1,47 @@
+
+import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:mts_website_admin_panel/utils/constants.dart';
+import 'package:mts_website_admin_panel/utils/global_variables.dart';
+import 'package:mts_website_admin_panel/utils/routes.dart';
+import 'package:mts_website_admin_panel/utils/theme_helpers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'bindings/init.dart';
+import 'bindings/language.dart';
+import 'languages/app_languages.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  GlobalVariables.prefs = await SharedPreferences.getInstance();
+  GlobalVariables.token = GlobalVariables.prefs?.getString(tokenKey) ?? '';
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return GetMaterialApp(
+      theme: ThemeHelpers.themeData,
+      debugShowCheckedModeBanner: false,
+      title: 'Admin Panel',
+      getPages: Routes.pages,
+      initialRoute: Routes.login,
+      translations: AppLanguages(),
+      fallbackLocale: const Locale('en', 'US'),
+      initialBinding: InitBinding(),
+      locale: getLocale(initLanguageController.languageKey.value),
+    );
+  }
+
+  Locale getLocale(String languageKey) {
+    if(languageKey == '') return Locale('en', 'US');
+    return Locale(
+        initLanguageController.optionsLocales[languageKey]['languageCode'],
+        initLanguageController.optionsLocales[languageKey]['countryCode']
+    );
+  }
+}
