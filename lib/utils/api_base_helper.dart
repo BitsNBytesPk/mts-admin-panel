@@ -19,6 +19,7 @@ class ApiBaseHelper {
     bool withBearer = true,
     bool withAuthorization = true,
     Object? body,
+    bool redirectToLogin = true,
   }) async {
     try {
 
@@ -54,7 +55,7 @@ class ApiBaseHelper {
       Map<String, dynamic> parsedJSON = jsonDecode(response.body);
       final apiResponse = ApiResponse.fromJson(parsedJSON);
 
-      if(response.statusCode == 401) {
+      if(response.statusCode == 401 && redirectToLogin == true) {
 
         await GlobalVariables.prefs?.clear();
         Get.offAllNamed(Routes.login, arguments: {'check': false});
@@ -81,6 +82,7 @@ class ApiBaseHelper {
     required Object body,
     bool withBearer = true,
     bool withAuthorization = true,
+    bool redirectToLogin = true,
   }) async {
     try {
       Map<String, String> header = {'Content-Type': 'application/json'};
@@ -111,9 +113,15 @@ class ApiBaseHelper {
       }
 
       Map<String, dynamic> parsedJSON = jsonDecode(response.body);
+
+      if(response.statusCode >= 200 && response.statusCode <= 299) {
+        parsedJSON['success'] = true;
+      } else {
+        parsedJSON['success'] = false;
+      }
       final apiResponse = ApiResponse.fromJson(parsedJSON);
 
-      if(response.statusCode == 401) {
+      if(response.statusCode == 401 && redirectToLogin) {
         await GlobalVariables.prefs?.clear();
         Get.offAllNamed(Routes.login, arguments: {'check': false});
         return Errors().showExpiredTokenError();
@@ -135,6 +143,7 @@ class ApiBaseHelper {
     Object? body,
     bool withBearer = true,
     bool withAuthorization = true,
+    bool redirectToLogin = true,
   }) async {
     try {
       Map<String, String> header = {'Content-Type': 'application/json'};
@@ -168,7 +177,7 @@ class ApiBaseHelper {
       Map<String, dynamic> parsedJSON = jsonDecode(response.body);
       final apiResponse = ApiResponse.fromJson(parsedJSON);
 
-      if(response.statusCode == 401) {
+      if(response.statusCode == 401 && redirectToLogin) {
         await GlobalVariables.prefs?.clear();
         Get.offAllNamed(Routes.login, arguments: {'check': false});
         return Errors().showExpiredTokenError();

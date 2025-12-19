@@ -17,7 +17,7 @@ class CustomMaterialButton extends StatelessWidget {
     this.textColor,
     this.borderColor,
     this.borderWidth = 1,
-    this.width = double.infinity,
+    this.width,
     this.height = 45
   }) : assert(text != null || child != null, 'Must provide text or child property'),
       assert(text == null || child == null, 'Cannot provide both text and child'),
@@ -43,7 +43,7 @@ class CustomMaterialButton extends StatelessWidget {
   final Color? borderColor;
   final double borderWidth;
   final double height;
-  final double width;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class CustomMaterialButton extends StatelessWidget {
       child: MaterialButton(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        minWidth: width,
+        minWidth: width ?? double.infinity,
         height: height,
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius ?? kContainerBorderRadius,

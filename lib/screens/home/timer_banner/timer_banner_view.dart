@@ -223,23 +223,19 @@ class HomeTimerBannerView extends StatelessWidget {
           ),
           Row(
             spacing: 15,
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: isSmallScreen(context) ? MainAxisAlignment.center : MainAxisAlignment.end,
             children: [
-              Expanded(
-                child: CustomMaterialButton(
-                    onPressed: () {},
-                  width: isSmallScreen(context) ? double.infinity : 200,
-                  text: 'Remove Banner',
-                  buttonColor: errorRed,
-                  borderColor: errorRed,
-                ),
+              CustomMaterialButton(
+                onPressed: () {},
+                width: isSmallScreen(context) ? 150 : 200,
+                text: 'Remove Banner',
+                buttonColor: errorRed,
+                borderColor: errorRed,
               ),
-              Expanded(
-                child: CustomMaterialButton(
-                    onPressed: () {},
-                  width: isSmallScreen(context) ? double.infinity : 200,
-                  text: 'Update Banner',
-                ),
+              CustomMaterialButton(
+                onPressed: () {},
+                width: isSmallScreen(context) ? 150 : 200,
+                text: 'Update Banner',
               ),
             ],
           )

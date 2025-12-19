@@ -86,10 +86,10 @@ class _CredentialFields extends StatelessWidget {
         spacing: 10,
         children: [
           CustomTextFormField(
-            title: lang_key.email.tr,
+            title: 'Username',
             controller: _viewModel.emailController,
-            validator: (value) => Validators.validateEmail(value),
-            suffixIcon: Icon(Icons.email_outlined, color: primaryGrey,),
+            validator: (value) => Validators.validateEmptyField(value),
+            suffixIcon: Icon(Icons.person, color: primaryGrey,),
           ),
           Obx(() => CustomTextFormField(
             obscureText: _viewModel.obscurePassword.value,

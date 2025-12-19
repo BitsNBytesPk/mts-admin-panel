@@ -1,6 +1,6 @@
 class Urls {
 
-  static const testEnvironment = 'http://localhost:3000/api/admin';
+  static const testEnvironment = 'https://mts-website-backend.onrender.com/api';
   static const prodEnvironment = '';
 
   static const baseURL = testEnvironment;

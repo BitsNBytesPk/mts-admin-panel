@@ -1,0 +1,15 @@
+
+{
+  "hosting": {
+    "site": "mts-admin-panel",
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  }
+}

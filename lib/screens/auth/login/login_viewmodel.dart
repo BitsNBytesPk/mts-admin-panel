@@ -44,8 +44,9 @@ class LoginViewModel extends GetxController {
     //   ApiBaseHelper.postMethod(
     //       url: Urls.login,
     //       withAuthorization: false,
+    //       redirectToLogin: false,
     //       body: {
-    //         'email': emailController.text.trim(),
+    //         'username': emailController.text.trim(),
     //         'password': passwordController.text.trim(),
     //       }).then((value) async {
     //
@@ -53,7 +54,9 @@ class LoginViewModel extends GetxController {
     //
     //           await GlobalVariables.prefs?.setString(tokenKey, value.data['token']);
     //           GlobalVariables.token = value.data['token'];
-    //           _getUserProfile();
+    //           GlobalVariables.showLoader.value = false;
+    //           Get.offAllNamed(Routes.homeBanner);
+    //           // _getUserProfile();
     //         } else {
     //           stopLoaderAndShowSnackBar(success: false, message: value.message!);
     //         }
