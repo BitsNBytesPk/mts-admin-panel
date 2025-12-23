@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:mts_website_admin_panel/models/home_data.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../helpers/scroll_controller_funcs.dart';
 import '../../../helpers/stop_loader_and_show_snackbar.dart';
@@ -11,56 +13,106 @@ import '../../../models/message.dart';
 import '../../../utils/api_base_helper.dart';
 import '../../../utils/global_variables.dart';
 import '../../../utils/url_paths.dart';
-import '../models/user_summary_model.dart';
 
-class HomeViewModel extends GetxController {
+class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   TextEditingController pageBannerMainTitleController = TextEditingController();
   TextEditingController pageBannerSubTitleController = TextEditingController();
   TextEditingController pageBannerDescriptionController = TextEditingController();
+  TextEditingController pageBannerCtaTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
 
   RxList<Message> recentUnreadMessages = <Message>[].obs;
+  RxBool isVideoControllerInitialized = false.obs;
+  Rx<Uint8List> newBanner = Uint8List(0).obs;
+  late CachedVideoPlayerPlus videoController;
+  late Future<void> initializeVideoPlayerFuture;
+  
+  Rx<HomeData> homeData = HomeData().obs;
 
-  Rx<Uint8List> projectImage = Uint8List(0).obs;
+  @override
+  void onInit() {
+    WidgetsBinding.instance.addObserver(this);
+    super.onInit();
+  }
 
   @override
   void onReady() async {
-    // _fetchInitialDataForDashboard();
+
+    _fetchInitialDataForHomeBanner();
     animateSidePanelScrollController(scrollController);
     super.onReady();
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      videoController.controller.pause();
+    } else if(state == AppLifecycleState.resumed) {
+      videoController.controller.play();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
   void onClose() {
     scrollController.dispose();
+    videoController.dispose();
+    pageBannerMainTitleController.dispose();
+    pageBannerSubTitleController.dispose();
+    pageBannerDescriptionController.dispose();
+    pageBannerCtaTextController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 
-  // /// Collective API calls to fetch data for home
-  // void _fetchInitialDataForDashboard() async {
-  //   GlobalVariables.showLoader.value = true;
-  //
-  //   final fetchUserMessages = ApiBaseHelper.getMethod(url: Urls.getRecentMessages);
-  //   final fetchAppsStats = ApiBaseHelper.getMethod(url: Urls.getAppsStats);
-  //
-  //   final responses = await Future.wait([fetchUserMessages,fetchAppsStats]);
-  //
-  //   if(responses[0].success! && responses[0].data != null) {
-  //     final data = responses[0].data as List;
-  //
-  //     recentUnreadMessages.addAllIf(data.isNotEmpty, data.map((e) => Message.fromJson(e)));
-  //     recentUnreadMessages.refresh();
-  //   }
-  //
-  //   if(responses[1].success! && responses[1].data != null) {
-  //     applicationsStats.value = AppsSummary.fromJson(responses[1].data);
-  //   }
-  //
-  //   if(responses.isEmpty || responses.every((element) => !element.success!)) {
-  //     showSnackBar(message: "${lang_key.generalApiError.tr}. ${lang_key.retry.tr}", success: false);
-  //   }
-  //
-  //   GlobalVariables.showLoader.value = false;
-  // }
+  /// Collective API calls to fetch data for home
+  void _fetchInitialDataForHomeBanner() async {
+    GlobalVariables.showLoader.value = true;
+
+    final fetchHomeData = ApiBaseHelper.getMethod(url: Urls.homeData);
+    // final fetchHomeBannerFile = ApiBaseHelper.getMethod(url: Urls.getAppsStats);
+
+    final responses = await Future.wait([fetchHomeData]);
+
+    if(responses[0].success! && responses[0].data != null) {
+      // final data = responses[0].data;
+
+      homeData.value = HomeData.fromJson(responses[0].data);
+      _fillHomeBannerDataAndFetchFile();
+      _getHomeBanner();
+      // recentUnreadMessages.refresh();
+    }
+
+    // if(responses[1].success! && responses[1].data != null) {
+    //   applicationsStats.value = AppsSummary.fromJson(responses[1].data);
+    // }
+
+    if(responses.isEmpty || responses.every((element) => !element.success!)) {
+      showSnackBar(message: "${lang_key.generalApiError.tr}. ${lang_key.retry.tr}", success: false);
+    }
+
+    GlobalVariables.showLoader.value = false;
+  }
+
+  void _fillHomeBannerDataAndFetchFile() {
+    pageBannerMainTitleController.text = homeData.value.content?.hero?.title ?? '';
+    pageBannerSubTitleController.text = homeData.value.content?.hero?.subtitle ?? '';
+    pageBannerDescriptionController.text = homeData.value.content?.hero?.description ?? '';
+    pageBannerCtaTextController.text = homeData.value.content?.hero?.ctaText ?? '';
+
+  }
+
+  void _getHomeBanner() async {
+    videoController = CachedVideoPlayerPlus.networkUrl(
+        Uri.parse(homeData.value.content?.hero?.backgroundVideo == null ? '' : '${Urls.baseURL}${homeData.value.content?.hero?.backgroundVideo}'),
+      httpHeaders: {
+        'Cache-Control': 'max-age=80085',
+      },
+    );
+    await videoController.initialize();
+    await videoController.controller.play();
+    await videoController.controller.setLooping(true);
+    isVideoControllerInitialized.value = true;
+  }
 }

@@ -55,7 +55,7 @@ class ApiBaseHelper {
       Map<String, dynamic> parsedJSON = jsonDecode(response.body);
       final apiResponse = ApiResponse.fromJson(parsedJSON);
 
-      if(response.statusCode == 401 && redirectToLogin == true) {
+      if(response.statusCode == 401 && redirectToLogin) {
 
         await GlobalVariables.prefs?.clear();
         Get.offAllNamed(Routes.login, arguments: {'check': false});
@@ -114,11 +114,6 @@ class ApiBaseHelper {
 
       Map<String, dynamic> parsedJSON = jsonDecode(response.body);
 
-      if(response.statusCode >= 200 && response.statusCode <= 299) {
-        parsedJSON['success'] = true;
-      } else {
-        parsedJSON['success'] = false;
-      }
       final apiResponse = ApiResponse.fromJson(parsedJSON);
 
       if(response.statusCode == 401 && redirectToLogin) {

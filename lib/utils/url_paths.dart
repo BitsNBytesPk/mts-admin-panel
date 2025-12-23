@@ -1,10 +1,12 @@
 class Urls {
 
-  static const testEnvironment = 'https://mts-website-backend.onrender.com/api';
+  static const testEnvironment = 'https://mts-website-backend.onrender.com';
   static const prodEnvironment = '';
 
   static const baseURL = testEnvironment;
 
+  static const _pagesBaseUrl = '/admin/pages';
+  // static const _homeBaseUrl = '/home';
   static const _projectBaseUrl = '/projects';
   static const _messagesBaseUrl = '/messages';
   static const _packagesBaseUrl = '/packages';
@@ -22,9 +24,14 @@ class Urls {
 
   /// Auth
     /// Login
-    static const String login = '$_authBaseUrl/login';
+    static const String login = '/api$_authBaseUrl/login';
     static const String getUserProfile = '$_authBaseUrl/user_profile';
 
+ /// Auth End ///
+
+  /// Home
+  static const String homeData = '$_pagesBaseUrl/home';
+  /// Home End
   /// Project Setup
   static String editProject(String id) {
     return '$_projectBaseUrl/$id';

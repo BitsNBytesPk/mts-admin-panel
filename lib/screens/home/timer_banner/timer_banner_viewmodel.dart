@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:mts_website_admin_panel/utils/global_variables.dart';
 
 import '../../../helpers/scroll_controller_funcs.dart';
 

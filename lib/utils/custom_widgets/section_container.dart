@@ -21,6 +21,7 @@ class SectionContainer extends StatelessWidget {
       child: Form(
         key: formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: spacing,
           children: children,
         ),

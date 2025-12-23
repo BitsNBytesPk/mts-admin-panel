@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_text.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/no_data_found.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/refresh_and_logs_button.dart';
-import 'package:mts_website_admin_panel/utils/custom_widgets/search_field_and_button.dart';
 import 'package:get/get.dart';
 
 import '../constants.dart';
@@ -24,8 +23,7 @@ class ListBaseContainer extends StatelessWidget {
     this.onLogsPressed,
     this.showLogs = false,
     this.showRefresh = true,
-  }) : assert((
-      includeSearchField == false && (controller == null && onSearch == null)) || (includeSearchField == true && (controller != null && onSearch != null)), 'controller and onSearch must be null, if search field is not included. And must be provided if search field is included.');
+  });
 
   final TextEditingController? controller;
   final RxList<dynamic> listData;
@@ -56,14 +54,14 @@ class ListBaseContainer extends StatelessWidget {
         spacing: 15,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              includeSearchField ? SearchFieldAndButton(
-                fieldWidth: fieldWidth,
-                controller: controller!,
-                hint: hintText,
-                onChanged: onSearch,
-              ) : SizedBox(),
+              // includeSearchField ? SearchFieldAndButton(
+              //   fieldWidth: fieldWidth,
+              //   controller: controller!,
+              //   hint: hintText,
+              //   onChanged: onSearch,
+              // ) : SizedBox(),
               RefreshAndLogsButton(
                 onRefresh: onRefresh,
                 showLogs: showLogs,

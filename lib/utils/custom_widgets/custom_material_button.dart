@@ -49,7 +49,7 @@ class CustomMaterialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: margin ?? EdgeInsets.zero,
-      child: MaterialButton(
+      child:  MaterialButton(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         minWidth: width ?? double.infinity,

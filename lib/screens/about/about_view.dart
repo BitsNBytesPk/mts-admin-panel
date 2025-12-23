@@ -4,11 +4,9 @@ import 'package:mts_website_admin_panel/utils/constants.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_switch.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_actions_buttons.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_base_container.dart';
-import 'package:mts_website_admin_panel/utils/custom_widgets/page_banner.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/screens_base_widget.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/heading_texts.dart';
 import 'package:mts_website_admin_panel/languages/translation_keys.dart' as lang_key;
-import 'package:mts_website_admin_panel/utils/routes.dart';
 
 import '../../utils/custom_widgets/list_entry_item.dart';
 import '../../utils/custom_widgets/project_setup_section.dart';
@@ -25,12 +23,14 @@ class AboutView extends StatelessWidget {
       scrollController: _viewModel.scrollController,
         selectedSidePanelItem: 2,
         children: [
-          PageBanner(
-            newImage: _viewModel.projectImage,
-            mainTitleController: _viewModel.pageBannerMainTitleController,
-            subtitleController: _viewModel.pageBannerSubTitleController,
-            descriptionController: _viewModel.pageBannerDescriptionController,
-          ),
+          // PageBanner(
+          //   newVideo: _viewModel.projectImage,
+          //   mainTitleController: _viewModel.pageBannerMainTitleController,
+          //   subtitleController: _viewModel.pageBannerSubTitleController,
+          //   descriptionController: _viewModel.pageBannerDescriptionController,
+          //   videoController: _viewModel.,
+          //   videoPlayerFuture: null,
+          // ),
           ProjectSetupSection(
               projectType: _viewModel.projectType,
             enableAutoValidation: _viewModel.enableAutoValidation.value,
@@ -85,7 +85,7 @@ class AboutView extends StatelessWidget {
                           includeEdit: true,
                           includeView: false,
                           onDeletePressed: () => _viewModel.deleteProject(index),
-                          onEditPressed: () => Get.toNamed(Routes.innovation, arguments: {projectDetailsKey: _viewModel.visibleProjectsList[index]}),
+                          // onEditPressed: () => Get.toNamed(Routes.innovation, arguments: {projectDetailsKey: _viewModel.visibleProjectsList[index]}),
                         )
                       ]
                   ),

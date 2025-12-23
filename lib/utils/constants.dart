@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/models/sidepanel_item_data.dart';
 import 'package:mts_website_admin_panel/utils/routes.dart';
 
@@ -15,6 +14,7 @@ Color primaryGrey = Colors.grey.shade400;
 Color secondaryGrey = Colors.grey.shade200;
 Color primaryGrey20 = primaryGrey.withValues(alpha: 0.2);
 Color primaryGrey50 = primaryGrey.withValues(alpha: 0.5);
+Color pageBannerSubtitleTextColor = Color(0xff04BBD9);
 
 /// Container Decorations
   /// Border Radius
@@ -127,7 +127,8 @@ List<SidePanelItemData> sidePanelItemsData = [
   SidePanelItemData(routeName: Routes.homeTimerBanner, scrollPosition: 0.0, sidePanelItemIndex: 2),
   SidePanelItemData(routeName: Routes.aboutBanner, scrollPosition: 50.0, sidePanelItemIndex: 3),
   SidePanelItemData(routeName: Routes.aboutContent, scrollPosition: 50.0, sidePanelItemIndex: 4),
-  SidePanelItemData(routeName: Routes.homeTimerBanner, scrollPosition: 50.0, sidePanelItemIndex: 5),
+  SidePanelItemData(routeName: Routes.innovationBanner, scrollPosition: 50.0, sidePanelItemIndex: 5),
+  SidePanelItemData(routeName: Routes.innovationContent, scrollPosition: 50.0, sidePanelItemIndex: 6),
   // {Routes.homeBanner: 0.0},
   // {Routes.homeContent: 0.0},
   // {Routes.homeTimerBanner: 0.0},

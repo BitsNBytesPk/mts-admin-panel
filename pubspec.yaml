@@ -25,6 +25,8 @@ dependencies:
   web_socket_channel: ^3.0.3
   flex_color_picker: ^3.7.1
   shared_preferences: ^2.5.3
+  video_player: ^2.10.1
+  cached_video_player_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:

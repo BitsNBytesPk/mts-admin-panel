@@ -37,31 +37,31 @@ class LoginViewModel extends GetxController {
 
   /// API call to login
   void login() {
-    Get.offAllNamed(Routes.homeBanner);
-    // if(formKey.currentState!.validate()){
-    //   GlobalVariables.showLoader.value = true;
-    //
-    //   ApiBaseHelper.postMethod(
-    //       url: Urls.login,
-    //       withAuthorization: false,
-    //       redirectToLogin: false,
-    //       body: {
-    //         'username': emailController.text.trim(),
-    //         'password': passwordController.text.trim(),
-    //       }).then((value) async {
-    //
-    //         if(value.success!) {
-    //
-    //           await GlobalVariables.prefs?.setString(tokenKey, value.data['token']);
-    //           GlobalVariables.token = value.data['token'];
-    //           GlobalVariables.showLoader.value = false;
-    //           Get.offAllNamed(Routes.homeBanner);
-    //           // _getUserProfile();
-    //         } else {
-    //           stopLoaderAndShowSnackBar(success: false, message: value.message!);
-    //         }
-    //       });
-    // }
+    // Get.offAllNamed(Routes.homeBanner);
+    if(formKey.currentState!.validate()){
+      GlobalVariables.showLoader.value = true;
+
+      ApiBaseHelper.postMethod(
+          url: Urls.login,
+          withAuthorization: false,
+          redirectToLogin: false,
+          body: {
+            'email': emailController.text.trim(),
+            'password': passwordController.text.trim(),
+          }).then((value) async {
+
+            if(value.success!) {
+
+              await GlobalVariables.prefs?.setString(tokenKey, value.data['token']);
+              GlobalVariables.token = value.data['token'];
+              GlobalVariables.showLoader.value = false;
+              Get.offAllNamed(Routes.homeBanner);
+              // _getUserProfile();
+            } else {
+              stopLoaderAndShowSnackBar(success: false, message: value.message!);
+            }
+          });
+    }
   }
 
   void _getUserProfile() {
