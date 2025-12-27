@@ -24,7 +24,7 @@ class Urls {
 
   /// Auth
     /// Login
-    static const String login = '/api$_authBaseUrl/login';
+    static const String login = '/admin$_authBaseUrl/login';
     static const String getUserProfile = '$_authBaseUrl/user_profile';
 
  /// Auth End ///
@@ -32,6 +32,19 @@ class Urls {
   /// Home
   static const String homeData = '$_pagesBaseUrl/home';
   /// Home End
+
+  /// About ///
+  static const String aboutData = '$_pagesBaseUrl/about';
+  /// About End ///
+
+  /// Shared Data ///
+  static const String sharedData = '$_pagesBaseUrl/shared';
+  /// Shared Data End ///
+
+  /// Innovation ///
+  static const String innovationData = '$_pagesBaseUrl/innovation';
+  /// Innovation End ///
+
   /// Project Setup
   static String editProject(String id) {
     return '$_projectBaseUrl/$id';

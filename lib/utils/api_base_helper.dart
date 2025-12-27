@@ -13,6 +13,8 @@ import 'global_variables.dart';
 
 class ApiBaseHelper {
 
+  static final int _timeLimit = 30;
+
   /// Function for HTTP GET method
   static Future<ApiResponse> getMethod({
     required String url,
@@ -43,7 +45,9 @@ class ApiBaseHelper {
           urlValue,
           headers: header,
 
-      ).timeout(Duration(seconds: 50));
+      ).timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
 
       if(kDebugMode){
         print(
@@ -103,7 +107,9 @@ class ApiBaseHelper {
 
       http.Response response = await http
           .post(urlValue, headers: header, body: body)
-          .timeout(Duration(seconds: 30));
+          .timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
 
       if(kDebugMode){
         print(
@@ -160,7 +166,9 @@ class ApiBaseHelper {
 
       http.Response response = await http
           .put(urlValue, headers: header, body: body)
-          .timeout(Duration(seconds: 30));
+          .timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
 
       if(kDebugMode) {
         print(
@@ -217,7 +225,9 @@ class ApiBaseHelper {
 
       http.Response response = await http
           .patch(urlValue, headers: header, body: body)
-          .timeout(Duration(seconds: 30));
+          .timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
 
       if(kDebugMode){
         print(
@@ -269,7 +279,9 @@ class ApiBaseHelper {
 
       http.Response response = await http
           .delete(urlValue, headers: header)
-          .timeout(Duration(seconds: 50));
+          .timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
 
       if(kDebugMode){
         print(
@@ -321,7 +333,9 @@ class ApiBaseHelper {
       request.headers.addAll(header);
       request.fields.addAll(fields);
       request.files.addAll(files);
-      http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());
 
       if(kDebugMode){
@@ -381,7 +395,9 @@ class ApiBaseHelper {
         request.fields.addAll({field.key: jsonEncode(field.value)});
       }
       request.files.addAll(files);
-      http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimit), onTimeout: () {
+        return Future.error(TimeoutException('Request timed out'));
+      });
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());
 
       if(kDebugMode){

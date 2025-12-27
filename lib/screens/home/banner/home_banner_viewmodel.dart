@@ -4,12 +4,10 @@ import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/models/home_data.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../helpers/scroll_controller_funcs.dart';
 import '../../../helpers/stop_loader_and_show_snackbar.dart';
 import '../../../languages/translation_keys.dart' as lang_key;
-import '../../../models/message.dart';
 import '../../../utils/api_base_helper.dart';
 import '../../../utils/global_variables.dart';
 import '../../../utils/url_paths.dart';
@@ -21,13 +19,12 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
   TextEditingController pageBannerDescriptionController = TextEditingController();
   TextEditingController pageBannerCtaTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  RxList<Message> recentUnreadMessages = <Message>[].obs;
-  RxBool isVideoControllerInitialized = false.obs;
   Rx<Uint8List> newBanner = Uint8List(0).obs;
   late CachedVideoPlayerPlus videoController;
-  late Future<void> initializeVideoPlayerFuture;
-  
+  RxBool isVideoControllerInitialized = false.obs;
+
   Rx<HomeData> homeData = HomeData().obs;
 
   @override

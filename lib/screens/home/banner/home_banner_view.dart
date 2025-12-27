@@ -23,6 +23,7 @@ class HomeBannerView extends StatelessWidget {
         selectedSidePanelItem: 0,
         children: [
           Obx(() => PageBanner(
+            formKey: _viewModel.formKey,
                 mainTitleController: _viewModel.pageBannerMainTitleController,
                 subtitleController: _viewModel.pageBannerSubTitleController,
                 descriptionController: _viewModel.pageBannerDescriptionController,
@@ -30,7 +31,6 @@ class HomeBannerView extends StatelessWidget {
                 includeCta: true,
                 isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
                 newVideo: _viewModel.newBanner,
-                fileInstructions: 'File Format - .mp4, .WebM - Maximum Size 5MB',
                 videoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
                 // videoPlayerFuture: _viewModel.initializeVideoPlayerFuture,
             ),

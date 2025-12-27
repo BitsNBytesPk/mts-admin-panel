@@ -326,7 +326,6 @@ class _ProjectNameDescAndImage extends StatelessWidget {
           ),
         ),
         AddImageSection(
-          isBeingEdited: isBeingEdited,
           newImage: projectImage,
           imageUrl: imageUrl,
         )

@@ -16,6 +16,10 @@ Color primaryGrey20 = primaryGrey.withValues(alpha: 0.2);
 Color primaryGrey50 = primaryGrey.withValues(alpha: 0.5);
 Color pageBannerSubtitleTextColor = Color(0xff04BBD9);
 
+/// Section Container height ///
+const double kSectionHeightValue = 75.0;
+/// Section Container height end ///
+
 /// Container Decorations
   /// Border Radius
   BorderRadius kContainerBorderRadius = BorderRadius.circular(12);
@@ -37,7 +41,7 @@ Color pageBannerSubtitleTextColor = Color(0xff04BBD9);
 /// Constant Paddings ///
 const EdgeInsets basePaddingForScreens = EdgeInsets.all(20);
 const EdgeInsets basePaddingForContainers = EdgeInsets.all(20);
-const EdgeInsets listEntryPadding = EdgeInsets.only(left: 16.0,);
+const EdgeInsets listEntryPadding = EdgeInsets.only(left: 18.0, bottom: 5);
 /// Constant Paddings End ///
 
 /// Input Decorations ///

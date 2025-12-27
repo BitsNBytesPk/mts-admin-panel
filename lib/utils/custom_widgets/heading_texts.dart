@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mts_website_admin_panel/utils/constants.dart';
 
 class PageHeadingText extends StatelessWidget {
   const PageHeadingText({
@@ -32,7 +33,8 @@ class SectionHeadingText extends StatelessWidget {
     return Text(
       headingText,
       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.w600
+          fontWeight: FontWeight.w600,
+        fontSize: isSmallScreen(context) ? 20 : 25,
       ),
     );
   }

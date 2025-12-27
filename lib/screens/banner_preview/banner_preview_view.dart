@@ -25,14 +25,14 @@ class BannerPreviewView extends StatelessWidget {
                     fit: BoxFit.cover,
                     clipBehavior: Clip.hardEdge,
                     child: SizedBox(
-                      width: _viewModel.videoPlayerController.controller.value.size.width,
-                      height: _viewModel.videoPlayerController.controller.value.size.height,
-                      child: VideoPlayer(_viewModel.videoPlayerController.controller),
+                      width: _viewModel.videoPlayerController?.controller.value.size.width,
+                      height: _viewModel.videoPlayerController?.controller.value.size.height,
+                      child: VideoPlayer(_viewModel.videoPlayerController!.controller),
                     ),
                   ),
                 ),
                 SizedBox.expand(
-                  child: ColoredBox(color: Colors.black26),
+                  child: ColoredBox(color: Colors.lightBlue.withValues(alpha: 0.18)),
                 ),
                 SizedBox(
                   width: isSmallScreen(context) ? MediaQuery.sizeOf(context).width * 0.85 : 700,

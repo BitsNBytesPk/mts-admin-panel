@@ -1,7 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mts_website_admin_panel/models/page_banner.dart';
+import 'package:mts_website_admin_panel/utils/custom_widgets/custom_material_button.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/section_container.dart';
+import 'package:mts_website_admin_panel/utils/routes.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:typed_data';
 import '../../helpers/pick_single_image.dart';
@@ -19,12 +22,15 @@ class PageBanner extends StatelessWidget {
     required this.subtitleController,
     required this.descriptionController,
     required this.newVideo,
+    required this.formKey,
     this.videoController,
     this.fileInstructions,
     this.includeTopTitle = true,
     this.includeCta = false,
     this.ctaTextController,
     this.isVideoControllerInitialized = false,
+    this.includeSectionContainer = true,
+    this.includePreviewButton = false,
   }) : assert((includeCta == true && ctaTextController != null) || (includeCta == false && ctaTextController == null));
 
   final Rx<Uint8List> newVideo;
@@ -35,8 +41,11 @@ class PageBanner extends StatelessWidget {
   final TextEditingController subtitleController;
   final TextEditingController descriptionController;
   final TextEditingController? ctaTextController;
+  final GlobalKey<FormState> formKey;
   final bool includeTopTitle;
   final bool includeCta;
+  final bool includeSectionContainer;
+  final bool includePreviewButton;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +65,61 @@ class PageBanner extends StatelessWidget {
           videoController: videoController,
           isControllerInitialized: isVideoControllerInitialized,
         ),
-        SectionContainer(
+        if(!includeSectionContainer) Form(
+          key: formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: mainTitleController,
+                showCounter: true,
+                maxLength: 50,
+                title: 'Main Title',
+                includeAsterisk: true,
+              ),
+              CustomTextFormField(
+                controller: subtitleController,
+                title: 'Subtitle',
+                includeAsterisk: true,
+                maxLength: 60,
+                showCounter: true,
+              ),
+              CustomTextFormField(
+                controller: descriptionController,
+                title: 'Description',
+                includeAsterisk: true,
+                maxLength: 150,
+                showCounter: true,
+              ),
+              if(includeCta) CustomTextFormField(
+                title: 'CTA Text',
+                includeAsterisk: true,
+                controller: ctaTextController,
+                maxLines: 1,
+                maxLength: 20,
+                showCounter: true,
+              ),
+            ],
+          ),
+        ),
+        if(!includeSectionContainer && includePreviewButton) CustomMaterialButton(
+          width: isSmallScreen(context) ? double.infinity : 150,
+            buttonColor: Colors.deepOrangeAccent,
+            borderColor: Colors.deepOrangeAccent,
+            text: 'Show Preview',
+            onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
+              'bannerData': PageBannerModel(
+                title: mainTitleController.text,
+                subtitle: subtitleController.text,
+                description: descriptionController.text,
+                ctaText: ctaTextController?.text,
+                newBanner: newVideo.value.isEmpty ? null : newVideo.value,
+                uploadedBanner: newVideo.value.isEmpty ? videoController?.dataSource : null,
+              ).toJson()
+            })
+        ),
+        if(includeSectionContainer) SectionContainer(
+          height: RxnDouble(null),
+          formKey: formKey,
           children: [
               CustomTextFormField(
                 controller: mainTitleController,
@@ -86,7 +149,23 @@ class PageBanner extends StatelessWidget {
               maxLines: 1,
               maxLength: 20,
               showCounter: true,
-            )
+            ),
+            if(includeSectionContainer && includePreviewButton) CustomMaterialButton(
+                width: isSmallScreen(context) ? double.infinity : 150,
+                text: 'Show Preview',
+                buttonColor: Colors.deepOrangeAccent,
+                borderColor: Colors.deepOrangeAccent,
+                onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
+                  'bannerData': PageBannerModel(
+                    title: mainTitleController.text,
+                    subtitle: subtitleController.text,
+                    description: descriptionController.text,
+                    ctaText: ctaTextController?.text,
+                    newBanner: newVideo.value.isEmpty ? null : newVideo.value,
+                    uploadedBanner: newVideo.value.isEmpty ? videoController?.dataSource : null,
+                  ).toJson()
+                })
+            ),
             ],
           ),
       ],

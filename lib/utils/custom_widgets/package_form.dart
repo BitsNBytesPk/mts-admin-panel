@@ -158,7 +158,6 @@ class _NameDescAndImage extends StatelessWidget {
         ),
         AddImageSection(
           imageUrl: imageUrl,
-          isBeingEdited: isBeingEdited,
           newImage: packageImageOrGif,
           fileInstructions: 'File Format - jpg, jpeg, png or gif',
         )

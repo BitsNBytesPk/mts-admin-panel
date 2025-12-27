@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mts_website_admin_panel/utils/constants.dart';
 import '../../../helpers/scroll_controller_funcs.dart';
+import '../../../models/innovation_data.dart';
+import '../../../utils/api_base_helper.dart';
+import '../../../utils/global_variables.dart';
+import '../../../utils/url_paths.dart';
 import 'innovation_content_models.dart';
 
 class InnovationContentViewModel extends GetxController {
@@ -14,13 +19,17 @@ class InnovationContentViewModel extends GetxController {
   RxList<StatItem> stats = <StatItem>[].obs;
 
   RxList<ProjectItem> projects = <ProjectItem>[].obs;
-  
+
   // Informatics
   RxList<InformaticsItem> informaticsList = <InformaticsItem>[].obs;
-  
+
   late ProjectItem currentProjectInput;
 
+  Rx<InnovationData> innovationData = InnovationData().obs;
+
   TextEditingController searchController = TextEditingController();
+
+  RxnDouble overViewHeight = RxnDouble(kSectionHeightValue);
 
   @override
   void onInit() {
@@ -35,6 +44,7 @@ class InnovationContentViewModel extends GetxController {
 
   @override
   void onReady() {
+    _fetchInnovationData();
     animateSidePanelScrollController(scrollController);
     super.onReady();
   }
@@ -124,5 +134,19 @@ class InnovationContentViewModel extends GetxController {
     currentProjectInputRx.value.dispose();
 
     super.onClose();
+  }
+
+  void _fetchInnovationData() {
+
+    GlobalVariables.showLoader.value = true;
+
+    ApiBaseHelper.getMethod(url: Urls.innovationData).then((value) {
+      GlobalVariables.showLoader.value = false;
+      if(value.success!) {
+        innovationData.value = InnovationData.fromJson(value.data);
+        // _fillInnovationBannerControllers();
+        // _getInnovationBanner();
+      }
+    });
   }
 }

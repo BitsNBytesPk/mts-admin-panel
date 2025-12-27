@@ -338,7 +338,7 @@ class English {
     key.typeHere: 'Type Here',
     key.saveInfo: 'Save Info',
     key.uploadFile: 'Upload File',
-    key.fileInstructions: 'File Format - jpg .jpeg .png Image Size - Maximum Size 5 MB.',
+    key.fileInstructions: 'File Format - .mp4, .WebM - Maximum Size 5MB',
     key.createdDate: 'Creation Date',
     key.searchPackage: 'Search Package',
     key.error: 'Error',

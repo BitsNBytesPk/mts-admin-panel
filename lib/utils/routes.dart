@@ -36,17 +36,17 @@ class Routes {
 
     // GetPage(name: initRoute, page: () => SplashView(),),
     GetPage(name: login, page: () => LoginView()),
-    GetPage(name: homeBanner, page: () => HomeBannerView()),
-    GetPage(name: homeContent, page: () => HomeContentView()),
+    GetPage(name: homeBanner, page: () => HomeBannerView(), maintainState: false),
+    GetPage(name: homeContent, page: () => HomeContentView(), maintainState: false),
     GetPage(name: homeTimerBanner, page: () => HomeTimerBannerView()),
-    GetPage(name: aboutBanner, page: () => AboutBannerView()),
+    GetPage(name: aboutBanner, page: () => AboutBannerView(), maintainState: false),
     GetPage(name: aboutContent, page: () => AboutContentView()),
-    GetPage(name: innovationBanner, page: () => InnovationBannerView()),
+    GetPage(name: innovationBanner, page: () => InnovationBannerView(), maintainState: false),
     GetPage(name: innovationContent, page: () => InnovationContentView()),
     GetPage(name: contact, page: () => ContactView()),
     GetPage(name: messagesList, page: () => MessagesListView()),
     // GetPage(name: editPackage, page: () => EditPackageView()),
     GetPage(name: support, page: () => SettingsView()),
-    GetPage(name: bannerPreview, page: () => BannerPreviewView()),
+    GetPage(name: bannerPreview, page: () => BannerPreviewView(), maintainState: false),
   ];
 }

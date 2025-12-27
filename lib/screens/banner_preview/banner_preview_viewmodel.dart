@@ -6,7 +6,7 @@ import 'package:mts_website_admin_panel/utils/routes.dart';
 
 class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver {
 
-  late CachedVideoPlayerPlus videoPlayerController;
+  CachedVideoPlayerPlus? videoPlayerController;
 
   Rx<PageBannerModel> bannerData = PageBannerModel().obs;
 
@@ -30,9 +30,9 @@ class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver 
           // await videoPlayerController.initialize();
         } else if(bannerData.value.uploadedBanner != null) {
           videoPlayerController = CachedVideoPlayerPlus.networkUrl(Uri.parse(bannerData.value.uploadedBanner!));
-          await videoPlayerController.initialize();
-          await videoPlayerController.controller.play();
-          await videoPlayerController.controller.setLooping(true);
+          await videoPlayerController?.initialize();
+          await videoPlayerController?.controller.play();
+          await videoPlayerController?.controller.setLooping(true);
           isVideoControllerInitialized.value = true;
         }
       } else {
@@ -48,17 +48,17 @@ class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && isVideoControllerInitialized.value) {
-      videoPlayerController.controller.pause();
+      videoPlayerController?.controller.pause();
     } else if(state == AppLifecycleState.resumed && isVideoControllerInitialized.value) {
-      videoPlayerController.controller.play();
+      videoPlayerController?.controller.play();
     }
     super.didChangeAppLifecycleState(state);
   }
 
   @override
   void onClose() {
-    if(videoPlayerController.isInitialized) {
-      videoPlayerController.dispose();
+    if(videoPlayerController != null) {
+      videoPlayerController = null;
     }
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
