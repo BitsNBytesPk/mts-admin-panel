@@ -30,4 +30,5 @@ class ImagesPaths {
   static String applications = '${_iconsPath}applications.png';
   static String pdf = '${_iconsPath}pdf.png';
   static String innovation = '${_iconsPath}innovation.png';
+  static String sharedData = '${_iconsPath}shared_data.png';
 }

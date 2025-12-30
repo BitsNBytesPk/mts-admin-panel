@@ -140,13 +140,15 @@ class Hero {
   String? subtitle;
   String? title;
 
-  Hero({this.backgroundImage,
-        this.backgroundVideo,
-        this.ctaText,
-        this.description,
-        this.height,
-        this.subtitle,
-        this.title});
+  Hero({
+    this.backgroundImage,
+    this.backgroundVideo,
+    this.ctaText,
+    this.description,
+    this.height,
+    this.subtitle,
+    this.title
+  });
 
   Hero.fromJson(Map<String, dynamic> json) {
     backgroundImage = json['backgroundImage'];
@@ -234,14 +236,15 @@ class Projects {
   Technology? technology;
   String? title;
 
-  Projects(
-      {this.applications,
-        this.category,
-        this.description,
-        this.image,
-        this.metrics,
-        this.technology,
-        this.title});
+  Projects({
+    this.applications,
+    this.category,
+    this.description,
+    this.image,
+    this.metrics,
+    this.technology,
+    this.title
+  });
 
   Projects.fromJson(Map<String, dynamic> json) {
     applications = json['applications'] != null

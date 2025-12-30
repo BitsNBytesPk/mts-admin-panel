@@ -45,6 +45,10 @@ class Urls {
   static const String innovationData = '$_pagesBaseUrl/innovation';
   /// Innovation End ///
 
+  /// Responsibility ///
+  static const String responsibilityData = '$_pagesBaseUrl/responsibility';
+  /// Responsibility End ///
+
   /// Project Setup
   static String editProject(String id) {
     return '$_projectBaseUrl/$id';

@@ -21,7 +21,9 @@ class AddImageSection extends StatelessWidget {
     this.fileInstructions,
     this.height,
     this.width,
-    this.includeFileInstructions = false
+    this.includeFileInstructions = false,
+    this.textAlignment = Alignment.center,
+    this.includeAsterisk = false,
   });
 
   final Rx<Uint8List> newImage;
@@ -30,13 +32,21 @@ class AddImageSection extends StatelessWidget {
   final double? height;
   final double? width;
   final bool includeFileInstructions;
+  final Alignment? textAlignment;
+  final bool includeAsterisk;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: 15,
       children: [
-        HeadingInContainerText(text: lang_key.image.tr,),
+        Align(
+          alignment: textAlignment ?? AlignmentGeometry.centerLeft,
+            child: HeadingInContainerText(
+              text: lang_key.image.tr,
+              includeAsterisk: includeAsterisk,
+            )
+        ),
         DottedBorder(
             options: RectDottedBorderOptions(
               dashPattern: [14,14],

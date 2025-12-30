@@ -35,7 +35,7 @@ class BannerPreviewView extends StatelessWidget {
                   child: ColoredBox(color: Colors.lightBlue.withValues(alpha: 0.18)),
                 ),
                 SizedBox(
-                  width: isSmallScreen(context) ? MediaQuery.sizeOf(context).width * 0.85 : 700,
+                  width: isSmallScreen(context) ? MediaQuery.sizeOf(context).width * 0.85 : MediaQuery.sizeOf(context).width * 0.7,
                   child: Column(
                     spacing: 30,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +62,7 @@ class BannerPreviewView extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
                         child: Text(
                           _viewModel.bannerData.value.description ?? '',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
