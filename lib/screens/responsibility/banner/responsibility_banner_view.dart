@@ -18,7 +18,7 @@ class ResponsibilityBannerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
         scrollController: _viewModel.scrollController,
-        selectedSidePanelItem: 7,
+        selectedSidePanelItem: 8,
         children: [
           Obx(() => PageBanner(
             formKey: _viewModel.formKey,

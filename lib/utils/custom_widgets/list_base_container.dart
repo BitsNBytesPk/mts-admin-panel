@@ -62,12 +62,12 @@ class ListBaseContainer extends StatelessWidget {
               //   hint: hintText,
               //   onChanged: onSearch,
               // ) : SizedBox(),
-              RefreshAndLogsButton(
-                onRefresh: onRefresh,
-                showLogs: showLogs,
-                showRefresh: showRefresh,
-                onLogsPressed: onLogsPressed,
-              ),
+              // RefreshAndLogsButton(
+              //   onRefresh: onRefresh,
+              //   showLogs: showLogs,
+              //   showRefresh: showRefresh,
+              //   onLogsPressed: onLogsPressed,
+              // ),
             ],
           ),
           _ListColumNames(columnNames: columnsNames, expandFirstColumn: expandFirstColumn,),

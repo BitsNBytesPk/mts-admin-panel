@@ -18,7 +18,7 @@ class HomeTimerBannerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
-        selectedSidePanelItem: 2,
+        selectedSidePanelItem: 3,
         scrollController: _viewModel.scrollController,
         children: [
           // SectionContainer(

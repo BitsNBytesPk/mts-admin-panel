@@ -224,7 +224,7 @@ class Cards {
   String? description;
   String? icon;
   List<Metrics>? metrics;
-  // Style? style;
+  CardStyle? style;
   String? title;
 
   Cards(
@@ -247,7 +247,7 @@ class Cards {
         metrics!.add(Metrics.fromJson(v));
       });
     }
-    // style = json['style'] != null ? Style.fromJson(json['style']) : null;
+    style = json['style'] != null ? CardStyle.fromJson(json['style']) : null;
     title = json['title'];
   }
 
@@ -262,9 +262,9 @@ class Cards {
     if (metrics != null) {
       data['metrics'] = metrics!.map((v) => v.toJson()).toList();
     }
-    // if (style != null) {
-    //   data['style'] = style!.toJson();
-    // }
+    if (style != null) {
+      data['style'] = style!.toJson();
+    }
     data['title'] = title;
     return data;
   }
@@ -292,30 +292,30 @@ class Metrics {
   }
 }
 
-// class Style {
-//   String? accentColor;
-//   String? glowColor;
-//   String? gradientFrom;
-//   String? gradientTo;
-//
-//   Style({this.accentColor, this.glowColor, this.gradientFrom, this.gradientTo});
-//
-//   Style.fromJson(Map<String, dynamic> json) {
-//     accentColor = json['accentColor'];
-//     glowColor = json['glowColor'];
-//     gradientFrom = json['gradientFrom'];
-//     gradientTo = json['gradientTo'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['accentColor'] = accentColor;
-//     data['glowColor'] = glowColor;
-//     data['gradientFrom'] = gradientFrom;
-//     data['gradientTo'] = gradientTo;
-//     return data;
-//   }
-// }
+class CardStyle {
+  String? accentColor;
+  String? glowColor;
+  String? gradientFrom;
+  String? gradientTo;
+
+  CardStyle({this.accentColor, this.glowColor, this.gradientFrom, this.gradientTo});
+
+  CardStyle.fromJson(Map<String, dynamic> json) {
+    accentColor = json['accentColor'];
+    glowColor = json['glowColor'];
+    gradientFrom = json['gradientFrom'];
+    gradientTo = json['gradientTo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['accentColor'] = accentColor;
+    data['glowColor'] = glowColor;
+    data['gradientFrom'] = gradientFrom;
+    data['gradientTo'] = gradientTo;
+    return data;
+  }
+}
 
 class Mission {
   String? footnote;

@@ -23,7 +23,7 @@ class AboutContentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
-      selectedSidePanelItem: 4,
+      selectedSidePanelItem: 5,
       scrollController: _viewModel.scrollController,
       children: [
         SectionContainer(

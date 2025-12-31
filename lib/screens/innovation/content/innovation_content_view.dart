@@ -10,7 +10,7 @@ import 'package:mts_website_admin_panel/utils/custom_widgets/list_base_container
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_entry_item.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_serial_no_text.dart';
 import 'package:mts_website_admin_panel/utils/validators.dart';
-import '../../../utils/custom_widgets/custom_switch.dart';
+import '../../../utils/custom_widgets/informatics_or_stats_text_form_fields.dart';
 import '../../../utils/custom_widgets/screens_base_widget.dart';
 import '../../../utils/custom_widgets/section_container.dart';
 import 'innovation_content_viewmodel.dart';
@@ -24,7 +24,7 @@ class InnovationContentView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
       scrollController: _viewModel.scrollController,
-      selectedSidePanelItem: 6,
+      selectedSidePanelItem: 7,
       children: [
         SectionContainer(
           headingText: 'Add Project',
@@ -62,16 +62,16 @@ class InnovationContentView extends StatelessWidget {
                   maxLines: 3,
                 ),
                 SectionHeadingText(headingText: 'Informatics'),
-                InformaticsTextFieldRow(
+                InformaticsOrStatsTextFormFields(
                     headingController: _viewModel.firstHeadingController,
                     subtitleController: _viewModel.firstInformaticsSubtitleController,
                   includeTitle: true,
                 ),
-                InformaticsTextFieldRow(
+                InformaticsOrStatsTextFormFields(
                     headingController: _viewModel.secondHeadingController,
                     subtitleController: _viewModel.secondInformaticsSubtitleController,
                 ),
-                InformaticsTextFieldRow(
+                InformaticsOrStatsTextFormFields(
                     headingController: _viewModel.thirdHeadingController,
                     subtitleController: _viewModel.thirdInformaticsSubtitleController,
                 ),
@@ -79,7 +79,7 @@ class InnovationContentView extends StatelessWidget {
                 Obx(() => Column(
                   spacing: 10,
                     children: List.generate(_viewModel.technologySection.length, (index) {
-                      return InformaticsTextFieldRow(
+                      return InformaticsOrStatsTextFormFields(
                           includeTitle: index == 0,
                           subtitleText: 'Description',
                           includeButton: _viewModel.technologySection.length != 1,
@@ -104,7 +104,7 @@ class InnovationContentView extends StatelessWidget {
                 Obx(() => Column(
                   spacing: 10,
                   children: List.generate(_viewModel.applicationSection.length, (index) {
-                    return InformaticsTextFieldRow(
+                    return InformaticsOrStatsTextFormFields(
                       includeTitle: index == 0,
                       subtitleText: 'Description',
                       includeButton: _viewModel.applicationSection.length != 1,
@@ -124,45 +124,45 @@ class InnovationContentView extends StatelessWidget {
                       ),
                     )
                 ),
-                Text('Add on Home', style: Theme.of(context).textTheme.bodySmall,),
-                Obx(() => CustomSwitch(
-                      onChanged: (value) => _viewModel.includeInHome.value = value, switchValue: _viewModel.includeInHome.value,
-                  ),
-                ),
-                Obx(() => Visibility(
-                    visible: _viewModel.includeInHome.value,
-                    child: Column(
-                        spacing: 10,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SectionHeadingText(headingText: 'Statistics',),
-                          Column(
-                            spacing: 10,
-                            children: List.generate(_viewModel.statisticsSection.length, (index) {
-                              return InformaticsTextFieldRow(
-                                includeTitle: index == 0,
-                                subtitleText: 'Value',
-                                includeButton: _viewModel.statisticsSection.length != 1,
-                                onTap: () => _viewModel.statisticsSection.remove(_viewModel.statisticsSection.keys.elementAt(index)),
-                                headingController: _viewModel.statisticsSection.keys.elementAt(index),
-                                subtitleController: _viewModel.statisticsSection.values.elementAt(index),
-                              );
-                            }),
-                          ),
-                          IconButton(
-                              onPressed: () => _viewModel.statisticsSection.addIf(_viewModel.statisticsSection.length < 3, TextEditingController(), TextEditingController()),
-                              icon: Center(
-                                child: Icon(
-                                  Icons.add_circle_outline_outlined,
-                                  size: 30,
-                                  color: primaryGrey,
-                                ),
-                              )
-                          ),
-                        ],
-                      )
-                  ),
-                )
+                // Text('Add on Home', style: Theme.of(context).textTheme.bodySmall,),
+                // Obx(() => CustomSwitch(
+                //       onChanged: (value) => _viewModel.includeInHome.value = value, switchValue: _viewModel.includeInHome.value,
+                //   ),
+                // ),
+                // Obx(() => Visibility(
+                //     visible: _viewModel.includeInHome.value,
+                //     child: Column(
+                //         spacing: 10,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           SectionHeadingText(headingText: 'Statistics',),
+                //           Column(
+                //             spacing: 10,
+                //             children: List.generate(_viewModel.statisticsSection.length, (index) {
+                //               return InformaticsTextFieldRow(
+                //                 includeTitle: index == 0,
+                //                 subtitleText: 'Value',
+                //                 includeButton: _viewModel.statisticsSection.length != 1,
+                //                 onTap: () => _viewModel.statisticsSection.remove(_viewModel.statisticsSection.keys.elementAt(index)),
+                //                 headingController: _viewModel.statisticsSection.keys.elementAt(index),
+                //                 subtitleController: _viewModel.statisticsSection.values.elementAt(index),
+                //               );
+                //             }),
+                //           ),
+                //           IconButton(
+                //               onPressed: () => _viewModel.statisticsSection.addIf(_viewModel.statisticsSection.length < 3, TextEditingController(), TextEditingController()),
+                //               icon: Center(
+                //                 child: Icon(
+                //                   Icons.add_circle_outline_outlined,
+                //                   size: 30,
+                //                   color: primaryGrey,
+                //                 ),
+                //               )
+                //           ),
+                //         ],
+                //       )
+                //   ),
+                // )
               ]
           ),
         Obx(() => ListBaseContainer(
@@ -196,61 +196,6 @@ class InnovationContentView extends StatelessWidget {
               'Actions'
             ],
             onRefresh: () {},
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class InformaticsTextFieldRow extends StatelessWidget {
-  const InformaticsTextFieldRow({
-    super.key,
-    required this.headingController,
-    required this.subtitleController,
-    this.includeTitle = false,
-    this.onTap,
-    this.includeButton = false,
-    this.headingText,
-    this.subtitleText
-  });
-
-  final bool includeButton;
-  final VoidCallback? onTap;
-  final bool includeTitle;
-  final TextEditingController headingController;
-  final TextEditingController subtitleController;
-  final String? headingText;
-  final String? subtitleText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      spacing: 15,
-      children: [
-        Expanded(
-          child: CustomTextFormField(
-            title: includeTitle ? headingText ?? 'Heading' : null,
-            controller: headingController,
-            includeAsterisk: true,
-            validator: (value) => Validators.validateEmptyField(value),
-          ),
-        ),
-        Expanded(
-          child: CustomTextFormField(
-            title: includeTitle ? subtitleText ?? 'Subtitle' : null,
-            controller: subtitleController,
-            includeAsterisk: true,
-            validator: (value) => Validators.validateEmptyField(value),
-          ),
-        ),
-        if(includeButton) InkWell(
-          onTap: onTap,
-          child: Icon(
-            Icons.remove_circle_outline_rounded,
-            color: errorRed,
-            size: 20,
           ),
         )
       ],

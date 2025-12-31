@@ -24,6 +24,7 @@ class AddImageSection extends StatelessWidget {
     this.includeFileInstructions = false,
     this.textAlignment = Alignment.center,
     this.includeAsterisk = false,
+    this.heading,
   });
 
   final Rx<Uint8List> newImage;
@@ -34,6 +35,7 @@ class AddImageSection extends StatelessWidget {
   final bool includeFileInstructions;
   final Alignment? textAlignment;
   final bool includeAsterisk;
+  final String? heading;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class AddImageSection extends StatelessWidget {
         Align(
           alignment: textAlignment ?? AlignmentGeometry.centerLeft,
             child: HeadingInContainerText(
-              text: lang_key.image.tr,
+              text: heading ?? lang_key.image.tr,
               includeAsterisk: includeAsterisk,
             )
         ),

@@ -3,6 +3,8 @@ import 'package:mts_website_admin_panel/screens/about/banner/about_banner_view.d
 import 'package:mts_website_admin_panel/screens/about/content/about_content_view.dart';
 import 'package:mts_website_admin_panel/screens/banner_preview/banner_preview_view.dart';
 import 'package:mts_website_admin_panel/screens/home/content/home_content_view.dart';
+import 'package:mts_website_admin_panel/screens/home/home_project_preview/home_project_preview_view.dart';
+import 'package:mts_website_admin_panel/screens/home/projects/projects_listing_view.dart';
 import 'package:mts_website_admin_panel/screens/messages/messages_list_view.dart';
 import 'package:mts_website_admin_panel/screens/settings/settings_view.dart';
 import '../../screens/innovation/banner/innovation_banner_view.dart';
@@ -19,9 +21,13 @@ class Routes {
 
   // static const initRoute = '/initRoute';
   static const login = '/login';
+
   static const homeBanner = '/homeBanner';
   static const homeContent = '/homeContent';
   static const homeTimerBanner = '/homeTimerBanner';
+  static const homeProjects = '/homeProjects';
+  static const homeProjectPreview = '/homeProjectPreview';
+
   static const aboutBanner = '/aboutBanner';
   static const aboutContent = '/aboutContent';
 
@@ -39,9 +45,13 @@ class Routes {
 
     // GetPage(name: initRoute, page: () => SplashView(),),
     GetPage(name: login, page: () => LoginView()),
+
     GetPage(name: homeBanner, page: () => HomeBannerView(), maintainState: false),
     GetPage(name: homeContent, page: () => HomeContentView(), maintainState: false),
     GetPage(name: homeTimerBanner, page: () => HomeTimerBannerView()),
+    GetPage(name: homeProjects, page: () => HomeProjectsListingView()),
+    GetPage(name: homeProjectPreview, page: () => HomeProjectPreviewView(), maintainState: false),
+
     GetPage(name: aboutBanner, page: () => AboutBannerView(), maintainState: false),
     GetPage(name: aboutContent, page: () => AboutContentView()),
     GetPage(name: innovationBanner, page: () => InnovationBannerView(), maintainState: false),

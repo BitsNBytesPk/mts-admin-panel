@@ -18,7 +18,7 @@ class InnovationBannerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
       scrollController: _viewModel.scrollController,
-        selectedSidePanelItem: 5,
+        selectedSidePanelItem: 6,
         children: [
           Obx(() => PageBanner(
               mainTitleController: _viewModel.pageBannerMainTitleController,

@@ -18,7 +18,7 @@ class AboutBannerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreensBaseWidget(
         scrollController: _viewModel.scrollController,
-        selectedSidePanelItem: 3,
+        selectedSidePanelItem: 4,
         children: [
           Obx(() => PageBanner(
             isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
