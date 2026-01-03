@@ -210,7 +210,7 @@ class PrimaryCta {
 }
 
 class Deployments {
-  List<Cards>? cards;
+  List<ResponsibilityDeploymentCards>? cards;
   String? heading;
   String? label;
 
@@ -218,9 +218,9 @@ class Deployments {
 
   Deployments.fromJson(Map<String, dynamic> json) {
     if (json['cards'] != null) {
-      cards = <Cards>[];
+      cards = <ResponsibilityDeploymentCards>[];
       json['cards'].forEach((v) {
-        cards!.add(Cards.fromJson(v));
+        cards!.add(ResponsibilityDeploymentCards.fromJson(v));
       });
     }
     heading = json['heading'];
@@ -238,16 +238,16 @@ class Deployments {
   }
 }
 
-class Cards {
+class ResponsibilityDeploymentCards {
   String? description;
   String? image;
   List<Metrics>? metrics;
   String? tag;
   String? title;
 
-  Cards({this.description, this.image, this.metrics, this.tag, this.title});
+  ResponsibilityDeploymentCards({this.description, this.image, this.metrics, this.tag, this.title});
 
-  Cards.fromJson(Map<String, dynamic> json) {
+  ResponsibilityDeploymentCards.fromJson(Map<String, dynamic> json) {
     description = json['description'];
     image = json['image'];
     if (json['metrics'] != null) {
@@ -388,7 +388,7 @@ class Impact {
 }
 
 class Partnerships {
-  List<Cards>? cards;
+  List<ResponsibilityPartnershipCards>? cards;
   String? description;
   String? heading;
   String? label;
@@ -397,9 +397,9 @@ class Partnerships {
 
   Partnerships.fromJson(Map<String, dynamic> json) {
     if (json['cards'] != null) {
-      cards = <Cards>[];
+      cards = <ResponsibilityPartnershipCards>[];
       json['cards'].forEach((v) {
-        cards!.add(Cards.fromJson(v));
+        cards!.add(ResponsibilityPartnershipCards.fromJson(v));
       });
     }
     description = json['description'];
@@ -419,27 +419,27 @@ class Partnerships {
   }
 }
 
-// class Cards {
-//   String? count;
-//   String? description;
-//   String? title;
-//
-//   Cards({this.count, this.description, this.title});
-//
-//   Cards.fromJson(Map<String, dynamic> json) {
-//     count = json['count'];
-//     description = json['description'];
-//     title = json['title'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['count'] = count;
-//     data['description'] = description;
-//     data['title'] = title;
-//     return data;
-//   }
-// }
+class ResponsibilityPartnershipCards {
+  String? count;
+  String? description;
+  String? title;
+
+  ResponsibilityPartnershipCards({this.count, this.description, this.title});
+
+  ResponsibilityPartnershipCards.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+    description = json['description'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['description'] = description;
+    data['title'] = title;
+    return data;
+  }
+}
 //
 // class ResponsibilityStats {
 //   String? description;

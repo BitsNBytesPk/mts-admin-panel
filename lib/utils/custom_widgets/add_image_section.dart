@@ -97,7 +97,7 @@ class AddImageSection extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              fileInstructions ?? lang_key.fileInstructions.tr,
+              fileInstructions ?? 'File Format - .png, .jpg, .jpeg - Max Size - 3MB',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: primaryGrey
               ),

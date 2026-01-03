@@ -176,7 +176,7 @@ class AboutContentView extends StatelessWidget {
                           includeView: false,
                         onEditPressed: () {
                             _viewModel.updatingValue.value = true;
-                            if(_viewModel.milestonesAndAchievementsHeight.value == kSectionHeightValue) {
+                            if(_viewModel.milestonesAndAchievementsHeight.value == kSectionContainerHeightValue) {
                               _viewModel.milestonesAndAchievementsHeight.value = null;
                             }
                             _viewModel.fillMilestoneControllers(index);

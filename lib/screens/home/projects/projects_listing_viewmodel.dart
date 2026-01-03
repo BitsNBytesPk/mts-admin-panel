@@ -20,12 +20,12 @@ class HomeProjectsListingViewmodel extends GetxController {
   TextEditingController projectDescriptionController = TextEditingController();
 
   /// Form Variables
-  RxnDouble projectFormHeight = RxnDouble(kSectionHeightValue);
+  RxnDouble projectFormHeight = RxnDouble(kSectionContainerHeightValue);
   Rx<Uint8List> projectIcon = Uint8List(0).obs;
   RxMap<TextEditingController, TextEditingController> statisticsSection = <TextEditingController, TextEditingController>{TextEditingController(): TextEditingController()}.obs;
 
   /// Projects List for Home Page
-  RxList<Cards> projects = <Cards>[].obs;
+  RxList<HomeInnovationCards> projects = <HomeInnovationCards>[].obs;
 
   @override
   void onReady() {

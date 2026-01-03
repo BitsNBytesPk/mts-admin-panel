@@ -42,18 +42,18 @@ class ListActionsButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 5,
         children: [
-          if(includeDelete) CustomMaterialButton(
+          if(includeView) CustomMaterialButton(
             width: 20,
-              height: 20,
-              borderRadius: BorderRadius.circular(8),
-              onPressed: onDeletePressed!,
+            height: 20,
+            borderRadius: BorderRadius.circular(8),
+            onPressed: onViewPressed!,
             buttonColor: primaryWhite,
-            borderColor: errorRed,
+            borderColor: primaryBlue,
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Icon(
-                deleteIcon ?? CupertinoIcons.delete,
-                color: deleteColor ?? errorRed,
+                viewIcon ?? CupertinoIcons.eye,
+                color: viewColor ?? primaryBlue,
                 size: 20,
               ),
             ),
@@ -74,18 +74,18 @@ class ListActionsButtons extends StatelessWidget {
               ),
             ),
           ),
-          if(includeView) CustomMaterialButton(
+          if(includeDelete) CustomMaterialButton(
             width: 20,
             height: 20,
-              borderRadius: BorderRadius.circular(8),
-              onPressed: onViewPressed!,
+            borderRadius: BorderRadius.circular(8),
+            onPressed: onDeletePressed!,
             buttonColor: primaryWhite,
-            borderColor: primaryBlue,
+            borderColor: errorRed,
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Icon(
-                viewIcon ?? CupertinoIcons.eye,
-                color: viewColor ?? primaryBlue,
+                deleteIcon ?? CupertinoIcons.delete,
+                color: deleteColor ?? errorRed,
                 size: 20,
               ),
             ),

@@ -29,8 +29,8 @@ class AboutContentViewModel extends GetxController {
   GlobalKey<FormState> personalDetailsFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> milestoneDetailsFormKey = GlobalKey<FormState>();
 
-  RxnDouble personalDetailsHeight = RxnDouble(kSectionHeightValue);
-  RxnDouble milestonesAndAchievementsHeight = RxnDouble(kSectionHeightValue);
+  RxnDouble personalDetailsHeight = RxnDouble(kSectionContainerHeightValue);
+  RxnDouble milestonesAndAchievementsHeight = RxnDouble(kSectionContainerHeightValue);
 
   Rx<AboutData> aboutData = AboutData().obs;
   Rx<SharedData> sharedData = SharedData().obs;

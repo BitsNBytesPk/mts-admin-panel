@@ -29,8 +29,8 @@ class HomeContentViewModel extends GetxController with WidgetsBindingObserver {
   Rx<HomeData> homeData = HomeData().obs;
 
   /// Heights variables for sections.
-  RxnDouble secondaryBannerHeight = RxnDouble(kSectionHeightValue);
-  RxnDouble ourMissionHeight = RxnDouble(kSectionHeightValue);
+  RxnDouble secondaryBannerHeight = RxnDouble(kSectionContainerHeightValue);
+  RxnDouble ourMissionHeight = RxnDouble(kSectionContainerHeightValue);
 
   late CachedVideoPlayerPlus videoController;
   RxBool isVideoControllerInitialized = false.obs;

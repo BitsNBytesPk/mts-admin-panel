@@ -10,7 +10,6 @@ import '../../utils/custom_widgets/list_actions_buttons.dart';
 import '../../utils/custom_widgets/list_base_container.dart';
 import '../../utils/custom_widgets/list_entry_item.dart';
 import '../../utils/custom_widgets/list_serial_no_text.dart';
-import '../../utils/custom_widgets/package_form.dart';
 import '../../utils/custom_widgets/screens_base_widget.dart';
 import '../../utils/custom_widgets/heading_texts.dart';
 import 'contact_viewmodel.dart';
@@ -30,22 +29,22 @@ class ContactView extends StatelessWidget {
           Container(
             decoration: kContainerBoxDecoration,
             padding: EdgeInsets.all(15),
-            child: PackageForm(
-                packageNameController: _viewModel.packageNameController,
-                packageMainDescController: _viewModel.packageMainDescController,
-                packageSecDescController: _viewModel.packageSecDescController,
-                packageDownloadsController: _viewModel.packageDownloadsController,
-                packagePubPointsController: _viewModel.packagePubPointsController,
-                packageGithubController: _viewModel.packageGithubController,
-                packagePackageManagerController: _viewModel.packagePackageManagerController,
-                packageLikesController: _viewModel.packageLikesController,
-                packageVersionController: _viewModel.packageVersionController,
-                formKey: _viewModel.formKey,
-                keyFeaturesList: _viewModel.keyFeaturesList,
-                techStackList: _viewModel.techStackList,
-                onContBtnPressed: () => _viewModel.addPackage(),
-                packageImageOrGif: _viewModel.packageImageOrGif
-            )
+            // child: PackageForm(
+            //     packageNameController: _viewModel.packageNameController,
+            //     packageMainDescController: _viewModel.packageMainDescController,
+            //     packageSecDescController: _viewModel.packageSecDescController,
+            //     packageDownloadsController: _viewModel.packageDownloadsController,
+            //     packagePubPointsController: _viewModel.packagePubPointsController,
+            //     packageGithubController: _viewModel.packageGithubController,
+            //     packagePackageManagerController: _viewModel.packagePackageManagerController,
+            //     packageLikesController: _viewModel.packageLikesController,
+            //     packageVersionController: _viewModel.packageVersionController,
+            //     formKey: _viewModel.formKey,
+            //     keyFeaturesList: _viewModel.keyFeaturesList,
+            //     techStackList: _viewModel.techStackList,
+            //     onContBtnPressed: () => _viewModel.addPackage(),
+            //     packageImageOrGif: _viewModel.packageImageOrGif
+            // )
           ),
           PageHeadingText(headingText: 'Packages List'),
           _AllPackages(),

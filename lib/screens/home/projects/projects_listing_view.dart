@@ -168,7 +168,7 @@ class HomeProjectsListingView extends StatelessWidget {
                         includeView: true,
                         onDeletePressed: () {},
                         onEditPressed: () {},
-                        onViewPressed: () => Get.toNamed(Routes.homeProjectPreview, arguments: {'projectCard': _viewModel.projects[index].toJson()}),
+                        onViewPressed: () => Get.toNamed(Routes.homeProjectPreview, arguments: {'projectData': _viewModel.projects[index].toJson()}),
                       )
                     ],
                   ),

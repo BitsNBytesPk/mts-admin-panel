@@ -4,13 +4,13 @@ import 'package:mts_website_admin_panel/utils/routes.dart';
 
 class HomeProjectPreviewViewModel extends GetxController {
 
-  Rx<Cards> homeProjectCard = Cards().obs;
+  Rx<HomeInnovationCards> homeProjectCard = HomeInnovationCards().obs;
 
   @override
   void onReady() {
     final Map<String, dynamic>? args = Get.arguments;
-    if(args != null && args.containsKey('projectCard')) {
-      homeProjectCard.value = Cards.fromJson(args['projectCard']);
+    if(args != null && args.containsKey('projectData')) {
+      homeProjectCard.value = HomeInnovationCards.fromJson(args['projectData']);
     } else {
       Get.offAllNamed(Routes.homeProjects);
     }

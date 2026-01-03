@@ -34,7 +34,7 @@ class InnovationContentViewModel extends GetxController {
 
   Rx<InnovationData> innovationData = InnovationData().obs;
 
-  RxnDouble projectsHeight = RxnDouble(kSectionHeightValue);
+  RxnDouble projectsHeight = RxnDouble(kSectionContainerHeightValue);
 
   /// Project Details related variables
   Rx<Uint8List> projectImage = Uint8List(0).obs;

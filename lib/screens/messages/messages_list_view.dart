@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:mts_website_admin_panel/languages/translation_keys.dart' as lang_key;
 
 import '../../utils/constants.dart';
-import '../../utils/custom_widgets/custom_tab_bar.dart';
 import '../../utils/custom_widgets/list_actions_buttons.dart';
 import '../../utils/custom_widgets/list_base_container.dart';
 import '../../utils/custom_widgets/list_entry_item.dart';
@@ -28,13 +27,13 @@ class MessagesListView extends StatelessWidget {
         children: [
           _MessagesAnalyticsData(),
           PageHeadingText(headingText: lang_key.messagesList.tr),
-          CustomTabBar(
-              controller: _viewModel.tabController,
-              tabsNames: [
-                lang_key.all.tr,
-                'Unread',
-              ]
-          ),
+          // CustomTabBar(
+          //     controller: _viewModel.tabController,
+          //     tabsNames: [
+          //       lang_key.all.tr,
+          //       'Unread',
+          //     ]
+          // ),
           SizedBox(
             height: 800,
             child: TabBarView(

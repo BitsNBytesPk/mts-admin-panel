@@ -30,7 +30,7 @@ class SectionContainer extends StatelessWidget {
       alignment: AlignmentGeometry.center,
         duration: Duration(milliseconds: 750),
         height: height.value,
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(25),
         decoration: kContainerBoxDecoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,22 +41,21 @@ class SectionContainer extends StatelessWidget {
                 Expanded(child: SectionHeadingText(headingText: headingText!)),
                 if(includeArrow) InkWell(
                   onTap: () {
-                    if(height.value == kSectionHeightValue) {
+                    if(height.value == kSectionContainerHeightValue) {
                       height.value = null;
                     } else {
-                      height.value = kSectionHeightValue;
+                      height.value = kSectionContainerHeightValue;
                     }
                   },
                   child: Icon(
-                    height.value == kSectionHeightValue ? Icons.keyboard_arrow_down_rounded : Icons.keyboard_arrow_up_rounded,
+                    height.value == kSectionContainerHeightValue ? Icons.keyboard_arrow_down_rounded : Icons.keyboard_arrow_up_rounded,
                     color: primaryGrey,
                     size: isSmallScreen(context) ? 23 : 30,
                   )),
               ],
             ),
-            Visibility(
-              visible: height.value != kSectionHeightValue,
-              child: Form(
+            if(headingText != null && headingText != '' && height.value != kSectionContainerHeightValue) SizedBox(height: 15,),
+            if(height.value != kSectionContainerHeightValue) Form(
                 key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +63,6 @@ class SectionContainer extends StatelessWidget {
                   children: children,
                 ),
               ),
-            ),
           ],
         )
       ),

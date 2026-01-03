@@ -15,9 +15,10 @@ Color secondaryGrey = Colors.grey.shade200;
 Color primaryGrey20 = primaryGrey.withValues(alpha: 0.2);
 Color primaryGrey50 = primaryGrey.withValues(alpha: 0.5);
 Color pageBannerSubtitleTextColor = Color(0xff04BBD9);
+Color primaryDarkBlue = Color(0xff00345C);
 
 /// Section Container height ///
-const double kSectionHeightValue = 75.0;
+const double kSectionContainerHeightValue = 90.0;
 /// Section Container height end ///
 
 /// Container Decorations
@@ -41,7 +42,7 @@ const double kSectionHeightValue = 75.0;
 /// Constant Paddings ///
 const EdgeInsets basePaddingForScreens = EdgeInsets.all(20);
 const EdgeInsets basePaddingForContainers = EdgeInsets.all(20);
-const EdgeInsets listEntryPadding = EdgeInsets.only(left: 18.0, bottom: 5);
+const EdgeInsets listEntryPadding = EdgeInsets.only(left: 18.5, bottom: 5);
 /// Constant Paddings End ///
 
 /// Input Decorations ///
@@ -136,6 +137,7 @@ List<SidePanelItemData> sidePanelItemsData = [
   SidePanelItemData(routeName: Routes.innovationContent, scrollPosition: 130.0, sidePanelItemIndex: 7),
   SidePanelItemData(routeName: Routes.responsibilityBanner, scrollPosition: 130.0, sidePanelItemIndex: 8),
   SidePanelItemData(routeName: Routes.responsibilityContent, scrollPosition: 130.0, sidePanelItemIndex: 9),
+  SidePanelItemData(routeName: Routes.responsibilityProjects, scrollPosition: 130.0, sidePanelItemIndex: 10),
   // {Routes.homeBanner: 0.0},
   // {Routes.homeContent: 0.0},
   // {Routes.homeTimerBanner: 0.0},

@@ -88,7 +88,7 @@ class CustomTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if(title != null && title != '') Padding(
-          padding: EdgeInsets.only(left: 8, bottom: 5),
+          padding: EdgeInsets.only(left: 5, bottom: 5),
           child: RichText(
             text: TextSpan(
               text: title!,

@@ -6,6 +6,8 @@ import 'package:mts_website_admin_panel/screens/home/content/home_content_view.d
 import 'package:mts_website_admin_panel/screens/home/home_project_preview/home_project_preview_view.dart';
 import 'package:mts_website_admin_panel/screens/home/projects/projects_listing_view.dart';
 import 'package:mts_website_admin_panel/screens/messages/messages_list_view.dart';
+import 'package:mts_website_admin_panel/screens/responsibility/projects_listing/responsibility_projects_listing_view.dart';
+import 'package:mts_website_admin_panel/screens/responsibility/responsibility_project_preview/responsibility_project_preview_view.dart';
 import 'package:mts_website_admin_panel/screens/settings/settings_view.dart';
 import '../../screens/innovation/banner/innovation_banner_view.dart';
 import '../../screens/innovation/content/innovation_content_view.dart';
@@ -16,6 +18,7 @@ import '../screens/contact/contact_view.dart';
 import '../screens/home/banner/home_banner_view.dart';
 import '../screens/home/timer_banner/timer_banner_view.dart';
 import '../screens/responsibility/banner/responsibility_banner_view.dart';
+import '../screens/responsibility/content/responsibility_content_view.dart';
 
 class Routes {
 
@@ -33,8 +36,12 @@ class Routes {
 
   static const innovationBanner = '/innovationBanner';
   static const innovationContent = '/innovationContent';
+
   static const responsibilityBanner = '/responsibilityBanner';
   static const responsibilityContent = '/responsibilityContent';
+  static const responsibilityProjects = '/responsibilityProjects';
+  static const responsibilityProjectPreview = '/responsibilityProjectPreview';
+
   static const contact = '/contact';
   static const editPackage = '/editPackage';
   static const messagesList = '/messagesList';
@@ -54,10 +61,15 @@ class Routes {
 
     GetPage(name: aboutBanner, page: () => AboutBannerView(), maintainState: false),
     GetPage(name: aboutContent, page: () => AboutContentView()),
+
     GetPage(name: innovationBanner, page: () => InnovationBannerView(), maintainState: false),
     GetPage(name: innovationContent, page: () => InnovationContentView()),
+
     GetPage(name: responsibilityBanner, page: () => ResponsibilityBannerView(), maintainState: false),
-    // GetPage(name: responsibilityContent, page: () => ResponsibilityContentView()),
+    GetPage(name: responsibilityContent, page: () => ResponsibilityContentView()),
+    GetPage(name: responsibilityProjects, page: () => ResponsibilityProjectsListingView()),
+    GetPage(name: responsibilityProjectPreview, page: () => ResponsibilityProjectPreviewView(), maintainState: false),
+
     GetPage(name: contact, page: () => ContactView()),
     GetPage(name: messagesList, page: () => MessagesListView()),
     // GetPage(name: editPackage, page: () => EditPackageView()),

@@ -190,7 +190,7 @@ class Hero {
 }
 
 class Innovations {
-  List<Cards>? cards;
+  List<HomeInnovationCards>? cards;
   String? heading;
   String? label;
 
@@ -198,9 +198,9 @@ class Innovations {
 
   Innovations.fromJson(Map<String, dynamic> json) {
     if (json['cards'] != null) {
-      cards = <Cards>[];
+      cards = <HomeInnovationCards>[];
       json['cards'].forEach((v) {
-        cards!.add(Cards.fromJson(v));
+        cards!.add(HomeInnovationCards.fromJson(v));
       });
     }
     heading = json['heading'];
@@ -218,7 +218,7 @@ class Innovations {
   }
 }
 
-class Cards {
+class HomeInnovationCards {
   String? backgroundImage;
   PrimaryCta? cta;
   String? description;
@@ -227,7 +227,7 @@ class Cards {
   CardStyle? style;
   String? title;
 
-  Cards(
+  HomeInnovationCards(
       {this.backgroundImage,
         this.cta,
         this.description,
@@ -236,7 +236,7 @@ class Cards {
         // this.style,
         this.title});
 
-  Cards.fromJson(Map<String, dynamic> json) {
+  HomeInnovationCards.fromJson(Map<String, dynamic> json) {
     backgroundImage = json['backgroundImage'];
     cta = json['cta'] != null ? PrimaryCta.fromJson(json['cta']) : null;
     description = json['description'];
