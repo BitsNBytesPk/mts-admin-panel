@@ -52,7 +52,7 @@ class Content {
   Footer? footer;
   Leadership? leadership;
   Navigation? navigation;
-  // List<SocialLinks>? socialLinks;
+  List<SocialLinks>? socialLinks;
 
   Content(
       {this.brand,
@@ -60,7 +60,7 @@ class Content {
         this.footer,
         this.leadership,
         this.navigation,
-        // this.socialLinks
+        this.socialLinks
       });
 
   Content.fromJson(Map<String, dynamic> json) {
@@ -76,9 +76,9 @@ class Content {
         ? Navigation.fromJson(json['navigation'])
         : null;
     if (json['socialLinks'] != null) {
-      // socialLinks = <SocialLinks>[];
+      socialLinks = <SocialLinks>[];
       json['socialLinks'].forEach((v) {
-        // socialLinks!.add(SocialLinks.fromJson(v));
+        socialLinks!.add(SocialLinks.fromJson(v));
       });
     }
   }
@@ -100,9 +100,9 @@ class Content {
     if (navigation != null) {
       data['navigation'] = navigation!.toJson();
     }
-    // if (socialLinks != null) {
-      // data['socialLinks'] = socialLinks!.map((v) => v.toJson()).toList();
-    // }
+    if (socialLinks != null) {
+      data['socialLinks'] = socialLinks!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -369,6 +369,26 @@ class Links {
     data['id'] = id;
     data['label'] = label;
     data['path'] = path;
+    return data;
+  }
+}
+
+class SocialLinks {
+
+  String? uri;
+  String? label;
+
+  SocialLinks({this.label, this.uri});
+
+  SocialLinks.fromJson(Map<String, dynamic> json) {
+    uri = json['url'];
+    label = json['label'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = uri;
+    data['label'] = label;
     return data;
   }
 }

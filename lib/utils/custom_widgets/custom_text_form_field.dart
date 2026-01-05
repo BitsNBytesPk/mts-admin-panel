@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../constants.dart';
+import '../validators.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -110,7 +111,14 @@ class CustomTextFormField extends StatelessWidget {
         TextFormField(
           focusNode: focusNode,
           maxLength: maxLength,
-          buildCounter: showCounter ? null : (context, {required currentLength, required isFocused, required maxLength}) => null,
+          buildCounter: showCounter ? (context, {required currentLength, required isFocused, required maxLength}) {
+            return Text(
+              '$currentLength/$maxLength',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: maxLength != null && currentLength <= maxLength ? null : errorRed
+              )
+            );
+          } : (context, {required currentLength, required isFocused, required maxLength}) => null,
           onChanged: onChanged,
           enabled: enabled,
           readOnly: readOnly,
@@ -155,6 +163,141 @@ class CustomTextFormField extends StatelessWidget {
           ),
           textAlign: textAlign,
         ),
+      ],
+    );
+  }
+}
+
+class SingleStatTextAndTextFormField extends StatelessWidget {
+  const SingleStatTextAndTextFormField({
+    super.key,
+    required this.label,
+    required this.controller,
+    this.includeHeading = false,
+    this.maxLength = 5,
+    this.headingText,
+    this.labelText
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final bool includeHeading;
+  final int maxLength;
+  final String? headingText;
+  final String? labelText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 15,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Column(
+            spacing: 15,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if(!includeHeading) SizedBox(height: 0.5,),
+              if(includeHeading) Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  labelText ?? 'Label',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: isSmallScreen(context) ? 3 : 4,
+          child: CustomTextFormField(
+            title: includeHeading ? 'Stat' : null,
+            includeAsterisk: includeHeading,
+            controller: controller,
+            maxLength: maxLength,
+            showCounter: true,
+            maxLines: 1,
+            minLines: 1,
+            validator: (value) => Validators.validateEmptyField(value),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class InformaticsOrStatsTextFormFields extends StatelessWidget {
+  const InformaticsOrStatsTextFormFields({
+    super.key,
+    required this.headingController,
+    required this.subtitleController,
+    this.includeTitle = false,
+    this.onTap,
+    this.includeButton = false,
+    this.headingText,
+    this.subtitleText,
+    this.headingMaxLength,
+    this.subtitleMaxLength,
+    this.showHeadingCounter = false,
+    this.showSubtitleCounter = false,
+  });
+
+  final bool includeButton;
+  final VoidCallback? onTap;
+  final bool includeTitle;
+  final TextEditingController headingController;
+  final TextEditingController subtitleController;
+  final String? headingText;
+  final String? subtitleText;
+  final int? headingMaxLength;
+  final int? subtitleMaxLength;
+  final bool showHeadingCounter;
+  final bool showSubtitleCounter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      spacing: 15,
+      children: [
+        Expanded(
+          child: CustomTextFormField(
+            title: includeTitle ? headingText ?? 'Heading' : null,
+            controller: headingController,
+            includeAsterisk: true,
+            showCounter: showHeadingCounter,
+            maxLength: headingMaxLength,
+            validator: (value) => Validators.validateEmptyField(value),
+          ),
+        ),
+        Expanded(
+          child: CustomTextFormField(
+            title: includeTitle ? subtitleText ?? 'Subtitle' : null,
+            controller: subtitleController,
+            showCounter: showSubtitleCounter,
+            maxLength: subtitleMaxLength,
+            includeAsterisk: true,
+            validator: (value) => Validators.validateEmptyField(value),
+          ),
+        ),
+        if(includeButton) InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.only(top: includeTitle ? 25.0 : 0),
+            child: Icon(
+              Icons.remove_circle_outline_rounded,
+              color: errorRed,
+              size: 20,
+            ),
+          ),
+        )
       ],
     );
   }

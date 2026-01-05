@@ -5,7 +5,6 @@ import 'package:mts_website_admin_panel/utils/constants.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/add_image_section.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_text_form_field.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/heading_texts.dart';
-import 'package:mts_website_admin_panel/utils/custom_widgets/informatics_or_stats_text_form_fields.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_actions_buttons.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_base_container.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/list_entry_item.dart';

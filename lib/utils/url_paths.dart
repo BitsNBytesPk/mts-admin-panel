@@ -49,6 +49,10 @@ class Urls {
   static const String responsibilityData = '$_pagesBaseUrl/responsibility';
   /// Responsibility End ///
 
+  /// Contact ///
+  static const String contactData = '$_pagesBaseUrl/contact';
+  /// Contact End ///
+
   /// Project Setup
   static String editProject(String id) {
     return '$_projectBaseUrl/$id';

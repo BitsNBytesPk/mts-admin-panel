@@ -25,6 +25,8 @@ class AddImageSection extends StatelessWidget {
     this.textAlignment = Alignment.center,
     this.includeAsterisk = false,
     this.heading,
+    this.boxFit,
+    this.headingTextStyle
   });
 
   final Rx<Uint8List> newImage;
@@ -36,7 +38,8 @@ class AddImageSection extends StatelessWidget {
   final Alignment? textAlignment;
   final bool includeAsterisk;
   final String? heading;
-
+  final BoxFit? boxFit;
+  final TextStyle? headingTextStyle;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,6 +48,7 @@ class AddImageSection extends StatelessWidget {
         Align(
           alignment: textAlignment ?? AlignmentGeometry.centerLeft,
             child: HeadingInContainerText(
+              headingTextStyle: headingTextStyle,
               text: heading ?? lang_key.image.tr,
               includeAsterisk: includeAsterisk,
             )
@@ -86,7 +90,7 @@ class AddImageSection extends StatelessWidget {
                     ) :
                     CustomNetworkImage(
                       imageUrl: imageUrl!,
-                      boxFit: BoxFit.fitHeight,
+                      boxFit: boxFit ?? BoxFit.fitHeight,
                     )),
                   )
               ),
