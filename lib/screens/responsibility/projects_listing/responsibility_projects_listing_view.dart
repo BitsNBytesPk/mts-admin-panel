@@ -59,7 +59,7 @@ class ResponsibilityProjectsListingView extends StatelessWidget {
                 CustomTextFormField(
                   title: 'Description',
                   controller: _viewModel.projectDescController,
-                  validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 60),
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 60),
                   maxLines: 3,
                   includeAsterisk: true,
                   maxLength: 60,

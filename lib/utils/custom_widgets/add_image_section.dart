@@ -4,7 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../helpers/pick_single_image.dart';
+import '../../helpers/file_picker_functions.dart';
 import '../../languages/translation_keys.dart' as lang_key;
 import '../constants.dart';
 import '../images_paths.dart';
@@ -65,7 +65,7 @@ class AddImageSection extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: InkWell(
-                    onTap: () => pickSingleImage(imageToUpload: newImage),
+                    onTap: () => FilePickerFunctions.pickSingleImage(imageToUpload: newImage),
                     child: Obx(() => newImage.value.isNotEmpty && newImage.value != Uint8List(0) ? Stack(
                       alignment: Alignment.center,
                       children: [

@@ -1,12 +1,14 @@
-import 'package:cached_video_player_plus/cached_video_player_plus.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mts_website_admin_panel/helpers/stop_loader_and_show_snackbar.dart';
 import 'package:mts_website_admin_panel/models/page_banner.dart';
 import 'package:mts_website_admin_panel/utils/routes.dart';
+import 'package:video_player/video_player.dart';
 
 class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver {
 
-  CachedVideoPlayerPlus? videoPlayerController;
+  late VideoPlayerController videoPlayerController;
 
   Rx<PageBannerModel> bannerData = PageBannerModel().obs;
 
@@ -23,17 +25,25 @@ class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver 
     final Map<String, dynamic>? args = Get.arguments;
     if(args != null) {
       if(args.containsKey('bannerData')) {
-        bannerData.value = PageBannerModel.fromJson(args['bannerData']);
+        bannerData.value = args['bannerData'];
 
-        if(bannerData.value.newBanner != null) {
-          // videoPlayerController = CachedVideoPlayerPlus.file(file);
-          // await videoPlayerController.initialize();
-        } else if(bannerData.value.uploadedBanner != null) {
-          videoPlayerController = CachedVideoPlayerPlus.networkUrl(Uri.parse(bannerData.value.uploadedBanner!));
-          await videoPlayerController?.initialize();
-          await videoPlayerController?.controller.play();
-          await videoPlayerController?.controller.setLooping(true);
+        if(bannerData.value.newBanner != null && bannerData.value.newBanner!.isNotEmpty) {
+          final blob = XFile.fromData(bannerData.value.newBanner!);
+          videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(blob.path));
+
+          await videoPlayerController.initialize();
+          await videoPlayerController.setLooping(true);
+          await videoPlayerController.play();
           isVideoControllerInitialized.value = true;
+        } else if(bannerData.value.uploadedBanner != null) {
+          videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(bannerData.value.uploadedBanner!));
+          await videoPlayerController.initialize();
+          await videoPlayerController.play();
+          await videoPlayerController.setLooping(true);
+          isVideoControllerInitialized.value = true;
+        } else {
+          Get.offAllNamed(Routes.homeBanner);
+          showSnackBar(message: 'No Banner Found', success: false);
         }
       } else {
         Get.offAllNamed(Routes.homeBanner);
@@ -48,18 +58,16 @@ class BannerPreviewViewModel extends GetxController with WidgetsBindingObserver 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && isVideoControllerInitialized.value) {
-      videoPlayerController?.controller.pause();
+      videoPlayerController.pause();
     } else if(state == AppLifecycleState.resumed && isVideoControllerInitialized.value) {
-      videoPlayerController?.controller.play();
+      videoPlayerController.play();
     }
     super.didChangeAppLifecycleState(state);
   }
 
   @override
   void onClose() {
-    if(videoPlayerController != null) {
-      videoPlayerController = null;
-    }
+    videoPlayerController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }

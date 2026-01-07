@@ -21,18 +21,21 @@ class HomeBannerView extends StatelessWidget {
         selectedSidePanelItem: 0,
         children: [
           Obx(() => PageBanner(
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            videoLoading: _viewModel.videoLoading,
+            bannerOnTap: () => _viewModel.selectVideoFromDevice(),
+            closeOnTap: () => _viewModel.removeSelectedVideo(),
+            newVideoController: _viewModel.isNewVideoControllerInitialized.value ? _viewModel.newVideoController : null,
             formKey: _viewModel.formKey,
-                mainTitleController: _viewModel.pageBannerMainTitleController,
-                subtitleController: _viewModel.pageBannerSubTitleController,
-                descriptionController: _viewModel.pageBannerDescriptionController,
-                ctaTextController: _viewModel.pageBannerCtaTextController,
-                includeCta: true,
-                isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
-                newVideo: _viewModel.newBanner,
-                videoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
-                // videoPlayerFuture: _viewModel.initializeVideoPlayerFuture,
-            ),
-          ),
+            mainTitleController: _viewModel.pageBannerMainTitleController,
+            subtitleController: _viewModel.pageBannerSubTitleController,
+            descriptionController: _viewModel.pageBannerDescriptionController,
+            ctaTextController: _viewModel.pageBannerCtaTextController,
+            includeCta: true,
+            isNetworkVideoControllerInitialized: _viewModel.isNetworkVideoControllerInitialized.value,
+            newVideo: _viewModel.newBanner,
+            networkVideoController: _viewModel.isNetworkVideoControllerInitialized.value ? _viewModel.networkVideoController.controller : null,
+          )),
           Row(
             spacing: 15,
             mainAxisAlignment: isSmallScreen(context) ? MainAxisAlignment.center : MainAxisAlignment.end,
@@ -42,26 +45,36 @@ class HomeBannerView extends StatelessWidget {
                 child: CustomMaterialButton(
                   buttonColor: Colors.deepOrangeAccent,
                     borderColor: Colors.deepOrangeAccent,
-                    onPressed: () => Get.toNamed(
-                      Routes.bannerPreview,
-                      arguments: {
-                        'bannerData': PageBannerModel(
-                          title: _viewModel.pageBannerMainTitleController.text,
-                          subtitle: _viewModel.pageBannerSubTitleController.text,
-                          description: _viewModel.pageBannerDescriptionController.text,
-                          ctaText: _viewModel.pageBannerCtaTextController.text,
-                          newBanner: _viewModel.newBanner.value.isEmpty ? null : _viewModel.newBanner.value,
-                          uploadedBanner: _viewModel.newBanner.value.isEmpty ? _viewModel.videoController.dataSource : null,
-                        ).toJson()
-                      },
-                    ),
-                  text: 'Show Preview',
+                    onPressed: () {
+                      _viewModel.bannerPreviewLoader.value = true;
+                      Get.toNamed(
+                        Routes.bannerPreview,
+                        arguments: {
+                          'bannerData': PageBannerModel(
+                            title: _viewModel.pageBannerMainTitleController.text,
+                            subtitle: _viewModel.pageBannerSubTitleController.text,
+                            description: _viewModel.pageBannerDescriptionController.text,
+                            ctaText: _viewModel.pageBannerCtaTextController.text,
+                            newBanner: _viewModel.newBanner.value.isEmpty ? null : _viewModel.newBanner.value,
+                            uploadedBanner: _viewModel.newBanner.value.isEmpty ? _viewModel.networkVideoController.dataSource : null,
+                          )
+                        },
+                      );
+                      _viewModel.bannerPreviewLoader.value = false;
+                    },
+                  text: _viewModel.bannerPreviewLoader.isFalse ? 'Show Preview' : null,
                   width: isSmallScreen(context) ? double.infinity : 150,
+                  child: _viewModel.bannerPreviewLoader.isFalse ? null : Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 4,
+                      color: primaryWhite,
+                    ),
+                  ),
                 ),
               ),
               Expanded(
                 child: CustomMaterialButton(
-                    onPressed: () {},
+                    onPressed: () => _viewModel.updateBannerData(),
                   text: 'Save',
                   width: isSmallScreen(context) ? double.infinity : 150,
                 ),

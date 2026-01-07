@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mts_website_admin_panel/utils/constants.dart';
+import 'package:mts_website_admin_panel/utils/custom_widgets/custom_cached_network_image.dart';
+import 'package:mts_website_admin_panel/utils/url_paths.dart';
 
 import '../global_variables.dart';
-import '../images_paths.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool includeNotification;
@@ -75,7 +78,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         )
       ] : null),
-      title: Image.asset(ImagesPaths.adawatLogo, fit: BoxFit.cover, width: 180,),
+      title: Obx(() => Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: GlobalVariables.logoUrl.value == '' ? SizedBox() : CustomNetworkImage(
+            imageUrl: "${Urls.baseURL}${GlobalVariables.logoUrl.value}",
+            boxFit: BoxFit.contain,
+            width: isSmallScreen(context) ? 150 : MediaQuery.sizeOf(context).width * 0.12,
+          ),
+        ),
+      ),
       leading: SizedBox(),
       bottom: bottom != null ? PreferredSize(preferredSize: preferredSize, child: bottom!) : null,
     );

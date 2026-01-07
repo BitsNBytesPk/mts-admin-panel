@@ -34,7 +34,7 @@ class FooterView extends StatelessWidget {
                   maxLines: 3,
                   minLines: 1,
                   showCounter: true,
-                  validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 80),
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 80),
                 ),
                 CustomTextFormField(
                   title: 'Copyrights Text',
@@ -44,7 +44,7 @@ class FooterView extends StatelessWidget {
                   showCounter: true,
                   maxLines: 3,
                   minLines: 1,
-                  validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 80),
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 80),
                 ),
                 Align(
                   alignment: AlignmentGeometry.centerRight,

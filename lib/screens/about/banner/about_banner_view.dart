@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -21,13 +24,15 @@ class AboutBannerView extends StatelessWidget {
         selectedSidePanelItem: 4,
         children: [
           Obx(() => PageBanner(
-            isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
+            videoLoading: RxBool(false),
+            newVideoController: VideoPlayerController.file(File('')),
+            isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
             newVideo: _viewModel.newBanner,
-            videoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
+            networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
             mainTitleController: _viewModel.pageBannerMainTitleController,
             subtitleController: _viewModel.pageBannerSubTitleController,
             descriptionController: _viewModel.pageBannerDescriptionController,
-            formKey: _viewModel.formKey,
+            formKey: _viewModel.formKey, bannerOnTap: () {  },
           )),
           Row(
             spacing: 15,

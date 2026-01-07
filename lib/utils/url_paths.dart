@@ -6,6 +6,7 @@ class Urls {
   static const baseURL = testEnvironment;
 
   static const _pagesBaseUrl = '/admin/pages';
+  static const _assetsBaseUrl = '/admin/assets';
   // static const _homeBaseUrl = '/home';
   static const _projectBaseUrl = '/projects';
   static const _messagesBaseUrl = '/messages';
@@ -52,6 +53,14 @@ class Urls {
   /// Contact ///
   static const String contactData = '$_pagesBaseUrl/contact';
   /// Contact End ///
+
+  /// Update Hero Section of a page ///
+  static const String updateHero = '$_assetsBaseUrl/hero';
+  /// Update Hero Section of a page end ///
+
+  /// Brand Logo ///
+  static const String brandLogo = '$_assetsBaseUrl/brand';
+  /// Brand Logo End ///
 
   /// Project Setup
   static String editProject(String id) {

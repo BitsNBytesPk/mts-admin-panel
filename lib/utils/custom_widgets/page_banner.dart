@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/models/page_banner.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_material_button.dart';
-import 'package:mts_website_admin_panel/utils/custom_widgets/section_container.dart';
 import 'package:mts_website_admin_panel/utils/routes.dart';
+import 'package:mts_website_admin_panel/utils/validators.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:typed_data';
-import '../../helpers/pick_single_image.dart';
 import '../../languages/translation_keys.dart' as lang_key;
 import '../constants.dart';
 import '../images_paths.dart';
@@ -23,20 +22,28 @@ class PageBanner extends StatelessWidget {
     required this.descriptionController,
     required this.newVideo,
     required this.formKey,
-    this.videoController,
+    required this.bannerOnTap,
+    required this.videoLoading,
+    this.closeOnTap,
+    this.newVideoController,
+    this.networkVideoController,
     this.fileInstructions,
     this.includeTopTitle = true,
     this.includeCta = false,
     this.ctaTextController,
-    this.isVideoControllerInitialized = false,
-    this.includeSectionContainer = true,
-    this.includePreviewButton = false,
+    this.isNetworkVideoControllerInitialized = false,
+    this.isNewVideoControllerInitialized = false,
+    this.includeButtons = false,
+    this.saveOnTap,
   }) : assert((includeCta == true && ctaTextController != null) || (includeCta == false && ctaTextController == null));
 
   final Rx<Uint8List> newVideo;
-  final VideoPlayerController? videoController;
+  final RxBool videoLoading;
+  final VideoPlayerController? networkVideoController;
+  final VideoPlayerController? newVideoController;
   final String? fileInstructions;
-  final bool isVideoControllerInitialized;
+  final bool isNetworkVideoControllerInitialized;
+  final bool isNewVideoControllerInitialized;
   final TextEditingController mainTitleController;
   final TextEditingController subtitleController;
   final TextEditingController descriptionController;
@@ -44,8 +51,10 @@ class PageBanner extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final bool includeTopTitle;
   final bool includeCta;
-  final bool includeSectionContainer;
-  final bool includePreviewButton;
+  final bool includeButtons;
+  final VoidCallback bannerOnTap;
+  final VoidCallback? closeOnTap;
+  final VoidCallback? saveOnTap;
 
   @override
   Widget build(BuildContext context) {
@@ -60,28 +69,35 @@ class PageBanner extends StatelessWidget {
             )
         ),
         BannerContainer(
+          videoLoading: videoLoading,
+          bannerOnTap: bannerOnTap,
           newVideo: newVideo,
+          closeOnTap: closeOnTap,
+          newVideoController: newVideoController,
           fileInstructions: fileInstructions,
-          videoController: videoController,
-          isControllerInitialized: isVideoControllerInitialized,
+          networkVideoController: networkVideoController,
+          isNetworkControllerInitialized: isNetworkVideoControllerInitialized,
+          isNewControllerInitialized: isNewVideoControllerInitialized,
         ),
-        if(!includeSectionContainer) Form(
+        Form(
           key: formKey,
           child: Column(
             children: [
               CustomTextFormField(
                 controller: mainTitleController,
                 showCounter: true,
-                maxLength: 50,
+                maxLength: mediumTitle,
                 title: 'Main Title',
                 includeAsterisk: true,
+                validator: (value) => Validators.validateEmptyField(value),
               ),
               CustomTextFormField(
                 controller: subtitleController,
                 title: 'Subtitle',
                 includeAsterisk: true,
-                maxLength: 60,
+                maxLength: mediumSubtitle,
                 showCounter: true,
+                validator: (value) => Validators.validateEmptyField(value),
               ),
               CustomTextFormField(
                 controller: descriptionController,
@@ -89,6 +105,7 @@ class PageBanner extends StatelessWidget {
                 includeAsterisk: true,
                 maxLength: 150,
                 showCounter: true,
+                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 30),
               ),
               if(includeCta) CustomTextFormField(
                 title: 'CTA Text',
@@ -97,64 +114,20 @@ class PageBanner extends StatelessWidget {
                 maxLines: 1,
                 maxLength: 20,
                 showCounter: true,
+                // validator: (value) => Validators.validateEmptyField(value),
               ),
             ],
           ),
         ),
-        if(!includeSectionContainer && includePreviewButton) CustomMaterialButton(
-          width: isSmallScreen(context) ? double.infinity : 150,
-            buttonColor: Colors.deepOrangeAccent,
-            borderColor: Colors.deepOrangeAccent,
-            text: 'Show Preview',
-            onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
-              'bannerData': PageBannerModel(
-                title: mainTitleController.text,
-                subtitle: subtitleController.text,
-                description: descriptionController.text,
-                ctaText: ctaTextController?.text,
-                newBanner: newVideo.value.isEmpty ? null : newVideo.value,
-                uploadedBanner: newVideo.value.isEmpty ? videoController?.dataSource : null,
-              ).toJson()
-            })
-        ),
-        if(includeSectionContainer) SectionContainer(
-          height: RxnDouble(null),
-          formKey: formKey,
+        if(includeButtons) Row(
+          spacing: 15,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-              CustomTextFormField(
-                controller: mainTitleController,
-                showCounter: true,
-                maxLength: 50,
-                title: 'Main Title',
-                includeAsterisk: true,
-              ),
-              CustomTextFormField(
-                controller: subtitleController,
-                title: 'Subtitle',
-                includeAsterisk: true,
-                maxLength: 60,
-                showCounter: true,
-              ),
-              CustomTextFormField(
-                controller: descriptionController,
-                title: 'Description',
-                includeAsterisk: true,
-                maxLength: 150,
-                showCounter: true,
-              ),
-            if(includeCta) CustomTextFormField(
-              title: 'CTA Text',
-              includeAsterisk: true,
-              controller: ctaTextController,
-              maxLines: 1,
-              maxLength: 20,
-              showCounter: true,
-            ),
-            if(includeSectionContainer && includePreviewButton) CustomMaterialButton(
-                width: isSmallScreen(context) ? double.infinity : 150,
-                text: 'Show Preview',
+            CustomMaterialButton(
+              width: isSmallScreen(context) ? double.infinity : 150,
                 buttonColor: Colors.deepOrangeAccent,
                 borderColor: Colors.deepOrangeAccent,
+                text: 'Show Preview',
                 onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
                   'bannerData': PageBannerModel(
                     title: mainTitleController.text,
@@ -162,12 +135,80 @@ class PageBanner extends StatelessWidget {
                     description: descriptionController.text,
                     ctaText: ctaTextController?.text,
                     newBanner: newVideo.value.isEmpty ? null : newVideo.value,
-                    uploadedBanner: newVideo.value.isEmpty ? videoController?.dataSource : null,
+                    uploadedBanner: newVideo.value.isEmpty ? networkVideoController?.dataSource : null,
                   ).toJson()
                 })
             ),
-            ],
-          ),
+            CustomMaterialButton(
+                onPressed: () {},
+              text: 'Save',
+              width: isSmallScreen(context) ? double.infinity : 150,
+            )
+          ],
+        ),
+        // if(includeSectionContainer) SectionContainer(
+        //   height: RxnDouble(null),
+        //   formKey: formKey,
+        //
+        //   children: [
+        //       CustomTextFormField(
+        //         controller: mainTitleController,
+        //         showCounter: true,
+        //         maxLength: mediumTitle,
+        //         title: 'Main Title',
+        //         includeAsterisk: true,
+        //       ),
+        //       CustomTextFormField(
+        //         controller: subtitleController,
+        //         title: 'Subtitle',
+        //         includeAsterisk: true,
+        //         maxLength: mediumSubtitle,
+        //         showCounter: true,
+        //       ),
+        //       CustomTextFormField(
+        //         controller: descriptionController,
+        //         title: 'Description',
+        //         includeAsterisk: true,
+        //         maxLength: 150,
+        //         showCounter: true,
+        //       ),
+        //     if(includeCta) CustomTextFormField(
+        //       title: 'CTA Text',
+        //       includeAsterisk: true,
+        //       controller: ctaTextController,
+        //       maxLines: 1,
+        //       maxLength: 20,
+        //       showCounter: true,
+        //     ),
+        //     if(includeSectionContainer && includeButtons) Row(
+        //       spacing: 15,
+        //       mainAxisAlignment: MainAxisAlignment.end,
+        //       children: [
+        //         CustomMaterialButton(
+        //             width: isSmallScreen(context) ? double.infinity : 150,
+        //             text: 'Show Preview',
+        //             buttonColor: Colors.deepOrangeAccent,
+        //             borderColor: Colors.deepOrangeAccent,
+        //             onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
+        //               'bannerData': PageBannerModel(
+        //                 title: mainTitleController.text,
+        //                 subtitle: subtitleController.text,
+        //                 description: descriptionController.text,
+        //                 ctaText: ctaTextController?.text,
+        //                 newBanner: newVideo.value.isEmpty ? null : newVideo.value,
+        //                 uploadedBanner: newVideo.value.isEmpty ? networkVideoController?.dataSource : null,
+        //               ).toJson()
+        //             })
+        //         ),
+        //         CustomMaterialButton(
+        //           onPressed: () {},
+        //           text: 'Save',
+        //           width: isSmallScreen(context) ? double.infinity : 150,
+        //         )
+        //       ],
+        //     ),
+        //     ],
+        //   ),
       ],
     );
   }
@@ -178,14 +219,24 @@ class BannerContainer extends StatelessWidget {
     super.key,
     this.fileInstructions,
     required this.newVideo,
-    this.videoController,
-    required this.isControllerInitialized
+    this.networkVideoController,
+    this.newVideoController,
+    required this.isNetworkControllerInitialized,
+    required this.isNewControllerInitialized,
+    required this.bannerOnTap,
+    required this.videoLoading,
+    this.closeOnTap,
   });
 
   final String? fileInstructions;
   final Rx<Uint8List> newVideo;
-  final VideoPlayerController? videoController;
-  final bool isControllerInitialized;
+  final VideoPlayerController? networkVideoController;
+  final VideoPlayerController? newVideoController;
+  final bool isNetworkControllerInitialized;
+  final bool isNewControllerInitialized;
+  final VoidCallback bannerOnTap;
+  final VoidCallback? closeOnTap;
+  final RxBool videoLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -203,48 +254,76 @@ class BannerContainer extends StatelessWidget {
               height: 400,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    onTap: () => pickSingleImage(imageToUpload: newVideo),
-                    child: Obx(() => newVideo.value.isNotEmpty && newVideo.value != Uint8List(0) ? Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.memory(newVideo.value, fit: BoxFit.fitHeight,),
-                        OverlayIcon(
-                          iconData: Icons.close,
-                          top: 5,
-                          right: 5,
-                          onPressed: () => newVideo.value = Uint8List(0),
-                        ),
-                      ],
-                    ) : isControllerInitialized && videoController != null ? videoController!.value.isBuffering ? Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 4.5,
-                      ),
-                    ) : SizedBox.expand(
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        clipBehavior: Clip.hardEdge,
-                        child: SizedBox(
-                          width: videoController!.value.size.width,
-                          height: videoController!.value.size.height,
-                          child: VideoPlayer(videoController!),
-                        ),
-                      ),
-                    ) : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  child: Stack(
+                    children: [
+                      Obx(() => newVideo.value.isNotEmpty && isNewControllerInitialized ? Stack(
+                        alignment: Alignment.center,
                         children: [
-                          Image.asset(ImagesPaths.uploadFile, width: 70, height: 70,),
-                          Text(
-                            lang_key.uploadFile.tr,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: primaryGrey
+                          SizedBox.expand(
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              clipBehavior: Clip.hardEdge,
+                              child: SizedBox(
+                                width: newVideoController!.value.size.width,
+                                height: newVideoController!.value.size.height,
+                                child: VideoPlayer(newVideoController!),
+                              ),
                             ),
-                          )
+                          ),
+                          OverlayIcon(
+                            iconData: Icons.close,
+                            top: 5,
+                            right: 5,
+                            onPressed: closeOnTap ?? () => newVideo.value = Uint8List(0),
+                          ),
                         ],
-                      ),
-                    ))
+                      ) : isNetworkControllerInitialized && networkVideoController != null ? networkVideoController!.value.isBuffering ? Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 4.5,
+                        ),
+                      ) : SizedBox.expand(
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          clipBehavior: Clip.hardEdge,
+                          child: SizedBox(
+                            width: networkVideoController!.value.size.width,
+                            height: networkVideoController!.value.size.height,
+                            child: VideoPlayer(networkVideoController!),
+                          ),
+                        ),
+                      ) : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(ImagesPaths.uploadFile, width: 70, height: 70,),
+                            Text(
+                              lang_key.uploadFile.tr,
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: primaryGrey
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                      Obx(() => videoLoading.value ? Positioned.fill(
+                        child: ColoredBox(
+                          color: Colors.black12,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 4.5,
+                              color: primaryWhite,
+                            ),
+                          ),
+                        ),
+                      ) : SizedBox()),
+                      Obx(() => videoLoading.isFalse && newVideo.value.isEmpty ? Positioned.fill(
+                          child: InkWell(
+                            overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                            onTap: bannerOnTap,
+                          )
+                      ) : SizedBox())
+                    ],
                   ),
               )
             ),

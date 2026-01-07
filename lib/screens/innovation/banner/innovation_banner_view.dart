@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -21,14 +24,17 @@ class InnovationBannerView extends StatelessWidget {
         selectedSidePanelItem: 6,
         children: [
           Obx(() => PageBanner(
+            videoLoading: RxBool(false),
+            bannerOnTap: () {  },
+            newVideoController: VideoPlayerController.file(File('')),
               mainTitleController: _viewModel.pageBannerMainTitleController,
               subtitleController: _viewModel.pageBannerSubTitleController,
               descriptionController: _viewModel.pageBannerDescriptionController,
               newVideo: _viewModel.newBanner,
               formKey: _viewModel.formKey,
               includeCta: false,
-              isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
-              videoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
+              isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
+              networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
             ),
           ),
           Row(

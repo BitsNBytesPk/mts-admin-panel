@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mts_website_admin_panel/screens/contact/banner/contact_banner_viewmodel.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/page_banner.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/screens_base_widget.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -21,13 +24,15 @@ class ContactBannerView extends StatelessWidget {
         scrollController: _viewModel.scrollController,
         children: [
           Obx(() => PageBanner(
+            videoLoading: RxBool(false),
+            bannerOnTap: () {  },
               mainTitleController: _viewModel.pageBannerMainTitleController,
               subtitleController: _viewModel.pageBannerSubTitleController,
               descriptionController: _viewModel.pageBannerDescriptionController,
-            isVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
+            isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
             newVideo: _viewModel.newBanner,
-            videoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoPlayerController.controller : null,
-            formKey: _viewModel.formKey,
+            networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoPlayerController.controller : null,
+            formKey: _viewModel.formKey, newVideoController: VideoPlayerController.file(File('')),
           )),
           Row(
             spacing: 15,

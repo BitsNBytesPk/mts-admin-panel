@@ -56,7 +56,7 @@ class InnovationContentView extends StatelessWidget {
                   title: 'Description',
                   includeAsterisk: true,
                   controller: _viewModel.projectDescController,
-                  validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 50),
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 50),
                   maxLength: 50,
                   maxLines: 3,
                 ),

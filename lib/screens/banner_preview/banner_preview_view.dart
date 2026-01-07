@@ -25,9 +25,9 @@ class BannerPreviewView extends StatelessWidget {
                     fit: BoxFit.cover,
                     clipBehavior: Clip.hardEdge,
                     child: SizedBox(
-                      width: _viewModel.videoPlayerController?.controller.value.size.width,
-                      height: _viewModel.videoPlayerController?.controller.value.size.height,
-                      child: VideoPlayer(_viewModel.videoPlayerController!.controller),
+                      width: _viewModel.videoPlayerController.value.size.width,
+                      height: _viewModel.videoPlayerController.value.size.height,
+                      child: VideoPlayer(_viewModel.videoPlayerController),
                     ),
                   ),
                 ),
@@ -39,7 +39,7 @@ class BannerPreviewView extends StatelessWidget {
                   child: Column(
                     spacing: 30,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
                         _viewModel.bannerData.value.subtitle?.toUpperCase() ?? '',
@@ -67,16 +67,25 @@ class BannerPreviewView extends StatelessWidget {
                           _viewModel.bannerData.value.description ?? '',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: primaryWhite,
-                              // fontSize: 15,
                               fontWeight: FontWeight.w300
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                        decoration: BoxDecoration(
+                          color: primaryDullYellow,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          _viewModel.bannerData.value.ctaText ?? '',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      )
                     ],
                   ),
                 ),
-
               ],
             ) : Center(
               child: CircularProgressIndicator(

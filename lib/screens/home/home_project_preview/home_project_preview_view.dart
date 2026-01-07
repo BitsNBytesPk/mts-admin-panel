@@ -28,35 +28,35 @@ class HomeProjectPreviewView extends StatelessWidget {
                 end: Alignment.bottomRight,
             )
           ),
-          child: Column(
-            spacing: 15,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _viewModel.homeProjectCard.value.title ?? '',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 40,
-                  color: primaryWhite
+          child: Obx(() => Column(
+              spacing: 15,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _viewModel.homeProjectCard.value.title ?? '',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 40,
+                    color: primaryWhite
+                  ),
                 ),
-              ),
-              Text(
-                _viewModel.homeProjectCard.value.description ?? '',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: primaryWhite.withValues(alpha: 0.7),
-                  fontWeight: FontWeight.w300
+                Text(
+                  _viewModel.homeProjectCard.value.description ?? '',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: primaryWhite.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w300
+                  ),
                 ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                spacing: 10,
-                children: [
-                  _StatsHeadingAndValue(label: _viewModel.homeProjectCard.value.metrics?[0].label ?? '', value: _viewModel.homeProjectCard.value.metrics?[0].value ?? ''),
-                  _StatsHeadingAndValue(label: _viewModel.homeProjectCard.value.metrics?[1].label ?? '', value: _viewModel.homeProjectCard.value.metrics?[1].value ?? ''),
-                ],
-              )
-            ],
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  spacing: 10,
+                  children: List.generate(_viewModel.homeProjectCard.value.metrics?.length ?? 0, (index) {
+                    return _StatsHeadingAndValue(label: _viewModel.homeProjectCard.value.metrics?[index].label ?? '', value: _viewModel.homeProjectCard.value.metrics?[index].value ?? '');
+                  }),
+                )
+              ],
+            ),
           ),
         ),
       ),

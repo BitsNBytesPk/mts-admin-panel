@@ -10,6 +10,9 @@ import '../../../utils/api_base_helper.dart';
 import '../../../utils/global_variables.dart';
 import '../../../utils/url_paths.dart';
 
+import 'package:video_player/video_player.dart';
+import '../../../helpers/banner_helpers.dart';
+
 class ContactBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   /// Controller(s) & Global Key(s)
@@ -20,9 +23,12 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
   ScrollController scrollController = ScrollController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late CachedVideoPlayerPlus videoPlayerController;
+  late VideoPlayerController newVideoController;
 
   Rx<Uint8List> newBanner = Uint8List(0).obs;
   RxBool isVideoControllerInitialized = false.obs;
+  RxBool isNewVideoControllerInitialized = false.obs;
+  RxBool videoLoading = false.obs;
 
   Rx<ContactData> contactData = ContactData().obs;
 
@@ -42,9 +48,9 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+    if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && videoPlayerController.isInitialized) {
       videoPlayerController.controller.pause();
-    } else if(state == AppLifecycleState.resumed) {
+    } else if(state == AppLifecycleState.resumed && videoPlayerController.isInitialized) {
       videoPlayerController.controller.play();
     }
     super.didChangeAppLifecycleState(state);
@@ -54,6 +60,7 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
   void onClose() {
     scrollController.dispose();
     videoPlayerController.dispose();
+    newVideoController.dispose();
     pageBannerMainTitleController.dispose();
     pageBannerSubTitleController.dispose();
     pageBannerDescriptionController.dispose();
@@ -79,6 +86,7 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
     pageBannerMainTitleController.text = contactData.value.content?.hero?.title ?? '';
     pageBannerSubTitleController.text = contactData.value.content?.hero?.subtitle ?? '';
     pageBannerDescriptionController.text = contactData.value.content?.hero?.description ?? '';
+    // pageBannerCtaTextController.text = contactData.value.content?.hero?.ctaText ?? '';
   }
 
   void _getResponsibilityBanner() async {
@@ -91,5 +99,49 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
     await videoPlayerController.controller.play();
     await videoPlayerController.controller.setLooping(true);
     isVideoControllerInitialized.value = true;
+  }
+
+  void selectVideoFromDevice() async {
+    await BannerHelpers.selectVideoFromDevice(
+      videoLoading: videoLoading,
+      newBanner: newBanner,
+      networkVideoController: videoPlayerController,
+      onNewVideoControllerCreated: (controller) => newVideoController = controller,
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      pauseNetworkVideo: (value) async => await videoPlayerController.controller.pause(),
+    );
+  }
+
+  void removeSelectedVideo() async {
+    await BannerHelpers.removeSelectedVideo(
+      newVideoController: newVideoController,
+      newBanner: newBanner,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      networkVideoController: videoPlayerController,
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+    );
+  }
+
+  void updateBannerData() async {
+    await BannerHelpers.updateBannerData(
+      formKey: formKey,
+      titleController: pageBannerMainTitleController,
+      subtitleController: pageBannerSubTitleController,
+      descriptionController: pageBannerDescriptionController,
+      ctaTextController: pageBannerCtaTextController,
+      currentValues: {
+        'title': contactData.value.content?.hero?.title,
+        'subtitle': contactData.value.content?.hero?.subtitle,
+        'description': contactData.value.content?.hero?.description,
+        // 'ctaText': contactData.value.content?.hero?.ctaText,
+      },
+      newBanner: newBanner,
+      page: 'contact',
+      networkVideoController: videoPlayerController,
+      newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      onSuccess: () {},
+    );
   }
 }

@@ -37,7 +37,6 @@ class LoginViewModel extends GetxController {
 
   /// API call to login
   void login() {
-    // Get.offAllNamed(Routes.homeBanner);
     if(formKey.currentState!.validate()){
       GlobalVariables.showLoader.value = true;
 
@@ -55,6 +54,13 @@ class LoginViewModel extends GetxController {
               await GlobalVariables.prefs?.setString(tokenKey, value.data['token']);
               GlobalVariables.token = value.data['token'];
               GlobalVariables.showLoader.value = false;
+
+              ApiBaseHelper.getMethod(url: Urls.brandLogo).then((value) {
+                if(value.success!) {
+                  GlobalVariables.logoUrl.value = value.data['logo_url'];
+                }
+              });
+
               Get.offAllNamed(Routes.homeBanner);
               // _getUserProfile();
             } else {

@@ -30,7 +30,9 @@ class ScreensBaseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoaderView(
       child: Scaffold(
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(
+          height: 70,
+        ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => hideAllOverlayPortalControllers(overlayPortalControllersAndIcons: overlayPortalControllersAndShowDropDown),

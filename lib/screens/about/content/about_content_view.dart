@@ -33,6 +33,7 @@ class AboutContentView extends StatelessWidget {
             children: [
               if(isSmallScreen(context)) Center(
                 child: AddImageSection(
+                  imageUrl: "${Urls.baseURL}${_viewModel.sharedData.value.content?.leadership?.people?.first.image}",
                   newImage: _viewModel.newImage,
                   width: 150,
                   height: 180,
@@ -89,7 +90,13 @@ class AboutContentView extends StatelessWidget {
                 maxLines: 10,
                 maxLength: 300,
                 showCounter: true,
-                validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 300),
+                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 300),
+              ),
+              CustomMaterialButton(
+                  onPressed: () {},
+                text: 'Save',
+                margin: EdgeInsets.only(top: 15),
+                width: 150,
               )
             ]
         ),
@@ -137,7 +144,7 @@ class AboutContentView extends StatelessWidget {
                 title: 'Description',
                 maxLines: 3,
                 controller: _viewModel.milestoneDescController,
-                validator: (value) => Validators.validateLongDescriptionText(value, maxLength: 100),
+                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 100),
                 includeAsterisk: true,
                 showCounter: true,
                 onChanged: (value) {

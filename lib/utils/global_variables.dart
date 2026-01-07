@@ -13,6 +13,8 @@ class GlobalVariables {
   /// JWT token
   static String token = '';
 
+  static RxString logoUrl = ''.obs;
+
   /// Variable to control the lists height in UI
   static RxDouble listHeight = 0.0.obs;
 

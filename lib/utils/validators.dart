@@ -11,10 +11,10 @@ class Validators {
     }
   }
 
-  static String? validateLongDescriptionText(String? value, {int maxLength = 25}) {
+  static String? validateLongDescriptionText(String? value, {int minLength = 25}) {
     if(value == null || value == '' || value.isEmpty) {
       return lang_key.fieldIsRequired.tr;
-    } else if(value.length < maxLength) {
+    } else if(value.length < minLength) {
       return lang_key.descTooShort.tr;
     } else {
       return null;

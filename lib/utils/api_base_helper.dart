@@ -14,6 +14,7 @@ import 'global_variables.dart';
 class ApiBaseHelper {
 
   static final int _timeLimit = 30;
+  static final int _timeLimitForMultipart = 40;
 
   /// Function for HTTP GET method
   static Future<ApiResponse> getMethod({
@@ -333,7 +334,7 @@ class ApiBaseHelper {
       request.headers.addAll(header);
       request.fields.addAll(fields);
       request.files.addAll(files);
-      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimit), onTimeout: () {
+      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimitForMultipart), onTimeout: () {
         return Future.error(TimeoutException('Request timed out'));
       });
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());
@@ -395,7 +396,8 @@ class ApiBaseHelper {
         request.fields.addAll({field.key: jsonEncode(field.value)});
       }
       request.files.addAll(files);
-      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimit), onTimeout: () {
+
+      http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimitForMultipart), onTimeout: () {
         return Future.error(TimeoutException('Request timed out'));
       });
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());

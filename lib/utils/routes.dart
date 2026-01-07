@@ -6,7 +6,8 @@ import 'package:mts_website_admin_panel/screens/contact/banner/contact_banner_vi
 import 'package:mts_website_admin_panel/screens/contact/content/contact_content_view.dart';
 import 'package:mts_website_admin_panel/screens/home/content/home_content_view.dart';
 import 'package:mts_website_admin_panel/screens/home/home_project_preview/home_project_preview_view.dart';
-import 'package:mts_website_admin_panel/screens/home/projects/projects_listing_view.dart';
+import 'package:mts_website_admin_panel/screens/home/projects/edit_project/edit_project_view.dart';
+import 'package:mts_website_admin_panel/screens/home/projects/projects_listing/projects_listing_view.dart';
 import 'package:mts_website_admin_panel/screens/messages/messages_list_view.dart';
 import 'package:mts_website_admin_panel/screens/responsibility/projects_listing/responsibility_projects_listing_view.dart';
 import 'package:mts_website_admin_panel/screens/responsibility/responsibility_project_preview/responsibility_project_preview_view.dart';
@@ -30,6 +31,7 @@ class Routes {
   static const homeContent = '/homeContent';
   static const homeTimerBanner = '/homeTimerBanner';
   static const homeProjects = '/homeProjects';
+  static const homeProjectsEdit = '/homeProjectEdit';
   static const homeProjectPreview = '/homeProjectPreview';
 
   static const aboutBanner = '/aboutBanner';
@@ -62,6 +64,7 @@ class Routes {
     GetPage(name: homeContent, page: () => HomeContentView(), maintainState: false),
     GetPage(name: homeTimerBanner, page: () => HomeTimerBannerView()),
     GetPage(name: homeProjects, page: () => HomeProjectsListingView()),
+    GetPage(name: homeProjectsEdit, page: () => HomeProjectEditView(), maintainState: false),
     GetPage(name: homeProjectPreview, page: () => HomeProjectPreviewView(), maintainState: false),
 
     GetPage(name: aboutBanner, page: () => AboutBannerView(), maintainState: false),

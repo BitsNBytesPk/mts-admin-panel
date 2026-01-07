@@ -130,6 +130,7 @@ List<SidePanelItemData> sidePanelItemsData = [
   SidePanelItemData(routeName: Routes.homeBanner, scrollPosition: 0.0, sidePanelItemIndex: 0),
   SidePanelItemData(routeName: Routes.homeContent, scrollPosition: 0.0, sidePanelItemIndex: 1),
   SidePanelItemData(routeName: Routes.homeProjects, scrollPosition: 0.0, sidePanelItemIndex: 2),
+  SidePanelItemData(routeName: Routes.homeProjectsEdit, scrollPosition: 0.0, sidePanelItemIndex: 2), /// Index is deliberately kept same
   SidePanelItemData(routeName: Routes.homeTimerBanner, scrollPosition: 0.0, sidePanelItemIndex: 3),
   SidePanelItemData(routeName: Routes.aboutBanner, scrollPosition: 160.0, sidePanelItemIndex: 4),
   SidePanelItemData(routeName: Routes.aboutContent, scrollPosition: 160.0, sidePanelItemIndex: 5),
@@ -166,3 +167,19 @@ const String packageDetailsKey = 'packageDetails';
 bool isSmallScreen(BuildContext context) {
   return MediaQuery.sizeOf(context).width < 750;
 }
+
+/// Max Length values for fields
+const int mediumDescription = 80;
+const int shortDescription = 60;
+
+const int mediumTitle = 50;
+const int shortTitle = 30;
+
+const int mediumSubtitle = 60;
+const int shortSubtitle = 40;
+
+const int shortMetricHeading = 15;
+const int mediumMetricHeading = 20;
+
+const int shortMetricValue = 5;
+const int mediumMetricValue = 10;

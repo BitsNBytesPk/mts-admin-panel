@@ -10,11 +10,15 @@ import 'package:mts_website_admin_panel/utils/global_variables.dart';
 import '../../../helpers/scroll_controller_funcs.dart';
 import '../../../utils/url_paths.dart';
 
-class AboutBannerViewModel extends GetxController {
+import 'package:video_player/video_player.dart';
+import '../../../helpers/banner_helpers.dart';
+
+class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   TextEditingController pageBannerMainTitleController = TextEditingController();
   TextEditingController pageBannerSubTitleController = TextEditingController();
   TextEditingController pageBannerDescriptionController = TextEditingController();
+  TextEditingController pageBannerCtaTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -22,13 +26,45 @@ class AboutBannerViewModel extends GetxController {
 
   Rx<Uint8List> newBanner = Uint8List(0).obs;
   late CachedVideoPlayerPlus videoController;
+  late VideoPlayerController newVideoController;
   RxBool isVideoControllerInitialized = false.obs;
+  RxBool isNewVideoControllerInitialized = false.obs;
+  RxBool videoLoading = false.obs;
+
+  @override
+  void onInit() {
+    WidgetsBinding.instance.addObserver(this);
+    super.onInit();
+  }
 
   @override
   void onReady() {
     _fetchAboutData();
     animateSidePanelScrollController(scrollController);
     super.onReady();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && videoController.isInitialized) {
+      videoController.controller.pause();
+    } else if(state == AppLifecycleState.resumed && videoController.isInitialized) {
+      videoController.controller.play();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    pageBannerMainTitleController.dispose();
+    pageBannerSubTitleController.dispose();
+    pageBannerDescriptionController.dispose();
+    pageBannerCtaTextController.dispose();
+    videoController.dispose();
+    newVideoController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
   }
 
   void _fetchAboutData() {
@@ -49,6 +85,7 @@ class AboutBannerViewModel extends GetxController {
     pageBannerMainTitleController.text = aboutData.value.content?.hero?.title ?? '';
     pageBannerSubTitleController.text = aboutData.value.content?.hero?.subtitle ?? '';
     pageBannerDescriptionController.text = aboutData.value.content?.hero?.description ?? '';
+    pageBannerCtaTextController.text = aboutData.value.content?.hero?.ctaText ?? '';
   }
 
   void _getAboutBanner() async {
@@ -61,5 +98,49 @@ class AboutBannerViewModel extends GetxController {
     await videoController.controller.play();
     await videoController.controller.setLooping(true);
     isVideoControllerInitialized.value = true;
+  }
+
+  void selectVideoFromDevice() async {
+    await BannerHelpers.selectVideoFromDevice(
+      videoLoading: videoLoading,
+      newBanner: newBanner,
+      networkVideoController: videoController,
+      onNewVideoControllerCreated: (controller) => newVideoController = controller,
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      pauseNetworkVideo: (value) async => await videoController.controller.pause(),
+    );
+  }
+
+  void removeSelectedVideo() async {
+    await BannerHelpers.removeSelectedVideo(
+      newVideoController: newVideoController,
+      newBanner: newBanner,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      networkVideoController: videoController,
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+    );
+  }
+
+  void updateBannerData() async {
+    await BannerHelpers.updateBannerData(
+      formKey: formKey,
+      titleController: pageBannerMainTitleController,
+      subtitleController: pageBannerSubTitleController,
+      descriptionController: pageBannerDescriptionController,
+      ctaTextController: pageBannerCtaTextController,
+      currentValues: {
+        'title': aboutData.value.content?.hero?.title,
+        'subtitle': aboutData.value.content?.hero?.subtitle,
+        'description': aboutData.value.content?.hero?.description,
+        'ctaText': aboutData.value.content?.hero?.ctaText,
+      },
+      newBanner: newBanner,
+      page: 'about',
+      networkVideoController: videoController,
+      newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
+      isNewVideoControllerInitialized: isNewVideoControllerInitialized,
+      onSuccess: () {},
+    );
   }
 }
