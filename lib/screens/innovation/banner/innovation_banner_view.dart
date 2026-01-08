@@ -1,8 +1,6 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -24,10 +22,9 @@ class InnovationBannerView extends StatelessWidget {
         selectedSidePanelItem: 6,
         children: [
           Obx(() => PageBanner(
-            // videoLoading: RxBool(false),
-            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized,
             videoLoading: _viewModel.videoLoading,
-            bannerOnTap: () {  },
+            newVideoController: _viewModel.isNewVideoControllerInitialized.value ? _viewModel.newVideoController : null,
             // newVideoController: VideoPlayerController.file(File('')),
               mainTitleController: _viewModel.pageBannerMainTitleController,
               subtitleController: _viewModel.pageBannerSubTitleController,
@@ -35,8 +32,9 @@ class InnovationBannerView extends StatelessWidget {
               newVideo: _viewModel.newBanner,
               formKey: _viewModel.formKey,
               includeCta: false,
-              isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
-              networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
+              isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized,
+              networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController : null,
+            bannerOnTap: () {  },
             ),
           ),
           Row(

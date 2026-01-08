@@ -1,8 +1,6 @@
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -24,15 +22,17 @@ class AboutBannerView extends StatelessWidget {
         selectedSidePanelItem: 4,
         children: [
           Obx(() => PageBanner(
-            videoLoading: RxBool(false),
-            newVideoController: VideoPlayerController.file(File('')),
-            isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized,
+            videoLoading: _viewModel.videoLoading,
+            newVideoController: _viewModel.isNewVideoControllerInitialized.value ? _viewModel.newVideoController : null,
+            isNetworkVideoControllerInitialized: _viewModel.isNetworkVideoControllerInitialized,
             newVideo: _viewModel.newBanner,
-            networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
+            networkVideoController: _viewModel.isNetworkVideoControllerInitialized.value ? _viewModel.networkVideoController : null,
             mainTitleController: _viewModel.pageBannerMainTitleController,
             subtitleController: _viewModel.pageBannerSubTitleController,
             descriptionController: _viewModel.pageBannerDescriptionController,
-            formKey: _viewModel.formKey, bannerOnTap: () {  },
+            formKey: _viewModel.formKey, bannerOnTap: () => _viewModel.selectVideoFromDevice(),
+            closeOnTap: () => _viewModel.removeSelectedVideo(),
           )),
           Row(
             spacing: 15,
@@ -52,7 +52,7 @@ class AboutBannerView extends StatelessWidget {
                         description: _viewModel.pageBannerDescriptionController.text,
                         // ctaText: _viewModel.pageBannerCtaTextController.text,
                         newBanner: _viewModel.newBanner.value.isEmpty ? null : _viewModel.newBanner.value,
-                        uploadedBanner: _viewModel.newBanner.value.isEmpty ? _viewModel.videoController.dataSource : null,
+                        uploadedBanner: _viewModel.newBanner.value.isEmpty ? _viewModel.networkVideoController.dataSource : null,
                       ).toJson()
                     },
                   ),

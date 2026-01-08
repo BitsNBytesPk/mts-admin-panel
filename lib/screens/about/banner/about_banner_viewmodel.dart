@@ -25,9 +25,9 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
   Rx<AboutData> aboutData = AboutData().obs;
 
   Rx<Uint8List> newBanner = Uint8List(0).obs;
-  late CachedVideoPlayerPlus videoController;
+  late CachedVideoPlayerPlus networkVideoController;
   late VideoPlayerController newVideoController;
-  RxBool isVideoControllerInitialized = false.obs;
+  RxBool isNetworkVideoControllerInitialized = false.obs;
   RxBool isNewVideoControllerInitialized = false.obs;
   RxBool videoLoading = false.obs;
 
@@ -46,10 +46,10 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && videoController.isInitialized) {
-      videoController.controller.pause();
-    } else if(state == AppLifecycleState.resumed && videoController.isInitialized) {
-      videoController.controller.play();
+    if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && networkVideoController.isInitialized) {
+      networkVideoController.controller.pause();
+    } else if(state == AppLifecycleState.resumed && networkVideoController.isInitialized) {
+      networkVideoController.controller.play();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -61,7 +61,7 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
     pageBannerSubTitleController.dispose();
     pageBannerDescriptionController.dispose();
     pageBannerCtaTextController.dispose();
-    videoController.dispose();
+    networkVideoController.dispose();
     newVideoController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
@@ -90,25 +90,25 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   void _getAboutBanner() async {
 
-    videoController = CachedVideoPlayerPlus.networkUrl(
+    networkVideoController = CachedVideoPlayerPlus.networkUrl(
       Uri.parse(aboutData.value.content?.hero?.backgroundVideo == null ? '' : '${Urls.baseURL}${aboutData.value.content?.hero?.backgroundVideo}'),
       httpHeaders: {'Cache-Control': 'max-age=80085',},
     );
-    await videoController.initialize();
-    await videoController.controller.play();
-    await videoController.controller.setLooping(true);
-    isVideoControllerInitialized.value = true;
+    await networkVideoController.initialize();
+    await networkVideoController.controller.play();
+    await networkVideoController.controller.setLooping(true);
+    isNetworkVideoControllerInitialized.value = true;
   }
 
   void selectVideoFromDevice() async {
     await BannerHelpers.selectVideoFromDevice(
       videoLoading: videoLoading,
       newBanner: newBanner,
-      networkVideoController: videoController,
+      networkVideoController: networkVideoController,
       onNewVideoControllerCreated: (controller) => newVideoController = controller,
-      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+      isNetworkVideoControllerInitialized: isNetworkVideoControllerInitialized,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      pauseNetworkVideo: (value) async => await videoController.controller.pause(),
+      pauseNetworkVideo: (value) async => await networkVideoController.controller.pause(),
     );
   }
 
@@ -117,8 +117,8 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
       newVideoController: newVideoController,
       newBanner: newBanner,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      networkVideoController: videoController,
-      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
+      networkVideoController: networkVideoController,
+      isNetworkVideoControllerInitialized: isNetworkVideoControllerInitialized,
     );
   }
 
@@ -137,7 +137,7 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
       },
       newBanner: newBanner,
       page: 'about',
-      networkVideoController: videoController,
+      networkVideoController: networkVideoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
       onSuccess: () {},

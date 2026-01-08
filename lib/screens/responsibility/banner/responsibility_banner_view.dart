@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/screens/responsibility/banner/responsibility_banner_viewmodel.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../models/page_banner.dart';
 import '../../../utils/constants.dart';
@@ -24,17 +22,17 @@ class ResponsibilityBannerView extends StatelessWidget {
         selectedSidePanelItem: 8,
         children: [
           Obx(() => PageBanner(
-            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized,
             videoLoading: _viewModel.videoLoading,
-            bannerOnTap: () {  },
             formKey: _viewModel.formKey,
             mainTitleController: _viewModel.pageBannerMainTitleController,
             subtitleController: _viewModel.pageBannerSubTitleController,
             descriptionController: _viewModel.pageBannerDescriptionController,
             includeCta: false,
-            isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized.value,
+            isNetworkVideoControllerInitialized: _viewModel.isVideoControllerInitialized,
             newVideo: _viewModel.newBanner,
-            networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController.controller : null,
+            networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController : null,
+            bannerOnTap: () {  },
           ),
           ),
           Row(

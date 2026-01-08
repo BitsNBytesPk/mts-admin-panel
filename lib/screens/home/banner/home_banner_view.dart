@@ -21,9 +21,8 @@ class HomeBannerView extends StatelessWidget {
         selectedSidePanelItem: 0,
         children: [
           Obx(() => PageBanner(
-            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized,
             videoLoading: _viewModel.videoLoading,
-            bannerOnTap: () => _viewModel.selectVideoFromDevice(),
             closeOnTap: () => _viewModel.removeSelectedVideo(),
             newVideoController: _viewModel.isNewVideoControllerInitialized.value ? _viewModel.newVideoController : null,
             formKey: _viewModel.formKey,
@@ -32,9 +31,11 @@ class HomeBannerView extends StatelessWidget {
             descriptionController: _viewModel.pageBannerDescriptionController,
             ctaTextController: _viewModel.pageBannerCtaTextController,
             includeCta: true,
-            isNetworkVideoControllerInitialized: _viewModel.isNetworkVideoControllerInitialized.value,
+            isNetworkVideoControllerInitialized: _viewModel.isNetworkVideoControllerInitialized,
             newVideo: _viewModel.newBanner,
-            networkVideoController: _viewModel.isNetworkVideoControllerInitialized.value ? _viewModel.networkVideoController.controller : null,
+            networkVideoController: _viewModel.isNetworkVideoControllerInitialized.value ? _viewModel.networkVideoController : null,
+            bannerOnTap: () => _viewModel.selectVideoFromDevice(),
+
           )),
           Row(
             spacing: 15,

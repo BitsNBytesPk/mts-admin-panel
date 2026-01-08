@@ -1,3 +1,4 @@
+import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:mts_website_admin_panel/utils/routes.dart';
 import 'package:mts_website_admin_panel/utils/validators.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:typed_data';
+import '../../helpers/banner_helpers.dart';
 import '../../languages/translation_keys.dart' as lang_key;
 import '../constants.dart';
 import '../images_paths.dart';
@@ -24,6 +26,8 @@ class PageBanner extends StatelessWidget {
     required this.formKey,
     required this.bannerOnTap,
     required this.videoLoading,
+    required this.isNetworkVideoControllerInitialized,
+    required this.isNewVideoControllerInitialized,
     this.closeOnTap,
     this.newVideoController,
     this.networkVideoController,
@@ -31,19 +35,17 @@ class PageBanner extends StatelessWidget {
     this.includeTopTitle = true,
     this.includeCta = false,
     this.ctaTextController,
-    this.isNetworkVideoControllerInitialized = false,
-    this.isNewVideoControllerInitialized = false,
     this.includeButtons = false,
     this.saveOnTap,
   }) : assert((includeCta == true && ctaTextController != null) || (includeCta == false && ctaTextController == null));
 
   final Rx<Uint8List> newVideo;
   final RxBool videoLoading;
-  final VideoPlayerController? networkVideoController;
+  final CachedVideoPlayerPlus? networkVideoController;
   final VideoPlayerController? newVideoController;
   final String? fileInstructions;
-  final bool isNetworkVideoControllerInitialized;
-  final bool isNewVideoControllerInitialized;
+  final RxBool isNetworkVideoControllerInitialized;
+  final RxBool isNewVideoControllerInitialized;
   final TextEditingController mainTitleController;
   final TextEditingController subtitleController;
   final TextEditingController descriptionController;
@@ -146,69 +148,6 @@ class PageBanner extends StatelessWidget {
             )
           ],
         ),
-        // if(includeSectionContainer) SectionContainer(
-        //   height: RxnDouble(null),
-        //   formKey: formKey,
-        //
-        //   children: [
-        //       CustomTextFormField(
-        //         controller: mainTitleController,
-        //         showCounter: true,
-        //         maxLength: mediumTitle,
-        //         title: 'Main Title',
-        //         includeAsterisk: true,
-        //       ),
-        //       CustomTextFormField(
-        //         controller: subtitleController,
-        //         title: 'Subtitle',
-        //         includeAsterisk: true,
-        //         maxLength: mediumSubtitle,
-        //         showCounter: true,
-        //       ),
-        //       CustomTextFormField(
-        //         controller: descriptionController,
-        //         title: 'Description',
-        //         includeAsterisk: true,
-        //         maxLength: 150,
-        //         showCounter: true,
-        //       ),
-        //     if(includeCta) CustomTextFormField(
-        //       title: 'CTA Text',
-        //       includeAsterisk: true,
-        //       controller: ctaTextController,
-        //       maxLines: 1,
-        //       maxLength: 20,
-        //       showCounter: true,
-        //     ),
-        //     if(includeSectionContainer && includeButtons) Row(
-        //       spacing: 15,
-        //       mainAxisAlignment: MainAxisAlignment.end,
-        //       children: [
-        //         CustomMaterialButton(
-        //             width: isSmallScreen(context) ? double.infinity : 150,
-        //             text: 'Show Preview',
-        //             buttonColor: Colors.deepOrangeAccent,
-        //             borderColor: Colors.deepOrangeAccent,
-        //             onPressed: () => Get.toNamed(Routes.bannerPreview, arguments: {
-        //               'bannerData': PageBannerModel(
-        //                 title: mainTitleController.text,
-        //                 subtitle: subtitleController.text,
-        //                 description: descriptionController.text,
-        //                 ctaText: ctaTextController?.text,
-        //                 newBanner: newVideo.value.isEmpty ? null : newVideo.value,
-        //                 uploadedBanner: newVideo.value.isEmpty ? networkVideoController?.dataSource : null,
-        //               ).toJson()
-        //             })
-        //         ),
-        //         CustomMaterialButton(
-        //           onPressed: () {},
-        //           text: 'Save',
-        //           width: isSmallScreen(context) ? double.infinity : 150,
-        //         )
-        //       ],
-        //     ),
-        //     ],
-        //   ),
       ],
     );
   }
@@ -230,10 +169,10 @@ class BannerContainer extends StatelessWidget {
 
   final String? fileInstructions;
   final Rx<Uint8List> newVideo;
-  final VideoPlayerController? networkVideoController;
+  final CachedVideoPlayerPlus? networkVideoController;
   final VideoPlayerController? newVideoController;
-  final bool isNetworkControllerInitialized;
-  final bool isNewControllerInitialized;
+  final RxBool isNetworkControllerInitialized;
+  final RxBool isNewControllerInitialized;
   final VoidCallback bannerOnTap;
   final VoidCallback? closeOnTap;
   final RxBool videoLoading;
@@ -256,7 +195,7 @@ class BannerContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Stack(
                     children: [
-                      Obx(() => newVideo.value.isNotEmpty && isNewControllerInitialized ? Stack(
+                      Obx(() => newVideo.value.isNotEmpty && isNewControllerInitialized.value ? Stack(
                         alignment: Alignment.center,
                         children: [
                           SizedBox.expand(
@@ -277,7 +216,7 @@ class BannerContainer extends StatelessWidget {
                             onPressed: closeOnTap ?? () => newVideo.value = Uint8List(0),
                           ),
                         ],
-                      ) : isNetworkControllerInitialized && networkVideoController != null ? networkVideoController!.value.isBuffering ? Center(
+                      ) : isNetworkControllerInitialized.value && networkVideoController != null ? networkVideoController!.controller.value.isBuffering ? Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 4.5,
                         ),
@@ -286,9 +225,9 @@ class BannerContainer extends StatelessWidget {
                           fit: BoxFit.cover,
                           clipBehavior: Clip.hardEdge,
                           child: SizedBox(
-                            width: networkVideoController!.value.size.width,
-                            height: networkVideoController!.value.size.height,
-                            child: VideoPlayer(networkVideoController!),
+                            width: networkVideoController!.controller.value.size.width,
+                            height: networkVideoController!.controller.value.size.height,
+                            child: VideoPlayer(networkVideoController!.controller),
                           ),
                         ),
                       ) : Center(
@@ -320,7 +259,7 @@ class BannerContainer extends StatelessWidget {
                       Obx(() => videoLoading.isFalse && newVideo.value.isEmpty ? Positioned.fill(
                           child: InkWell(
                             overlayColor: WidgetStatePropertyAll(Colors.transparent),
-                            onTap: bannerOnTap,
+                            onTap: bannerOnTap
                           )
                       ) : SizedBox())
                     ],

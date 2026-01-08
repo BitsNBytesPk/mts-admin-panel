@@ -9,7 +9,6 @@ class Urls {
   static const _assetsBaseUrl = '/admin/assets';
   static const _messagesBaseUrl = '$_pagesBaseUrl/contact/messages';
   // static const _homeBaseUrl = '/home';
-  static const _projectBaseUrl = '/projects';
   static const _packagesBaseUrl = '/packages';
   static const _dashboardBaseUrl = '/home';
   static const _authBaseUrl = '/auth';
