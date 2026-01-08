@@ -24,7 +24,8 @@ class ContactBannerView extends StatelessWidget {
         scrollController: _viewModel.scrollController,
         children: [
           Obx(() => PageBanner(
-            videoLoading: RxBool(false),
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            videoLoading: _viewModel.videoLoading,
             bannerOnTap: () {  },
               mainTitleController: _viewModel.pageBannerMainTitleController,
               subtitleController: _viewModel.pageBannerSubTitleController,

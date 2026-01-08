@@ -53,16 +53,23 @@ class LoginViewModel extends GetxController {
 
               await GlobalVariables.prefs?.setString(tokenKey, value.data['token']);
               GlobalVariables.token = value.data['token'];
+
+              final fetchLogoUrl = ApiBaseHelper.getMethod(url: Urls.brandLogo);
+              final fetchMessagesCount = ApiBaseHelper.getMethod(url: Urls.fetchUnreadMessagesCount);
+
+              final responses = await Future.wait([fetchLogoUrl, fetchMessagesCount]);
+
+              if(responses[0].success == true && responses[0].data != null) {
+                GlobalVariables.logoUrl.value = responses[0].data['logo_url'];
+              }
+
+              if(responses[1].success == true && responses[1].data != null) {
+                GlobalVariables.unreadMessagesCount.value = responses[1].data['count'];
+              }
+
               GlobalVariables.showLoader.value = false;
 
-              ApiBaseHelper.getMethod(url: Urls.brandLogo).then((value) {
-                if(value.success!) {
-                  GlobalVariables.logoUrl.value = value.data['logo_url'];
-                }
-              });
-
               Get.offAllNamed(Routes.homeBanner);
-              // _getUserProfile();
             } else {
               stopLoaderAndShowSnackBar(success: false, message: value.message!);
             }

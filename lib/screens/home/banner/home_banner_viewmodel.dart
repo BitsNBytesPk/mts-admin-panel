@@ -87,17 +87,11 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
 
     if(responses[0].success! && responses[0].data != null) {
 
-      homeData.value = HomeData.fromJson(responses[0].data);// if(responses[1].success! && responses[1].data != null) {
-    //   applicationsStats.value = AppsSummary.fromJson(responses[1].data);
+      homeData.value = HomeData.fromJson(responses[0].data);
 
       _fillHomeBannerDataAndFetchFile();
       _getHomeBanner();
-      // recentUnreadMessages.refresh();
     }
-
-    // if(responses[1].success! && responses[1].data != null) {
-    //   applicationsStats.value = AppsSummary.fromJson(responses[1].data);
-    // }
 
     if(responses.isEmpty || responses.every((element) => !element.success!)) {
       showSnackBar(message: "${lang_key.generalApiError.tr}. ${lang_key.retry.tr}", success: false);

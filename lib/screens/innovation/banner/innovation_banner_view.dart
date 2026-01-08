@@ -24,9 +24,11 @@ class InnovationBannerView extends StatelessWidget {
         selectedSidePanelItem: 6,
         children: [
           Obx(() => PageBanner(
-            videoLoading: RxBool(false),
+            // videoLoading: RxBool(false),
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            videoLoading: _viewModel.videoLoading,
             bannerOnTap: () {  },
-            newVideoController: VideoPlayerController.file(File('')),
+            // newVideoController: VideoPlayerController.file(File('')),
               mainTitleController: _viewModel.pageBannerMainTitleController,
               subtitleController: _viewModel.pageBannerSubTitleController,
               descriptionController: _viewModel.pageBannerDescriptionController,

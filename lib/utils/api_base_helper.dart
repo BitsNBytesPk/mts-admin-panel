@@ -393,7 +393,7 @@ class ApiBaseHelper {
 
       request.headers.addAll(header);
       for(var field in fields.entries) {
-        request.fields.addAll({field.key: jsonEncode(field.value)});
+        request.fields.addAll({field.key: field.value});
       }
       request.files.addAll(files);
 

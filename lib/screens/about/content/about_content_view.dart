@@ -85,18 +85,22 @@ class AboutContentView extends StatelessWidget {
               ),
               CustomTextFormField(
                 includeAsterisk: true,
-                title: 'Description',
-                controller: _viewModel.pageBannerDescriptionController,
+                title: 'Bio',
+                controller: _viewModel.personalDetailsDescriptionController,
                 maxLines: 10,
-                maxLength: 300,
+                minLines: 5,
+                maxLength: 500,
                 showCounter: true,
-                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 300),
+                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 80),
               ),
-              CustomMaterialButton(
-                  onPressed: () {},
-                text: 'Save',
-                margin: EdgeInsets.only(top: 15),
-                width: 150,
+              Align(
+                alignment: AlignmentGeometry.centerRight,
+                child: CustomMaterialButton(
+                    onPressed: () => _viewModel.updatePersonalData(),
+                  text: 'Save',
+                  margin: EdgeInsets.only(top: 15),
+                  width: 150,
+                ),
               )
             ]
         ),
@@ -112,10 +116,10 @@ class AboutContentView extends StatelessWidget {
                     child: CustomTextFormField(
                       title: 'Title',
                       controller: _viewModel.milestoneTitleController,
-                      validator: (value) => Validators.validateLongDescriptionText(value),
+                      validator: (value) => Validators.validateEmptyField(value),
                       includeAsterisk: true,
                       showCounter: true,
-                      maxLength: 25,
+                      maxLength: mediumMetricHeading,
                       onChanged: (value) {
                         if(value.isEmpty && _viewModel.milestoneYearTextController.text.isEmpty && _viewModel.milestoneDescController.text.isEmpty) {
                           _viewModel.updatingValue.value = false;
@@ -127,10 +131,10 @@ class AboutContentView extends StatelessWidget {
                     child: CustomTextFormField(
                       title: 'Year Text',
                       controller: _viewModel.milestoneYearTextController,
-                      validator: (value) => Validators.validateLongDescriptionText(value),
+                      validator: (value) => Validators.validateEmptyField(value),
                       includeAsterisk: true,
                       showCounter: true,
-                      maxLength: 25,
+                      maxLength: mediumMetricHeading,
                       onChanged: (value) {
                         if(value.isEmpty && _viewModel.milestoneDescController.text.isEmpty && _viewModel.milestoneTitleController.text.isEmpty) {
                           _viewModel.updatingValue.value = false;
@@ -144,7 +148,7 @@ class AboutContentView extends StatelessWidget {
                 title: 'Description',
                 maxLines: 3,
                 controller: _viewModel.milestoneDescController,
-                validator: (value) => Validators.validateLongDescriptionText(value, minLength: 100),
+                validator: (value) => Validators.validateEmptyField(value),
                 includeAsterisk: true,
                 showCounter: true,
                 onChanged: (value) {
@@ -152,12 +156,13 @@ class AboutContentView extends StatelessWidget {
                     _viewModel.updatingValue.value = false;
                   }
                 },
-                maxLength: 100,
+                maxLength: mediumDescription,
               ),
               Align(
                 alignment: AlignmentGeometry.centerRight,
                 child: Obx(() => CustomMaterialButton(
-                      onPressed: () {},
+                  margin: EdgeInsets.only(top: 15),
+                      onPressed: _viewModel.updatingValue.value ? () {} : () => _viewModel.addNewMilestoneEntry(),
                     text: _viewModel.updatingValue.value ? 'Update' : 'Save',
                     width: 150,
                   ),
@@ -188,7 +193,7 @@ class AboutContentView extends StatelessWidget {
                             }
                             _viewModel.fillMilestoneControllers(index);
                         },
-                        onDeletePressed: () {},
+                        onDeletePressed: () => _viewModel.milestoneDeletionConfirmation(index),
                       )
                     ],
                   ),

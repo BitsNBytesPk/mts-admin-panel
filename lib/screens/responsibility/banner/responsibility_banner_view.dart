@@ -24,9 +24,9 @@ class ResponsibilityBannerView extends StatelessWidget {
         selectedSidePanelItem: 8,
         children: [
           Obx(() => PageBanner(
-            videoLoading: RxBool(false),
+            isNewVideoControllerInitialized: _viewModel.isNewVideoControllerInitialized.value,
+            videoLoading: _viewModel.videoLoading,
             bannerOnTap: () {  },
-            newVideoController: VideoPlayerController.file(File('')),
             formKey: _viewModel.formKey,
             mainTitleController: _viewModel.pageBannerMainTitleController,
             subtitleController: _viewModel.pageBannerSubTitleController,

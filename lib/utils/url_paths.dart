@@ -7,9 +7,9 @@ class Urls {
 
   static const _pagesBaseUrl = '/admin/pages';
   static const _assetsBaseUrl = '/admin/assets';
+  static const _messagesBaseUrl = '$_pagesBaseUrl/contact/messages';
   // static const _homeBaseUrl = '/home';
   static const _projectBaseUrl = '/projects';
-  static const _messagesBaseUrl = '/messages';
   static const _packagesBaseUrl = '/packages';
   static const _dashboardBaseUrl = '/home';
   static const _authBaseUrl = '/auth';
@@ -62,17 +62,9 @@ class Urls {
   static const String brandLogo = '$_assetsBaseUrl/brand';
   /// Brand Logo End ///
 
-  /// Project Setup
-  static String editProject(String id) {
-    return '$_projectBaseUrl/$id';
-  }
-
-  static String deleteProject(String id) {
-    return '$_projectBaseUrl/$id';
-  }
-
-  static const String addNewProject = '$_projectBaseUrl/add';
-  static const String getAllProjects = '$_projectBaseUrl/get';
+  /// Messages ///
+  static const String fetchUnreadMessagesCount = '$_messagesBaseUrl/count';
+  /// Messages End ///
 
   /// Messages ///
     /// Messages List ///
