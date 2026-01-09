@@ -126,6 +126,7 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
       formKey: formKey,
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized,
       titleController: pageBannerMainTitleController,
       subtitleController: pageBannerSubTitleController,
       descriptionController: pageBannerDescriptionController,
@@ -137,11 +138,36 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
         // 'ctaText': contactData.value.content?.hero?.ctaText,
       },
       newBanner: newBanner,
-      page: 'contact',
+      page: 'home',
       networkVideoController: videoPlayerController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {},
+      onSuccess: (newVideoUrl) async {
+
+        isVideoControllerInitialized.value = false;
+        await videoPlayerController.controller.pause();
+        await videoPlayerController.dispose();
+
+        newBanner.value = Uint8List(0);
+        if(isNewVideoControllerInitialized.value) {
+          await newVideoController.dispose();
+          isNewVideoControllerInitialized.value = false;
+        }
+
+        videoPlayerController = CachedVideoPlayerPlus.networkUrl(
+          Uri.parse(newVideoUrl == null ? '' : '${Urls.baseURL}$newVideoUrl?t=${DateTime.now().millisecondsSinceEpoch}'),
+          httpHeaders: {
+            'Cache-Control': 'max-age=80085',
+          },
+        );
+
+        Future.delayed(Duration(milliseconds: 250), () async {
+          await videoPlayerController.initialize();
+          isVideoControllerInitialized.value = true;
+          await videoPlayerController.controller.play();
+          await videoPlayerController.controller.setLooping(true);
+        });
+      },
     );
   }
 }

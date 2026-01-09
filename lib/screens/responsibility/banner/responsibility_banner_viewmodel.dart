@@ -142,7 +142,8 @@ class ResponsibilityBannerViewModel extends GetxController with WidgetsBindingOb
       networkVideoController: videoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {},
+      onSuccess: (va) {},
+      isNetworkVideoControllerInitialized: isVideoControllerInitialized
     );
   }
 }

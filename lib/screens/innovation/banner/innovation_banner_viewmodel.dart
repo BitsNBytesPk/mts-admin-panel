@@ -127,6 +127,7 @@ class InnovationBannerViewModel extends GetxController with WidgetsBindingObserv
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
       formKey: formKey,
+      isNetworkVideoControllerInitialized: isNewVideoControllerInitialized,
       titleController: pageBannerMainTitleController,
       subtitleController: pageBannerSubTitleController,
       descriptionController: pageBannerDescriptionController,
@@ -142,8 +143,31 @@ class InnovationBannerViewModel extends GetxController with WidgetsBindingObserv
       networkVideoController: videoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {
-        innovationData.value.content?.hero?.backgroundVideo = newBanner.value.isNotEmpty ? 'video.mp4' : null;
+      onSuccess: (newVideoUrl) async {
+
+        isVideoControllerInitialized.value = false;
+        await videoController.controller.pause();
+        await videoController.dispose();
+
+        newBanner.value = Uint8List(0);
+        if(isNewVideoControllerInitialized.value) {
+          await newVideoController.dispose();
+          isNewVideoControllerInitialized.value = false;
+        }
+
+        videoController = CachedVideoPlayerPlus.networkUrl(
+          Uri.parse(newVideoUrl == null ? '' : '${Urls.baseURL}$newVideoUrl?t=${DateTime.now().millisecondsSinceEpoch}'),
+          httpHeaders: {
+            'Cache-Control': 'max-age=80085',
+          },
+        );
+
+        Future.delayed(Duration(milliseconds: 250), () async {
+          await videoController.initialize();
+          isVideoControllerInitialized.value = true;
+          await videoController.controller.play();
+          await videoController.controller.setLooping(true);
+        });
 
       },
     );

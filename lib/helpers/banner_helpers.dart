@@ -81,7 +81,8 @@ class BannerHelpers {
     required CachedVideoPlayerPlus networkVideoController,
     required VideoPlayerController? newVideoController,
     required RxBool isNewVideoControllerInitialized,
-    required Function() onSuccess,
+    required RxBool isNetworkVideoControllerInitialized,
+    required Function(String? newVideoUrl) onSuccess,
   }) async {
     if (formKey.currentState!.validate()) {
       Map<String, dynamic> body = {};
@@ -106,15 +107,7 @@ class BannerHelpers {
           stopLoaderAndShowSnackBar(message: value.message!, success: value.success!);
 
           if (value.success!) {
-            await networkVideoController.controller.pause();
-            
-            /// Cleaning up the new video controller if it was initialized
-            if (isNewVideoControllerInitialized.value && newVideoController != null) {
-              newBanner.value = Uint8List(0);
-              isNewVideoControllerInitialized.value = false;
-              await newVideoController.dispose();
-            }
-            onSuccess();
+            onSuccess(value.data['changes']['hero.backgroundVideo']);
           } else {
             showSnackBar(message: value.message!, success: false);
           }

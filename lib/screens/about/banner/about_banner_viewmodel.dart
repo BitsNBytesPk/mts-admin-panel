@@ -140,7 +140,7 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
       networkVideoController: networkVideoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {},
+      onSuccess: (va) {}, isNetworkVideoControllerInitialized: isNetworkVideoControllerInitialized,
     );
   }
 }

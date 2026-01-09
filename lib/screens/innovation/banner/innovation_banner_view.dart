@@ -64,7 +64,7 @@ class InnovationBannerView extends StatelessWidget {
               ),
               Expanded(
                 child: CustomMaterialButton(
-                  onPressed: () {},
+                  onPressed: () => _viewModel.updateBannerData(),
                   text: 'Save',
                   width: isSmallScreen(context) ? double.infinity : 150,
                 ),

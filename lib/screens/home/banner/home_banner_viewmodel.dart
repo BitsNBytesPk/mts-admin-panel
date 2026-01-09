@@ -50,12 +50,6 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
 
-    // if((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && newVideoController.value.isInitialized) {
-    //   newVideoController.pause();
-    // } else if(state == AppLifecycleState.resumed && newVideoController.value.isInitialized) {
-    //   newVideoController.play();
-    // }
-
     if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && networkVideoController.isInitialized) {
       networkVideoController.controller.pause();
     } else if(state == AppLifecycleState.resumed && networkVideoController.isInitialized) {
@@ -109,6 +103,7 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
   }
 
   void _getHomeBanner() async {
+
     networkVideoController = CachedVideoPlayerPlus.networkUrl(
         Uri.parse(homeData.value.content?.hero?.backgroundVideo == null ? '' : '${Urls.baseURL}${homeData.value.content?.hero?.backgroundVideo}'),
       httpHeaders: {
@@ -144,8 +139,10 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
   }
 
   void updateBannerData() async {
+
     await BannerHelpers.updateBannerData(
       formKey: formKey,
+      isNetworkVideoControllerInitialized: isNetworkVideoControllerInitialized,
       titleController: pageBannerMainTitleController,
       subtitleController: pageBannerSubTitleController,
       descriptionController: pageBannerDescriptionController,
@@ -161,7 +158,32 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
       networkVideoController: networkVideoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {},
+      onSuccess: (newVideoUrl) async {
+        
+        isNetworkVideoControllerInitialized.value = false;
+        await networkVideoController.controller.pause();
+        await networkVideoController.dispose();
+
+        newBanner.value = Uint8List(0);
+        if(isNewVideoControllerInitialized.value) {
+          await newVideoController.dispose();
+          isNewVideoControllerInitialized.value = false;
+        }
+
+        networkVideoController = CachedVideoPlayerPlus.networkUrl(
+          Uri.parse(newVideoUrl == null ? '' : '${Urls.baseURL}$newVideoUrl?t=${DateTime.now().millisecondsSinceEpoch}'),
+          httpHeaders: {
+            'Cache-Control': 'max-age=80085',
+          },
+        );
+
+        Future.delayed(Duration(milliseconds: 250), () async {
+          await networkVideoController.initialize();
+          isNetworkVideoControllerInitialized.value = true;
+          await networkVideoController.controller.play();
+          await networkVideoController.controller.setLooping(true);
+        });
+      },
     );
   }
 }

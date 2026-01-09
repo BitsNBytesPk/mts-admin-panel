@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/models/innovation_data.dart';
@@ -197,9 +196,9 @@ class InnovationContentView extends StatelessWidget {
                 child: Row(
                   children: [
                     ListSerialNoText(index: index),
-                    ListEntryItem(text: _viewModel.projects[index].title, maxLines: 2,),
-                    ListEntryItem(text: _viewModel.projects[index].category),
-                    if(!isSmallScreen(context)) ListEntryItem(text: _viewModel.projects[index].description, maxLines: 2,),
+                    ListEntryItem(text: _viewModel.projects[index].title ?? '', maxLines: 2,),
+                    ListEntryItem(text: _viewModel.projects[index].category ?? ''),
+                    if(!isSmallScreen(context)) ListEntryItem(text: _viewModel.projects[index].description ?? '', maxLines: 2,),
                     ListActionsButtons(
                         includeDelete: true,
                         includeEdit: true,

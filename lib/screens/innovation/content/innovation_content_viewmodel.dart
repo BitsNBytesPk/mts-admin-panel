@@ -120,8 +120,55 @@ class InnovationContentViewModel extends GetxController {
           stopLoaderAndShowSnackBar(success: value.success!, message: value.message!);
 
           if(value.success!) {
-            projects.add(InnovationProjects.fromJson(value.data));
+            projects.add(InnovationProjects.fromJson(value.data['updated_project']));
             projects.refresh();
+            projectMainTitleController.clear();
+            projectSubtitleController.clear();
+            projectDescController.clear();
+            technologySectionHeadingController.clear();
+            applicationSectionHeadingController.clear();
+
+            for(int i = 0; i <= technologySection.length - 1 ; i++) {
+              if(i == 0) {
+                technologySection.keys.first.clear();
+                technologySection.values.first.clear();
+              } else {
+                technologySection.keys.elementAt(i).dispose();
+                technologySection.values.elementAt(i).dispose();
+
+                technologySection.remove(technologySection.keys.elementAt(i));
+                // technologySection.values.elementAt(i).clear();
+
+              }
+            }
+
+            for(int i = 0; i <= applicationSection.length - 1 ; i++) {
+              if(i == 0) {
+                applicationSection.keys.first.clear();
+                applicationSection.values.first.clear();
+              } else {
+                applicationSection.keys.elementAt(i).dispose();
+                applicationSection.values.elementAt(i).dispose();
+
+                applicationSection.remove(applicationSection.keys.elementAt(i));
+
+              }
+            }
+
+            for(int i = 0; i <= informaticsSection.length - 1 ; i++) {
+              if(i == 0) {
+                informaticsSection.keys.first.clear();
+                informaticsSection.values.first.clear();
+              } else {
+                informaticsSection.keys.elementAt(i).dispose();
+                informaticsSection.values.elementAt(i).dispose();
+
+                informaticsSection.remove(informaticsSection.keys.elementAt(i));
+                // technologySection.values.elementAt(i).clear();
+
+              }
+            }
+
           }
 
         });
