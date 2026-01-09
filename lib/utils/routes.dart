@@ -8,6 +8,8 @@ import 'package:mts_website_admin_panel/screens/home/content/home_content_view.d
 import 'package:mts_website_admin_panel/screens/home/home_project_preview/home_project_preview_view.dart';
 import 'package:mts_website_admin_panel/screens/home/projects/edit_project/edit_project_view.dart';
 import 'package:mts_website_admin_panel/screens/home/projects/projects_listing/projects_listing_view.dart';
+import 'package:mts_website_admin_panel/screens/innovation/innovation_edit_project/innovation_edit_project_view.dart';
+import 'package:mts_website_admin_panel/screens/innovation/innovation_project_preview/innovation_project_preview_view.dart';
 import 'package:mts_website_admin_panel/screens/messages/messages_list_view.dart';
 import 'package:mts_website_admin_panel/screens/responsibility/projects_listing/responsibility_projects_listing_view.dart';
 import 'package:mts_website_admin_panel/screens/responsibility/responsibility_project_preview/responsibility_project_preview_view.dart';
@@ -39,6 +41,8 @@ class Routes {
 
   static const innovationBanner = '/innovationBanner';
   static const innovationContent = '/innovationContent';
+  static const innovationEditProject = '/innovationEditProject';
+  static const innovationProjectPreview = '/innovationProjectPreview';
 
   static const responsibilityBanner = '/responsibilityBanner';
   static const responsibilityContent = '/responsibilityContent';
@@ -62,28 +66,30 @@ class Routes {
 
     GetPage(name: homeBanner, page: () => HomeBannerView(), maintainState: false),
     GetPage(name: homeContent, page: () => HomeContentView(), maintainState: false),
-    GetPage(name: homeTimerBanner, page: () => HomeTimerBannerView()),
-    GetPage(name: homeProjects, page: () => HomeProjectsListingView()),
+    GetPage(name: homeTimerBanner, page: () => HomeTimerBannerView(), maintainState: false),
+    GetPage(name: homeProjects, page: () => HomeProjectsListingView(), maintainState: false),
     GetPage(name: homeProjectsEdit, page: () => HomeProjectEditView(), maintainState: false),
     GetPage(name: homeProjectPreview, page: () => HomeProjectPreviewView(), maintainState: false),
 
     GetPage(name: aboutBanner, page: () => AboutBannerView(), maintainState: false),
-    GetPage(name: aboutContent, page: () => AboutContentView()),
+    GetPage(name: aboutContent, page: () => AboutContentView(), maintainState: false),
 
     GetPage(name: innovationBanner, page: () => InnovationBannerView(), maintainState: false),
-    GetPage(name: innovationContent, page: () => InnovationContentView()),
+    GetPage(name: innovationContent, page: () => InnovationContentView(), maintainState: false),
+    GetPage(name: innovationEditProject, page: () => InnovationEditProjectView(), maintainState: false),
+    GetPage(name: innovationProjectPreview, page: () => InnovationProjectPreviewView(), maintainState: false),
 
     GetPage(name: responsibilityBanner, page: () => ResponsibilityBannerView(), maintainState: false),
-    GetPage(name: responsibilityContent, page: () => ResponsibilityContentView()),
-    GetPage(name: responsibilityProjects, page: () => ResponsibilityProjectsListingView()),
+    GetPage(name: responsibilityContent, page: () => ResponsibilityContentView(), maintainState: false),
+    GetPage(name: responsibilityProjects, page: () => ResponsibilityProjectsListingView(), maintainState: false),
     GetPage(name: responsibilityProjectPreview, page: () => ResponsibilityProjectPreviewView(), maintainState: false),
 
     GetPage(name: contactBanner, page: () => ContactBannerView(), maintainState: false),
-    GetPage(name: contactContent, page: () => ContactContentView()),
+    GetPage(name: contactContent, page: () => ContactContentView(), maintainState: false),
 
-    GetPage(name: footer, page: () => FooterView()),
+    GetPage(name: footer, page: () => FooterView(), maintainState: false),
 
-    GetPage(name: messagesList, page: () => MessagesListView()),
+    GetPage(name: messagesList, page: () => MessagesListView(), maintainState: false),
     GetPage(name: bannerPreview, page: () => BannerPreviewView(), maintainState: false),
   ];
 }

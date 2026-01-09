@@ -103,7 +103,7 @@ class BannerHelpers {
         GlobalVariables.showLoader.value = true;
 
         ApiBaseHelper.patchMethodForImage(url: Urls.updateHero, files: file, fields: body).then((value) async {
-          GlobalVariables.showLoader.value = false;
+          stopLoaderAndShowSnackBar(message: value.message!, success: value.success!);
 
           if (value.success!) {
             await networkVideoController.controller.pause();

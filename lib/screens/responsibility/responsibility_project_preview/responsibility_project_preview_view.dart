@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mts_website_admin_panel/utils/constants.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_cached_network_image.dart';
 
+import '../../../utils/custom_widgets/project_stats_heading_and_value_text.dart';
 import 'responsibility_project_preview_viewmodel.dart';
 
 class ResponsibilityProjectPreviewView extends StatelessWidget {
@@ -79,8 +80,8 @@ class ResponsibilityProjectPreviewView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       spacing: 10,
                       children: [
-                        _StatsHeadingAndValue(label: _viewModel.responsibilityProjectCard.value.metrics?[0].label ?? '', value: _viewModel.responsibilityProjectCard.value.metrics?[0].value ?? ''),
-                        _StatsHeadingAndValue(label: _viewModel.responsibilityProjectCard.value.metrics?[1].label ?? '', value: _viewModel.responsibilityProjectCard.value.metrics?[1].value ?? ''),
+                        StatsHeadingAndValue(label: _viewModel.responsibilityProjectCard.value.metrics?[0].label ?? '', value: _viewModel.responsibilityProjectCard.value.metrics?[0].value ?? ''),
+                        StatsHeadingAndValue(label: _viewModel.responsibilityProjectCard.value.metrics?[1].label ?? '', value: _viewModel.responsibilityProjectCard.value.metrics?[1].value ?? ''),
                       ],
                     )
                   ],
@@ -89,42 +90,6 @@ class ResponsibilityProjectPreviewView extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _StatsHeadingAndValue extends StatelessWidget {
-  const _StatsHeadingAndValue({
-    required this.label,
-    required this.value
-  });
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            value,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.amber
-            ),
-          ),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w200,
-              color: primaryWhite.withValues(alpha: 0.7),
-              // fontSize: 16
-            )
-          )
-        ],
       ),
     );
   }

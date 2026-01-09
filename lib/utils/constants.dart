@@ -14,8 +14,9 @@ Color primaryGrey = Colors.grey.shade400;
 Color secondaryGrey = Colors.grey.shade200;
 Color primaryGrey20 = primaryGrey.withValues(alpha: 0.2);
 Color primaryGrey50 = primaryGrey.withValues(alpha: 0.5);
-Color pageBannerSubtitleTextColor = Color(0xff04BBD9);
+Color pageBannerSubtitleTextColor = Color(0xff05DDFB);
 Color primaryDarkBlue = Color(0xff00345C);
+const primaryPreviewButtonOrange = Colors.deepOrangeAccent;
 
 /// Section Container height ///
 const double kSectionContainerHeightValue = 90.0;
@@ -132,10 +133,11 @@ List<SidePanelItemData> sidePanelItemsData = [
   SidePanelItemData(routeName: Routes.homeProjects, scrollPosition: 0.0, sidePanelItemIndex: 2),
   SidePanelItemData(routeName: Routes.homeProjectsEdit, scrollPosition: 0.0, sidePanelItemIndex: 2), /// Index is deliberately kept same
   SidePanelItemData(routeName: Routes.homeTimerBanner, scrollPosition: 0.0, sidePanelItemIndex: 3),
-  SidePanelItemData(routeName: Routes.aboutBanner, scrollPosition: 160.0, sidePanelItemIndex: 4),
-  SidePanelItemData(routeName: Routes.aboutContent, scrollPosition: 160.0, sidePanelItemIndex: 5),
-  SidePanelItemData(routeName: Routes.innovationBanner, scrollPosition: 160.0, sidePanelItemIndex: 6),
-  SidePanelItemData(routeName: Routes.innovationContent, scrollPosition: 160.0, sidePanelItemIndex: 7),
+  SidePanelItemData(routeName: Routes.aboutBanner, scrollPosition: 220.0, sidePanelItemIndex: 4),
+  SidePanelItemData(routeName: Routes.aboutContent, scrollPosition: 220.0, sidePanelItemIndex: 5),
+  SidePanelItemData(routeName: Routes.innovationBanner, scrollPosition: 300.0, sidePanelItemIndex: 6),
+  SidePanelItemData(routeName: Routes.innovationContent, scrollPosition: 300.0, sidePanelItemIndex: 7),
+  SidePanelItemData(routeName: Routes.innovationEditProject, scrollPosition: 300.0, sidePanelItemIndex: 7), /// Index is deliberately kept same
   SidePanelItemData(routeName: Routes.responsibilityBanner, scrollPosition: 160.0, sidePanelItemIndex: 8),
   SidePanelItemData(routeName: Routes.responsibilityContent, scrollPosition: 160.0, sidePanelItemIndex: 9),
   SidePanelItemData(routeName: Routes.responsibilityProjects, scrollPosition: 160.0, sidePanelItemIndex: 10),

@@ -26,7 +26,8 @@ class AddImageSection extends StatelessWidget {
     this.includeAsterisk = false,
     this.heading,
     this.boxFit,
-    this.headingTextStyle
+    this.headingTextStyle,
+    this.fileMaxSize
   });
 
   final Rx<Uint8List> newImage;
@@ -40,6 +41,10 @@ class AddImageSection extends StatelessWidget {
   final String? heading;
   final BoxFit? boxFit;
   final TextStyle? headingTextStyle;
+
+  /// Variable to change the file size as required. The number is in MB
+  final int? fileMaxSize;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -65,7 +70,13 @@ class AddImageSection extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: InkWell(
-                    onTap: () => FilePickerFunctions.pickSingleImage(imageToUpload: newImage),
+                    onTap: () async {
+                      final image = await FilePickerFunctions.pickSingleImage(maxFileSize: fileMaxSize ?? 5);
+
+                      if(image != null) {
+                        newImage.value = image.files.first.bytes!;
+                      }
+                    },
                     child: Obx(() => newImage.value.isNotEmpty && newImage.value != Uint8List(0) ? Stack(
                       alignment: Alignment.center,
                       children: [

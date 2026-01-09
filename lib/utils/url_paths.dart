@@ -43,6 +43,8 @@ class Urls {
 
   /// Innovation ///
   static const String innovationData = '$_pagesBaseUrl/innovation';
+
+  static const String innovationProject = '$_pagesBaseUrl/projects';
   /// Innovation End ///
 
   /// Responsibility ///

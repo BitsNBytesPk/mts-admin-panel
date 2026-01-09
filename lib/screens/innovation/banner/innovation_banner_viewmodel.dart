@@ -142,7 +142,10 @@ class InnovationBannerViewModel extends GetxController with WidgetsBindingObserv
       networkVideoController: videoController,
       newVideoController: isNewVideoControllerInitialized.value ? newVideoController : null,
       isNewVideoControllerInitialized: isNewVideoControllerInitialized,
-      onSuccess: () {},
+      onSuccess: () {
+        innovationData.value.content?.hero?.backgroundVideo = newBanner.value.isNotEmpty ? 'video.mp4' : null;
+
+      },
     );
   }
 }

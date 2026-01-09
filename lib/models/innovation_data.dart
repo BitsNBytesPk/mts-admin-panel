@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class InnovationData {
   String? sId;
   Content? content;
@@ -50,7 +52,7 @@ class Content {
   Cta? cta;
   Hero? hero;
   Overview? overview;
-  List<Projects>? projects;
+  List<InnovationProjects>? projects;
 
   Content({this.cta, this.hero, this.overview, this.projects});
 
@@ -61,9 +63,9 @@ class Content {
         ? Overview.fromJson(json['overview'])
         : null;
     if (json['projects'] != null) {
-      projects = <Projects>[];
+      projects = <InnovationProjects>[];
       json['projects'].forEach((v) {
-        projects!.add(Projects.fromJson(v));
+        projects!.add(InnovationProjects.fromJson(v));
       });
     }
   }
@@ -227,28 +229,30 @@ class Stats {
   }
 }
 
-class Projects {
-  Applications? applications;
+class InnovationProjects {
+  ApplicationsOrTechnology? applications;
   String? category;
   String? description;
   String? image;
+  Uint8List? newImage;
   List<Metrics>? metrics;
-  Technology? technology;
+  ApplicationsOrTechnology? technology;
   String? title;
 
-  Projects({
+  InnovationProjects({
     this.applications,
     this.category,
     this.description,
     this.image,
     this.metrics,
     this.technology,
-    this.title
+    this.title,
+    this.newImage
   });
 
-  Projects.fromJson(Map<String, dynamic> json) {
+  InnovationProjects.fromJson(Map<String, dynamic> json) {
     applications = json['applications'] != null
-        ? Applications.fromJson(json['applications'])
+        ? ApplicationsOrTechnology.fromJson(json['applications'])
         : null;
     category = json['category'];
     description = json['description'];
@@ -260,9 +264,10 @@ class Projects {
       });
     }
     technology = json['technology'] != null
-        ? Technology.fromJson(json['technology'])
+        ? ApplicationsOrTechnology.fromJson(json['technology'])
         : null;
     title = json['title'];
+    newImage = json['newImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -280,24 +285,31 @@ class Projects {
       data['technology'] = technology!.toJson();
     }
     data['title'] = title;
+    data['newImage'] = newImage;
     return data;
   }
 }
 
-class Applications {
+class ApplicationsOrTechnology {
   String? heading;
   List<Items>? items;
   String? label;
 
-  Applications({this.heading, this.items, this.label});
+  ApplicationsOrTechnology({this.heading, this.items, this.label});
 
-  Applications.fromJson(Map<String, dynamic> json) {
+  ApplicationsOrTechnology.fromJson(Map<String, dynamic> json) {
     heading = json['heading'];
-    if (json['items'] != null) {
+    if (json['items'] != null || json['steps'] != null) {
       items = <Items>[];
-      json['items'].forEach((v) {
-        items!.add(Items.fromJson(v));
-      });
+      if(json['items'] != null){
+        json['items'].forEach((v) {
+          items!.add(Items.fromJson(v));
+        });
+      } else if(json['steps'] != null) {
+        json['steps'].forEach((v) {
+          items!.add(Items.fromJson(v));
+        });
+      }
     }
     label = json['label'];
   }
@@ -326,8 +338,8 @@ class Items {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['description'] = description;
-    data['title'] = title;
+    data['description'] = description.toString();
+    data['title'] = title.toString();
     return data;
   }
 }
@@ -345,59 +357,59 @@ class Metrics {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['label'] = label;
-    data['value'] = value;
+    data['label'] = label.toString();
+    data['value'] = value.toString();
     return data;
   }
 }
 
-class Technology {
-  String? heading;
-  String? label;
-  List<Steps>? steps;
+// class Technology {
+//   String? heading;
+//   String? label;
+//   List<Steps>? steps;
+//
+//   Technology({this.heading, this.label, this.steps});
+//
+//   Technology.fromJson(Map<String, dynamic> json) {
+//     heading = json['heading'];
+//     label = json['label'];
+//     if (json['steps'] != null) {
+//       steps = <Steps>[];
+//       json['steps'].forEach((v) {
+//         steps!.add(Steps.fromJson(v));
+//       });
+//     }
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['heading'] = heading;
+//     data['label'] = label;
+//     if (steps != null) {
+//       data['steps'] = steps!.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
 
-  Technology({this.heading, this.label, this.steps});
-
-  Technology.fromJson(Map<String, dynamic> json) {
-    heading = json['heading'];
-    label = json['label'];
-    if (json['steps'] != null) {
-      steps = <Steps>[];
-      json['steps'].forEach((v) {
-        steps!.add(Steps.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['heading'] = heading;
-    data['label'] = label;
-    if (steps != null) {
-      data['steps'] = steps!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Steps {
-  String? description;
-  String? step;
-  String? title;
-
-  Steps({this.description, this.step, this.title});
-
-  Steps.fromJson(Map<String, dynamic> json) {
-    description = json['description'];
-    step = json['step'];
-    title = json['title'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['description'] = description;
-    data['step'] = step;
-    data['title'] = title;
-    return data;
-  }
-}
+// class Steps {
+//   String? description;
+//   String? step;
+//   String? title;
+//
+//   Steps({this.description, this.step, this.title});
+//
+//   Steps.fromJson(Map<String, dynamic> json) {
+//     description = json['description'];
+//     step = json['step'];
+//     title = json['title'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['description'] = description;
+//     data['step'] = step;
+//     data['title'] = title;
+//     return data;
+//   }
+// }
