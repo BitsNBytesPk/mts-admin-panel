@@ -74,15 +74,18 @@ class BannerHelpers {
     required TextEditingController titleController,
     required TextEditingController subtitleController,
     required TextEditingController descriptionController,
-    required TextEditingController ctaTextController,
+    TextEditingController? ctaTextController,
     required Map<String, String?> currentValues,
     required Rx<Uint8List> newBanner,
-    required String page,
+    String? page,
     required CachedVideoPlayerPlus networkVideoController,
     required VideoPlayerController? newVideoController,
     required RxBool isNewVideoControllerInitialized,
     required RxBool isNetworkVideoControllerInitialized,
-    required Function(String? newVideoUrl) onSuccess,
+    required Function(Map<String, dynamic>? data) onSuccess,
+    required String fileName,
+    String? fileFieldName,
+    String? url,
   }) async {
     if (formKey.currentState!.validate()) {
       Map<String, dynamic> body = {};
@@ -91,23 +94,23 @@ class BannerHelpers {
       body.addIf(titleController.text != currentValues['title'], 'title', titleController.text);
       body.addIf(subtitleController.text != currentValues['subtitle'], 'subtitle', subtitleController.text);
       body.addIf(descriptionController.text != currentValues['description'], 'description', descriptionController.text);
-      body.addIf(ctaTextController.text != currentValues['ctaText'], 'ctaText', ctaTextController.text);
+      body.addIf(ctaTextController != null && ctaTextController.text != currentValues['ctaText'], 'ctaText', ctaTextController?.text);
 
       if (newBanner.value.isNotEmpty) {
-        file.add(http.MultipartFile.fromBytes('file', newBanner.value, filename: 'video.mp4'));
+        file.add(http.MultipartFile.fromBytes(fileFieldName ?? 'file', newBanner.value, filename: '$fileName.mp4'));
       }
 
       if (body.isEmpty && file.isEmpty) {
         showSnackBar(message: 'No details updated', success: false);
       } else {
-        body.addAll({'page': page});
+        body.addIf(page != null, 'page', page);
         GlobalVariables.showLoader.value = true;
 
-        ApiBaseHelper.patchMethodForImage(url: Urls.updateHero, files: file, fields: body).then((value) async {
+        ApiBaseHelper.patchMethodForImage(url: url ?? Urls.updateHero, files: file, fields: body).then((value) async {
           stopLoaderAndShowSnackBar(message: value.message!, success: value.success!);
 
           if (value.success!) {
-            onSuccess(value.data['changes']['hero.backgroundVideo']);
+            onSuccess(value.data);
           } else {
             showSnackBar(message: value.message!, success: false);
           }

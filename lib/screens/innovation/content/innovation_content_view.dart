@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mts_website_admin_panel/models/innovation_data.dart';
 import 'package:mts_website_admin_panel/utils/constants.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/add_image_section.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_material_button.dart';
@@ -28,15 +27,16 @@ class InnovationContentView extends StatelessWidget {
       selectedSidePanelItem: 7,
       children: [
         SectionContainer(
-          spacing: 20,
+          spacing: 15,
           formKey: _viewModel.formKey,
           headingText: 'Add Project',
               height: _viewModel.projectsHeight,
               children: [
                 AddImageSection(
+                  height: 250,
                   includeFileInstructions: true,
-                    fileInstructions: 'File Format - .jpg, .png, .jpeg - Max Size - 5MB',
-                    newImage: _viewModel.projectImage,
+                  fileInstructions: 'File Format - .jpg, .png, .jpeg - Max Size - 5MB',
+                  newImage: _viewModel.projectImage,
                   textAlignment: Alignment.centerLeft,
                   includeAsterisk: true,
                 ),
@@ -103,17 +103,16 @@ class InnovationContentView extends StatelessWidget {
                       spacing: 10,
                         children: List.generate(_viewModel.technologySection.length, (index) {
                           return InformaticsOrStatsTextFormFields(
-                              includeTitle: index == 0,
-                              subtitleText: 'Description',
-                              headingText: 'Item Heading',
-                              includeButton: _viewModel.technologySection.length != 1,
-                              headingController: _viewModel.technologySection.keys.elementAt(index),
-                              subtitleController: _viewModel.technologySection.values.elementAt(index),
+                            includeTitle: index == 0,
+                            subtitleText: 'Description',
+                            headingText: 'Item Heading',
+                            includeButton: _viewModel.technologySection.length != 1,
+                            headingController: _viewModel.technologySection.keys.elementAt(index),
+                            subtitleController: _viewModel.technologySection.values.elementAt(index),
                             onTap: () => _viewModel.technologySection.remove(_viewModel.technologySection.keys.elementAt(index)),
                           );
                         }),
-                      ),
-                    ),
+                      )),
                   ],
                 ),
                 IconButton(

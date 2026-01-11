@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mts_website_admin_panel/models/innovation_data.dart';
 import 'package:mts_website_admin_panel/screens/innovation/innovation_edit_project/innovation_edit_project_viewmodel.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_material_button.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/screens_base_widget.dart';
@@ -31,9 +32,10 @@ class InnovationEditProjectView extends StatelessWidget {
               children: [
                 Obx(() =>  AddImageSection(
                   height: 250,
+                    fileMaxSize: 10,
                     imageUrl: "${Urls.baseURL}${_viewModel.project.value.image}",
                     includeFileInstructions: true,
-                    fileInstructions: 'File Format - .jpg, .png, .jpeg - Max Size - 5MB',
+                    fileInstructions: 'File Format - .jpg, .png, .jpeg - Max Size - 10MB',
                     newImage: _viewModel.projectImage,
                     textAlignment: Alignment.centerLeft,
                     includeAsterisk: true,
@@ -59,9 +61,10 @@ class InnovationEditProjectView extends StatelessWidget {
                   title: 'Description',
                   includeAsterisk: true,
                   controller: _viewModel.projectDescController,
-                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 50),
-                  maxLength: 50,
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 20),
+                  maxLength: mediumDescription,
                   maxLines: 3,
+                  showCounter: true,
                 ),
                 SectionHeadingText(headingText: 'Informatics'),
                 Obx(() => Column(
@@ -172,12 +175,46 @@ class InnovationEditProjectView extends StatelessWidget {
                                 _viewModel.project.value.newImage = _viewModel.projectImage.value;
                               }
 
-                              Get.toNamed(Routes.innovationProjectPreview, arguments: {'projectData': _viewModel.project.value});
+                              List<Metrics> metrics = [];
+                              List<Items> applications = [];
+                              List<Items> technology = [];
+
+                              _viewModel.informaticsSection.forEach((key, value) {
+                                metrics.add(Metrics(label: key.text, value: value.text));
+                              });
+
+                              _viewModel.technologySection.forEach((key, value) {
+                                technology.add(Items(title: key.text, description: value.text));
+                              });
+
+                              _viewModel.applicationSection.forEach((key, value) {
+                                applications.add(Items(title: key.text, description: value.text));
+                              });
+
+                              Get.toNamed(
+                                  Routes.innovationProjectPreview,
+                                  arguments: {'projectData': InnovationProjects(
+                                    image: _viewModel.project.value.image,
+                                    newImage: _viewModel.projectImage.value,
+                                    title: _viewModel.projectMainTitleController.text,
+                                    category: _viewModel.projectSubtitleController.text,
+                                    description: _viewModel.projectDescController.text,
+                                    metrics: metrics,
+                                    technology: ApplicationsOrTechnology(
+                                        heading: _viewModel.technologySectionHeadingController.text,
+                                        items: technology
+                                    ),
+                                    applications: ApplicationsOrTechnology(
+                                      heading: _viewModel.applicationSectionHeadingController.text,
+                                      items: applications,
+                                    ),
+                                  )
+                              });
                             },
-                          text: 'Show Preview',
-                          buttonColor: primaryPreviewButtonOrange,
-                          borderColor: primaryPreviewButtonOrange,
-                          width: 150,
+                            text: 'Show Preview',
+                            buttonColor: primaryPreviewButtonOrange,
+                            borderColor: primaryPreviewButtonOrange,
+                            width: 150,
                         ),
                         CustomMaterialButton(
                             onPressed: () => _viewModel.updateProject(),
@@ -195,45 +232,6 @@ class InnovationEditProjectView extends StatelessWidget {
                     ),
                   ),
                 )
-                // Text('Add on Home', style: Theme.of(context).textTheme.bodySmall,),
-                // Obx(() => CustomSwitch(
-                //       onChanged: (value) => _viewModel.includeInHome.value = value, switchValue: _viewModel.includeInHome.value,
-                //   ),
-                // ),
-                // Obx(() => Visibility(
-                //     visible: _viewModel.includeInHome.value,
-                //     child: Column(
-                //         spacing: 10,
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           SectionHeadingText(headingText: 'Statistics',),
-                //           Column(
-                //             spacing: 10,
-                //             children: List.generate(_viewModel.statisticsSection.length, (index) {
-                //               return InformaticsTextFieldRow(
-                //                 includeTitle: index == 0,
-                //                 subtitleText: 'Value',
-                //                 includeButton: _viewModel.statisticsSection.length != 1,
-                //                 onTap: () => _viewModel.statisticsSection.remove(_viewModel.statisticsSection.keys.elementAt(index)),
-                //                 headingController: _viewModel.statisticsSection.keys.elementAt(index),
-                //                 subtitleController: _viewModel.statisticsSection.values.elementAt(index),
-                //               );
-                //             }),
-                //           ),
-                //           IconButton(
-                //               onPressed: () => _viewModel.statisticsSection.addIf(_viewModel.statisticsSection.length < 3, TextEditingController(), TextEditingController()),
-                //               icon: Center(
-                //                 child: Icon(
-                //                   Icons.add_circle_outline_outlined,
-                //                   size: 30,
-                //                   color: primaryGrey,
-                //                 ),
-                //               )
-                //           ),
-                //         ],
-                //       )
-                //   ),
-                // )
               ]
           ),
         ]

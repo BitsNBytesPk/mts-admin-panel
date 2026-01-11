@@ -124,6 +124,7 @@ class AboutBannerViewModel extends GetxController with WidgetsBindingObserver {
 
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
+      fileName: 'about_hero',
       formKey: formKey,
       titleController: pageBannerMainTitleController,
       subtitleController: pageBannerSubTitleController,

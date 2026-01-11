@@ -80,7 +80,7 @@ class AddImageSection extends StatelessWidget {
                     child: Obx(() => newImage.value.isNotEmpty && newImage.value != Uint8List(0) ? Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.memory(newImage.value, fit: BoxFit.fitHeight,),
+                        Image.memory(newImage.value, fit: boxFit ?? BoxFit.fitHeight,),
                         OverlayIcon(iconData: Icons.close, top: 5, right: 5, onPressed: () => newImage.value = Uint8List(0),),
                       ],
                     ) : imageUrl == null ? Column(

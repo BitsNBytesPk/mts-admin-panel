@@ -95,7 +95,17 @@ class InnovationContentViewModel extends GetxController {
         List<http.MultipartFile> file = [];
 
         if(projectImage.value.isNotEmpty) {
-          file.add(http.MultipartFile.fromBytes('image', projectImage.value));
+          file.add(http.MultipartFile.fromBytes('image', projectImage.value, filename: 'leadership.jpg'));
+        }
+
+        List<Map<String, dynamic>> techSteps = [];
+
+        for(int i = 0; i <= technologySection.length - 1 ; i++) {
+          techSteps.add({
+            'step': "0${i+1}",
+            'title': technologySection.keys.elementAt(i).text,
+            'description': technologySection.values.elementAt(i).text
+          });
         }
 
         ApiBaseHelper.postMethodForImage(
@@ -107,12 +117,12 @@ class InnovationContentViewModel extends GetxController {
               'description': projectDescController.text,
               // 'image': projectImage.value,
               'metrics': jsonEncode(metrics.map((e) => e.toJson()).toList()),
-              'application': applicationItem.map((e) => e.toJson()).toList(),
-              'technology': technologyItem.map((e) => e.toJson()).toList(),
+              'applications_items': jsonEncode(applicationItem.map((e) => e.toJson()).toList()),
+              'technology_steps': jsonEncode(techSteps),
               'technology_heading': technologySectionHeadingController.text,
-              'application_heading': applicationSectionHeadingController.text,
+              'applications_heading': applicationSectionHeadingController.text,
               'technology_label': 'Technology',
-              'application_label': 'Applications',
+              'applications_label': 'Applications',
             },
             files: file
         ).then((value) {
@@ -137,8 +147,6 @@ class InnovationContentViewModel extends GetxController {
                 technologySection.values.elementAt(i).dispose();
 
                 technologySection.remove(technologySection.keys.elementAt(i));
-                // technologySection.values.elementAt(i).clear();
-
               }
             }
 
@@ -151,7 +159,6 @@ class InnovationContentViewModel extends GetxController {
                 applicationSection.values.elementAt(i).dispose();
 
                 applicationSection.remove(applicationSection.keys.elementAt(i));
-
               }
             }
 
@@ -164,13 +171,9 @@ class InnovationContentViewModel extends GetxController {
                 informaticsSection.values.elementAt(i).dispose();
 
                 informaticsSection.remove(informaticsSection.keys.elementAt(i));
-                // technologySection.values.elementAt(i).clear();
-
               }
             }
-
           }
-
         });
       }
     }
@@ -187,11 +190,7 @@ class InnovationContentViewModel extends GetxController {
           GlobalVariables.showLoader.value = true;
           
           ApiBaseHelper.deleteMethod(
-            url: Urls.innovationProject,
-            body: {
-              "page": "innovation",
-              "index": "$index"
-            }
+            url: "${Urls.innovationProject}?page=innovation&index=$index",
           ).then((value) {
 
             stopLoaderAndShowSnackBar(success: value.success!, message: value.message!);

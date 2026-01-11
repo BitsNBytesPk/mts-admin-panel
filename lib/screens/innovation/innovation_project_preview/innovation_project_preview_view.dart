@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mts_website_admin_panel/utils/constants.dart';
@@ -6,7 +5,6 @@ import 'package:mts_website_admin_panel/utils/custom_widgets/custom_cached_netwo
 import 'package:mts_website_admin_panel/utils/custom_widgets/project_stats_heading_and_value_text.dart';
 import 'package:mts_website_admin_panel/utils/url_paths.dart';
 
-import '../../../models/innovation_data.dart';
 import 'innovation_project_preview_viewmodel.dart';
 
 class InnovationProjectPreviewView extends StatelessWidget {
@@ -39,7 +37,9 @@ class InnovationProjectPreviewView extends StatelessWidget {
                         ),
                         if(_viewModel.project.value.newImage != null && _viewModel.project.value.newImage!.isNotEmpty) Image.memory(
                           _viewModel.project.value.newImage!,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                         Positioned.fill(
                             child: Container(
@@ -201,7 +201,95 @@ class InnovationProjectPreviewView extends StatelessWidget {
                             )),
                       ),
                     ],
-                  ) : Column(),
+                  ) : Column(
+                    children: [
+                      Obx(() => _ApplicationOrTechnologyListing(
+                        heading: 'Application',
+                        subtitle: _viewModel.project.value.applications?.heading ?? '',
+                        child: Column(
+                          spacing: 15,
+                          children: List.generate(
+                              _viewModel.project.value.applications?.items?.length ?? 0, (index) {
+
+                            return Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  border: Border.all(
+                                      color: primaryGrey.withValues(alpha: 0.4),
+                                      width: 0.3
+                                  )
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 15,
+                                children: [
+                                  Text(
+                                    _viewModel.project.value.applications?.items?[index].title ?? '',
+                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  Text(
+                                    _viewModel.project.value.applications?.items?[index].description ?? '',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    maxLines: 2,
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+                      )),
+                      Obx(() => _ApplicationOrTechnologyListing(
+                        heading: 'Technology',
+                        subtitle: _viewModel.project.value.technology?.heading ?? '',
+                        child: Column(
+                          spacing: 20,
+                          children: List.generate(_viewModel.project.value.technology?.items?.length ?? 0, (index) {
+                            return Row(
+                              spacing: 15,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    color: pageBannerSubtitleTextColor,
+                                  ),
+                                  child: Text(
+                                    "0${(index + 1).toString()}",
+                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                        color: primaryWhite,
+                                        fontWeight: FontWeight.w400
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    spacing: 5,
+                                    children: [
+                                      Text(
+                                        _viewModel.project.value.technology?.items?[index].title ?? '',
+                                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                      Text(
+                                        _viewModel.project.value.technology?.items?[index].description ?? '',
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        maxLines: 2,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                        ),
+                      )),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class InnovationEditProjectViewModel extends GetxController {
       body.addIf(projectMainTitleController.text != project.value.title, 'title', projectMainTitleController.text);
       body.addIf(projectDescController.text != project.value.description, 'description', projectDescController.text);
       body.addIf(projectSubtitleController.text != project.value.category, 'category', projectSubtitleController.text);
-      body.addIf(applicationSectionHeadingController.text != project.value.applications?.heading, 'application_heading', applicationSectionHeadingController.text);
+      body.addIf(applicationSectionHeadingController.text != project.value.applications?.heading, 'applications_heading', applicationSectionHeadingController.text);
       body.addIf(technologySectionHeadingController.text != project.value.technology?.heading, 'technology_heading', technologySectionHeadingController.text);
 
       if(project.value.metrics != null && project.value.metrics!.isNotEmpty) {
@@ -151,19 +152,29 @@ class InnovationEditProjectViewModel extends GetxController {
       }
 
       if(updatedMetrics.isNotEmpty) {
-        body.addAll({'metrics': updatedMetrics.map((e) => e.toJson()).toList()});
+        body.addAll({'metrics': jsonEncode(updatedMetrics.map((e) => e.toJson()).toList())});
       }
 
       if(updatedApplication.isNotEmpty) {
-        body.addAll({'application': updatedApplication.map((e) => e.toJson()).toList()});
+        body.addAll({'applications_items': jsonEncode(updatedApplication.map((e) => e.toJson()).toList())});
       }
 
       if(updatedTechnology.isNotEmpty) {
-        body.addAll({'technology': updatedTechnology.map((e) => e.toJson()).toList()});
+        List<Map<String, dynamic>> techSteps = [];
+
+        for(int i = 0; i <= technologySection.length - 1 ; i++) {
+          techSteps.add({
+            'step': "0${i+1}",
+            'title': technologySection.keys.elementAt(i).text,
+            'description': technologySection.values.elementAt(i).text
+          });
+        }
+
+        body.addAll({'technology_steps': jsonEncode(techSteps)});
       }
 
       if(projectImage.value.isNotEmpty) {
-        file.add(http.MultipartFile.fromBytes('image', projectImage.value));
+        file.add(http.MultipartFile.fromBytes('image', projectImage.value, filename: 'leadership.jpg'));
       }
 
       if(file.isEmpty && body.isEmpty) {
@@ -173,7 +184,11 @@ class InnovationEditProjectViewModel extends GetxController {
 
         body.addAll({'page': 'innovation', 'index': Get.arguments['index']});
 
-        ApiBaseHelper.patchMethodForImage(url: Urls.innovationProject, fields: body, files: file).then((value) {
+        ApiBaseHelper.patchMethodForImage(
+            url: Urls.innovationProject,
+            fields: body,
+            files: file
+        ).then((value) {
           GlobalVariables.showLoader.value = false;
           if(value.success!) {
 

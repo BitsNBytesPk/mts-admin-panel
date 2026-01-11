@@ -126,6 +126,7 @@ class InnovationBannerViewModel extends GetxController with WidgetsBindingObserv
 
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
+      fileName: 'innovation_hero',
       formKey: formKey,
       isNetworkVideoControllerInitialized: isNewVideoControllerInitialized,
       titleController: pageBannerMainTitleController,
@@ -136,7 +137,7 @@ class InnovationBannerViewModel extends GetxController with WidgetsBindingObserv
         'title': innovationData.value.content?.hero?.title,
         'subtitle': innovationData.value.content?.hero?.subtitle,
         'description': innovationData.value.content?.hero?.description,
-        'ctaText': innovationData.value.content?.hero?.ctaText,
+        // 'ctaText': innovationData.value.content?.hero?.ctaText,
       },
       newBanner: newBanner,
       page: 'innovation',

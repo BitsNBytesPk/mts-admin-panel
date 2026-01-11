@@ -125,6 +125,7 @@ class ContactBannerViewModel extends GetxController with WidgetsBindingObserver 
 
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
+      fileName: 'contact_hero',
       formKey: formKey,
       isNetworkVideoControllerInitialized: isVideoControllerInitialized,
       titleController: pageBannerMainTitleController,

@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mts_website_admin_panel/screens/home/projects/projects_listing/projects_listing_viewmodel.dart';
 import 'package:mts_website_admin_panel/utils/constants.dart';
-import 'package:mts_website_admin_panel/utils/custom_widgets/add_image_section.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_cached_network_image.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/custom_text_form_field.dart';
 import 'package:mts_website_admin_panel/utils/custom_widgets/heading_texts.dart';
@@ -32,15 +31,6 @@ class HomeProjectsListingView extends StatelessWidget {
               headingText: 'Add Projects To Home',
               height: _viewModel.projectFormHeight,
               children: [
-                if(isSmallScreen(context)) Center(
-                  child: AddImageSection(
-                    includeAsterisk: true,
-                    heading: 'Icon',
-                    newImage: _viewModel.projectIcon,
-                    width: 150,
-                    height: 180,
-                  ),
-                ),
                 if(isSmallScreen(context)) CustomTextFormField(
                   title: 'Title',
                   includeAsterisk: true,
@@ -56,39 +46,20 @@ class HomeProjectsListingView extends StatelessWidget {
                   controller: _viewModel.projectDescriptionController,
                   validator: (value) => Validators.validateLongDescriptionText(value, minLength: 50),
                 ),
-                if(!isSmallScreen(context)) Row(
-                  spacing: 15,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        spacing: 15,
-                        children: [
-                          CustomTextFormField(
-                            title: 'Title',
-                            includeAsterisk: true,
-                            controller: _viewModel.projectMainTitleController,
-                            validator: (value) => Validators.validateEmptyField(value),
-                          ),
-                          CustomTextFormField(
-                            title: 'Description',
-                            includeAsterisk: true,
-                            maxLines: 1,
-                            maxLength: 50,
-                            showCounter: true,
-                            controller: _viewModel.projectDescriptionController,
-                            validator: (value) => Validators.validateLongDescriptionText(value, minLength: 50),
-                          ),
-                        ],
-                      ),
-                    ),
-                    AddImageSection(
-                      newImage: _viewModel.projectIcon,
-                      width: 130,
-                      height: 150,
-                      heading: 'Icon',
-                      includeAsterisk: true,
-                    ),
-                  ],
+                CustomTextFormField(
+                  title: 'Title',
+                  includeAsterisk: true,
+                  controller: _viewModel.projectMainTitleController,
+                  validator: (value) => Validators.validateEmptyField(value),
+                ),
+                CustomTextFormField(
+                  title: 'Description',
+                  includeAsterisk: true,
+                  maxLines: 1,
+                  maxLength: 50,
+                  showCounter: true,
+                  controller: _viewModel.projectDescriptionController,
+                  validator: (value) => Validators.validateLongDescriptionText(value, minLength: 50),
                 ),
                 CustomTextFormField(
                   includeAsterisk: true,

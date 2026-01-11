@@ -333,6 +333,7 @@ class ApiBaseHelper {
       Uri urlValue = Uri.parse(Urls.baseURL + url);
 
       http.MultipartRequest request = http.MultipartRequest('POST', urlValue);
+
       request.headers.addAll(header);
       for(var field in fields.entries) {
         request.fields[field.key] = '${field.value}';
@@ -340,10 +341,10 @@ class ApiBaseHelper {
       request.files.addAll(files);
 
       if(kDebugMode){
-        print(
-            '*********************** Request ********************************');
+        print('*********************** Request ********************************');
         print(urlValue);
         print(request.fields);
+        print("${request.files.first.field}: ${request.files.first.length}");
       }
 
       http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimitForMultipart), onTimeout: () {
@@ -352,8 +353,7 @@ class ApiBaseHelper {
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());
 
       if(kDebugMode){
-        print(
-            '*********************** Response ********************************');
+        print('*********************** Response ********************************');
         print(urlValue);
         print(parsedJSON.toString());
       }
@@ -394,12 +394,6 @@ class ApiBaseHelper {
             : GlobalVariables.token.toString()});
       }
       Uri urlValue = Uri.parse(Urls.baseURL + url);
-      if(kDebugMode){
-        print(
-            '*********************** Request ********************************');
-        print(urlValue);
-        print(fields);
-      }
 
       http.MultipartRequest request = http.MultipartRequest('PATCH', urlValue);
 
@@ -409,14 +403,20 @@ class ApiBaseHelper {
       }
       request.files.addAll(files);
 
+      if(kDebugMode){
+        print('*********************** Request ********************************');
+        print(urlValue);
+        if(fields.isNotEmpty) print(fields);
+        if(files.isNotEmpty) print("${files.first.field}: ${files.first.length}");
+      }
+
       http.StreamedResponse response = await request.send().timeout(Duration(seconds: _timeLimitForMultipart), onTimeout: () {
         return Future.error(TimeoutException('Request timed out'));
       });
       Map<String, dynamic> parsedJSON = await jsonDecode(await response.stream.bytesToString());
 
       if(kDebugMode){
-        print(
-            '*********************** Response ********************************');
+        print('*********************** Response ********************************');
         print(urlValue);
         print(parsedJSON.toString());
       }

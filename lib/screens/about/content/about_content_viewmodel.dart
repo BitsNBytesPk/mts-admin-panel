@@ -35,7 +35,7 @@ class AboutContentViewModel extends GetxController {
   RxnDouble milestonesAndAchievementsHeight = RxnDouble(kSectionContainerHeightValue);
 
   Rx<AboutData> aboutData = AboutData().obs;
-  Rx<SharedData> sharedData = SharedData().obs;
+  Rx<People> leadershipData = People().obs;
 
   Rx<Uint8List> newImage = Uint8List(0).obs;
 
@@ -66,8 +66,13 @@ class AboutContentViewModel extends GetxController {
     }
 
     if(responses[1].success == true && responses[1].data != null) {
-      sharedData.value = SharedData.fromJson(responses[1].data);
-      _fillAboutPersonalDetailsControllers();
+      final SharedData sharedData = SharedData.fromJson(responses[1].data);
+
+      if(sharedData.content != null && sharedData.content!.leadership != null && sharedData.content!.leadership!.people != null && sharedData.content!.leadership!.people!.isNotEmpty) {
+        leadershipData.value = sharedData.content!.leadership!.people!.first;
+        _fillAboutPersonalDetailsControllers();
+      }
+
     }
 
     if(responses.isEmpty || responses.every((element) => !element.success!)) {
@@ -78,9 +83,9 @@ class AboutContentViewModel extends GetxController {
   }
 
   void _fillAboutPersonalDetailsControllers() {
-    nameController.text = sharedData.value.content?.leadership?.people?.first.name ?? '';
-    designationController.text = sharedData.value.content?.leadership?.people?.first.role ?? '';
-    personalDetailsDescriptionController.text = sharedData.value.content?.leadership?.people?.first.bio ?? '';
+    nameController.text = leadershipData.value.name ?? '';
+    designationController.text = leadershipData.value.role ?? '';
+    personalDetailsDescriptionController.text = leadershipData.value.bio ?? '';
   }
 
   void fillMilestoneControllers(int index) {
@@ -96,33 +101,41 @@ class AboutContentViewModel extends GetxController {
       Map<String, dynamic> body = {};
       List<http.MultipartFile> files = [];
 
-      body.addIf(nameController.text != sharedData.value.content?.leadership?.people?.first.name, 'name', nameController.text);
-      body.addIf(designationController.text != sharedData.value.content?.leadership?.people?.first.role, 'role', designationController.text);
-      body.addIf(personalDetailsDescriptionController.text != sharedData.value.content?.leadership?.people?.first.bio, 'bio', personalDetailsDescriptionController.text);
+      body.addIf(nameController.text != leadershipData.value.name, 'name', nameController.text);
+      body.addIf(designationController.text != leadershipData.value.role, 'role', designationController.text);
+      body.addIf(personalDetailsDescriptionController.text != leadershipData.value.bio, 'bio', personalDetailsDescriptionController.text);
       
       if(newImage.value.isNotEmpty) {
-        files.add(http.MultipartFile.fromBytes('file', newImage.value));
+        files.add(http.MultipartFile.fromBytes('image', newImage.value));
       }
       
       if(body.isEmpty && files.isEmpty) {
         showSnackBar(message: 'No changes made', success: false);
       } else {
+
+        body.addAll({'page': 'shared', 'index': 0});
+
         GlobalVariables.showLoader.value = true;
 
         ApiBaseHelper.patchMethodForImage(
-            url: Urls.sharedData,
+            url: Urls.personalDetails,
             files: files,
             fields: body
         ).then((value) {
-          stopLoaderAndShowSnackBar(message: value.message!, success: value.success!);
+          stopLoaderAndShowSnackBar(message: value.success! ? 'Data updated successfully' : value.message!, success: value.success!);
 
-          if(value.success!) {
+          if(value.success! && value.data['updated_person'] != null) {
+            leadershipData.value = People.fromJson(value.data['updated_person']);
+            leadershipData.refresh();
+            _fillAboutPersonalDetailsControllers();
 
+            if(newImage.value.isNotEmpty) {
+              newImage.value = Uint8List(0);
+            }
           }
         });
       }
     }
-
   }
 
   void milestoneDeletionConfirmation(int index) {
@@ -193,8 +206,7 @@ class AboutContentViewModel extends GetxController {
           milestoneTitleController.clear();
         }
       });
-
     }
-
   }
+
 }

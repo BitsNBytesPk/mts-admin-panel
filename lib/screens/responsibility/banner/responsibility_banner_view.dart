@@ -33,8 +33,7 @@ class ResponsibilityBannerView extends StatelessWidget {
             newVideo: _viewModel.newBanner,
             networkVideoController: _viewModel.isVideoControllerInitialized.value ? _viewModel.videoController : null,
             bannerOnTap: () {  },
-          ),
-          ),
+          )),
           Row(
             spacing: 15,
             mainAxisAlignment: isSmallScreen(context) ? MainAxisAlignment.center : MainAxisAlignment.end,

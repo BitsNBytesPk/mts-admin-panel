@@ -141,6 +141,7 @@ class HomeBannerViewModel extends GetxController with WidgetsBindingObserver {
   void updateBannerData() async {
 
     await BannerHelpers.updateBannerData(
+      fileName: 'home_hero',
       formKey: formKey,
       isNetworkVideoControllerInitialized: isNetworkVideoControllerInitialized,
       titleController: pageBannerMainTitleController,

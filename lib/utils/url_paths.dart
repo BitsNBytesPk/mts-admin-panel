@@ -31,6 +31,7 @@ class Urls {
 
   /// Home
   static const String homeData = '$_pagesBaseUrl/home';
+  static const String updateHomeResponsibilityTeaser = '$homeData/responsibility-teaser';
   /// Home End
 
   /// About ///
@@ -39,6 +40,8 @@ class Urls {
 
   /// Shared Data ///
   static const String sharedData = '$_pagesBaseUrl/shared';
+
+  static const String personalDetails = '$_pagesBaseUrl/leadership';
   /// Shared Data End ///
 
   /// Innovation ///

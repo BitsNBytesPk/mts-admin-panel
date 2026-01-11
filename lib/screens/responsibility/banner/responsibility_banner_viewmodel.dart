@@ -126,6 +126,7 @@ class ResponsibilityBannerViewModel extends GetxController with WidgetsBindingOb
 
   void updateBannerData() async {
     await BannerHelpers.updateBannerData(
+      fileName: 'responsibility_hero',
       formKey: formKey,
       titleController: pageBannerMainTitleController,
       subtitleController: pageBannerSubTitleController,

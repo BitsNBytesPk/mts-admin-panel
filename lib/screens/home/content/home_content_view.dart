@@ -56,6 +56,7 @@ class HomeContentView extends StatelessWidget {
                   bannerOnTap: () => _viewModel.selectVideoFromDevice(),
                   newVideoController: _viewModel.isNewVideoControllerInitialized.value ? _viewModel.newVideoController : null,
                   includeButtons: true,
+                  saveOnTap: () => _viewModel.updateBannerData(),
                   formKey: _viewModel.secondaryBannerFormKey,
                   networkVideoController: _viewModel.isNetworkVideoControllerInitialized.value ? _viewModel.networkVideoController : null,
                   includeTopTitle: false,

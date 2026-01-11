@@ -8,7 +8,6 @@ import 'package:mts_website_admin_panel/utils/routes.dart';
 import 'package:mts_website_admin_panel/utils/validators.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:typed_data';
-import '../../helpers/banner_helpers.dart';
 import '../../languages/translation_keys.dart' as lang_key;
 import '../constants.dart';
 import '../images_paths.dart';
@@ -142,7 +141,7 @@ class PageBanner extends StatelessWidget {
                 })
             ),
             CustomMaterialButton(
-                onPressed: () {},
+                onPressed: saveOnTap ?? () {},
               text: 'Save',
               width: isSmallScreen(context) ? double.infinity : 150,
             )

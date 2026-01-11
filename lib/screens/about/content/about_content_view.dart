@@ -32,11 +32,14 @@ class AboutContentView extends StatelessWidget {
             height: _viewModel.personalDetailsHeight,
             children: [
               if(isSmallScreen(context)) Center(
-                child: AddImageSection(
-                  imageUrl: "${Urls.baseURL}${_viewModel.sharedData.value.content?.leadership?.people?.first.image}",
-                  newImage: _viewModel.newImage,
-                  width: 150,
-                  height: 180,
+                child: Obx(() => AddImageSection(
+                    includeAsterisk: true,
+                    imageUrl: "${Urls.baseURL}${_viewModel.leadershipData.value.image}",
+                    newImage: _viewModel.newImage,
+                    width: 150,
+                    height: 180,
+                    boxFit: BoxFit.cover,
+                  ),
                 ),
               ),
               if(isSmallScreen(context)) CustomTextFormField(
@@ -75,12 +78,13 @@ class AboutContentView extends StatelessWidget {
                     ),
                   ),
                   Obx(() => AddImageSection(
-                      newImage: _viewModel.newImage,
-                      width: 130,
-                      height: 150,
-                      imageUrl: "${Urls.baseURL}${_viewModel.sharedData.value.content?.leadership?.people?.first.image}",
-                    ),
-                  ),
+                    includeAsterisk: true,
+                    newImage: _viewModel.newImage,
+                    width: 130,
+                    height: 150,
+                    boxFit: BoxFit.cover,
+                    imageUrl: "${Urls.baseURL}${_viewModel.leadershipData.value.image}",
+                  )),
                 ],
               ),
               CustomTextFormField(
@@ -96,7 +100,7 @@ class AboutContentView extends StatelessWidget {
               Align(
                 alignment: AlignmentGeometry.centerRight,
                 child: CustomMaterialButton(
-                    onPressed: () => _viewModel.updatePersonalData(),
+                  onPressed: () => _viewModel.updatePersonalData(),
                   text: 'Save',
                   margin: EdgeInsets.only(top: 15),
                   width: 150,
@@ -162,11 +166,10 @@ class AboutContentView extends StatelessWidget {
                 alignment: AlignmentGeometry.centerRight,
                 child: Obx(() => CustomMaterialButton(
                   margin: EdgeInsets.only(top: 15),
-                      onPressed: _viewModel.updatingValue.value ? () {} : () => _viewModel.addNewMilestoneEntry(),
-                    text: _viewModel.updatingValue.value ? 'Update' : 'Save',
-                    width: 150,
-                  ),
-                ),
+                  onPressed: _viewModel.updatingValue.value ? () {} : () => _viewModel.addNewMilestoneEntry(),
+                  text: _viewModel.updatingValue.value ? 'Update' : 'Save',
+                  width: 150,
+                )),
               )
             ]
         ),
@@ -181,11 +184,11 @@ class AboutContentView extends StatelessWidget {
                       ListSerialNoText(index: index),
                       ListEntryItem(text: _viewModel.milestonesAndAchievementsList[index].title,),
                       ListEntryItem(text: _viewModel.milestonesAndAchievementsList[index].year,),
-                      ListEntryItem(text: _viewModel.milestonesAndAchievementsList[index].description, maxLines: 2,),
+                      if(!isSmallScreen(context)) ListEntryItem(text: _viewModel.milestonesAndAchievementsList[index].description, maxLines: 2,),
                       ListActionsButtons(
-                          includeDelete: true,
-                          includeEdit: true,
-                          includeView: false,
+                        includeDelete: true,
+                        includeEdit: true,
+                        includeView: false,
                         onEditPressed: () {
                             _viewModel.updatingValue.value = true;
                             if(_viewModel.milestonesAndAchievementsHeight.value == kSectionContainerHeightValue) {
@@ -204,12 +207,11 @@ class AboutContentView extends StatelessWidget {
                 'SN',
                 'Title',
                 'Year Text',
-                'Description',
+                if(!isSmallScreen(context)) 'Description',
                 'Actions',
               ],
               onRefresh: () => _viewModel.fetchAboutData(),
-          ),
-        )
+          ))
       ],
     );
   }
